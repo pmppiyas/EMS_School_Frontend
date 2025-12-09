@@ -33,7 +33,7 @@ const Information = () => {
         </div>
 
         {/* Quick Links Cards */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
           {cards.map((card, idx) => (
             <Link key={idx} href={card.link} className="flex flex-col items-center p-6 bg-card text-card-foreground rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center justify-center w-12 h-12 mb-3 rounded-full bg-primary/10">

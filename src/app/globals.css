@@ -120,3 +120,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+.marqueeSliderLeft {
+  animation: marqueeLeft 20s linear infinite;
+}
+
+@keyframes marqueeLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.marqueeSliderRight {
+  animation: marqueeRight 5s linear infinite;
+}
+
+@keyframes marqueeRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.slider-container:hover .slider-container:hover .marqueeSliderRight {
+  animation-play-state: paused;
+}
