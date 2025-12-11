@@ -2,6 +2,8 @@
 import HeroSection from '@/app/components/module/home/hero';
 import Information from '@/app/components/module/home/Information';
 import NoticeBoard from '@/app/components/module/home/Notice';
+import OurTeacher from '@/app/components/module/home/OurTecaher';
+
 
 
 export default function Home() {
@@ -10,6 +12,7 @@ export default function Home() {
       <HeroSection />
       <Information />
       <NoticeBoard />
+      <OurTeacher />
     </div>
   );
 }

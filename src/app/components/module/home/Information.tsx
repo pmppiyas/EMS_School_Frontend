@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Information = () => {
   const cards = [
-    { title: "Our Teachers", icon: <Users className="w-6 h-6 text-primary" />, link: "/teachers" },
+    { title: "Our Teachers", icon: <Users className="w-6 h-6 text-primary" />, link: "/teacher" },
     { title: "Results", icon: <ClipboardList className="w-6 h-6 text-primary" />, link: "/results" },
     { title: "Exam Schedule", icon: <Calendar className="w-6 h-6 text-primary" />, link: "/exam-schedule" },
     { title: "Routine", icon: <BookOpen className="w-6 h-6 text-primary" />, link: "/routine" },
@@ -19,8 +19,14 @@ const Information = () => {
 
         {/* MD Info */}
         <div className="flex flex-col lg:flex-row gap-6 mb-12">
-          <div className="shrink-0 ">
-            <Image src={head} alt="Chairman" width={400} height={300} className="rounded-xl object-cover" />
+          <div className="w-full  lg:max-w-[400px] rounded-xl overflow-hidden mx-auto lg:mx-0">
+            <Image
+              src={head}
+              alt="Chairman"
+              width={400}
+              height={300}
+              className="w-full h-auto object-cover rounded-xl"
+            />
           </div>
           <div className="flex flex-col justify-end">
             <div>      <h2 className="text-4xl font-bold text-foreground">MD Momirul Islam Liton</h2>
