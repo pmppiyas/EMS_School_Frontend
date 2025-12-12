@@ -1,5 +1,6 @@
 
 import Featured from '@/app/components/module/home/Featured';
+import Footer from '@/app/components/module/home/Footer';
 import HeroSection from '@/app/components/module/home/hero';
 import Information from '@/app/components/module/home/Information';
 import NoticeBoard from '@/app/components/module/home/Notice';
@@ -17,6 +18,7 @@ export default function Home() {
       <OurTeacher />
       <Featured />
       <Testimonial />
+      <Footer />
     </div>
   );
 }
