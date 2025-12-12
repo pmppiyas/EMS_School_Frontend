@@ -16,9 +16,8 @@ export default async function OurTeacher() {
   const { teachers }: { teachers: Teacher[] } = await getTeachers();
 
   return (
-    <div className='w-full lg:w-11/12 '>
-
-      <section className="py-16">
+    <div className='bg-primary-foreground w-full mx-auto'>
+      <section className="py-16  lg:w-11/12 mx-auto ">
         <div className="container mx-auto px-4">
           <Header title='Our' title2=' Teachers' />
 

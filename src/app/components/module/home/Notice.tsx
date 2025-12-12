@@ -9,9 +9,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-
 const NoticeBoard = () => {
-
   const NoticeData = [
     {
       title: "Mid-Term Examination Schedule Published",
@@ -37,52 +35,45 @@ const NoticeBoard = () => {
         "Registration for Co-Curricular Activities Week is now open for all students. This event includes competitions, workshops, sports activities, and creative showcases designed to help students build confidence and discover new talents. Participation certificates will be provided, which can be valuable for future portfolios and university applications.",
       url: "#",
     },
-
   ];
 
-
   return (
-    <div className='relative container overflow-x-hidden  min-h-screen flex flex-col  items-center justify-center'>
-      <Header title="Notice" title2='Board' />
+    <div className='bg-primary-foreground w-full mx-auto relative'>
 
-      {/* Background Image */}
-      <div className="absolute inset-0 -z-10 opacity-20 h-full w-full">
-        <Image
-          src={notice}
-          alt="NoticeBoard Background"
-          fill
-          style={{ objectFit: "cover" }}
-          quality={100}
-        />
-      </div>
 
-      {/* Main Content */}
-      <div className="slider-container w-full flex-nowrap relative overflow-hidden mask-[linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)] z-10">
-        <div className="marqueeSliderLeft flex items-center gap-5 z-10">
-          {NoticeData.map((item, index) => (
-            <Link
-              href={item.url}
-              className="py-4 px-6 bg-primary capitalize border text-background rounded font-medium whitespace-nowrap"
-              key={index}
-            >
-              {item.message}
-            </Link>
-          ))}
+      <section className="py-16 lg:w-11/12 mx-auto relative z-10">
+        <div className="container mx-auto px-4">
+          <Header title="Notice" title2='Board' />
+
+          {/* Marquee Slider */}
+          <div className="slider-container w-full flex-nowrap relative overflow-hidden mask-[linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)] mb-8">
+            <div className="marqueeSliderLeft flex items-center gap-5">
+              {NoticeData.map((item, index) => (
+                <Link
+                  href={item.url}
+                  className="py-4 px-6 bg-primary capitalize border text-background rounded font-medium whitespace-nowrap"
+                  key={index}
+                >
+                  {item.message}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Accordion Section */}
+          <div className='px-6 flex flex-col lg:flex-row'>
+            <Accordion type="single" collapsible className='flex-1'>
+              {NoticeData.map((item, index) => (
+                <AccordionItem value={`item-${index}`} key={index}>
+                  <AccordionTrigger className='text-lg'>{item.title}</AccordionTrigger>
+                  <AccordionContent>{item.message}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
-
-        <div className='px-6 flex flex-col lg:flex-row z-10'>
-          <Accordion type="single" collapsible className='flex-1'>
-            {NoticeData.map((item, index) => (
-              <AccordionItem value={`item-${index}`} key={index}>
-                <AccordionTrigger className='text-lg'>{item.title}</AccordionTrigger>
-                <AccordionContent>{item.message}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </div>
+      </section>
     </div>
-
   );
 };
 
