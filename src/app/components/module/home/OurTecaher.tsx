@@ -16,11 +16,11 @@ export default async function OurTeacher() {
   const { teachers }: { teachers: Teacher[] } = await getTeachers();
 
   return (
-    <div className='w-full lg:w-11/12'>
+    <div className='w-full lg:w-11/12 '>
 
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <Header title='Our Teachers' />
+          <Header title='Our' title2=' Teachers' />
 
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

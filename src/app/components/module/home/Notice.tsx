@@ -43,7 +43,7 @@ const NoticeBoard = () => {
 
   return (
     <div className='relative container overflow-x-hidden  min-h-screen flex flex-col  items-center justify-center'>
-      <Header title="Notice Board" />
+      <Header title="Notice" title2='Board' />
 
       {/* Background Image */}
       <div className="absolute inset-0 -z-10 opacity-20 h-full w-full">
