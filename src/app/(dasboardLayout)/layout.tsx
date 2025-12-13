@@ -1,4 +1,5 @@
-import { AppSidebar } from "@/components/app-sidebar";
+
+import AppSidebar from '@/components/app-sidebar';
 import { SiteHeader } from "@/components/site-header";
 import {
   SidebarInset,
@@ -16,7 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      <AppSidebar />
       <SidebarInset>
         <SiteHeader />
         <main className="p-6">{children}</main>

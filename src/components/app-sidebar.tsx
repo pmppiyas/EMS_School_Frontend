@@ -1,15 +1,6 @@
-"use client"
-
-import {
-  IconChartBar,
-  IconDashboard,
-  IconFolder,
-  IconListDetails,
-  IconUsers,
-} from "@tabler/icons-react"
-
+import NavLinkClient from '@/app/components/module/dashboard/NavlinkClient'
 import Logo from '@/app/components/shared/Logo'
-import { NavMain } from "@/components/nav-main"
+import { getUserInfo } from '@/app/services/auth/userInfo'
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -19,46 +10,18 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { commonRoutes, getRoutesByRole } from '@/routes/routes'
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
 
-}
+export default async function AppSidebar() {
+  const user = await getUserInfo()
+  if (!user) {
+    return null
+  }
+  const routes = getRoutesByRole(user.role);
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="offcanvas" >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -67,10 +30,32 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <div className="flex flex-col  h-full space-y-8">
+          <nav className="mt-3 space-y-1">
+            {routes.map((item) => (
+              <NavLinkClient
+                key={item.href}
+                href={item.href}
+                title={item.title}
+                iconName={item.iconName || ''}
+              />
+            ))}
+          </nav>
+
+          <nav className="mt-3 space-y-1">
+            {commonRoutes.map((item) => (
+              <NavLinkClient
+                key={item.href}
+                href={item.href}
+                title={item.title}
+                iconName={item.iconName || ''}
+              />
+            ))}
+          </nav>
+        </div>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )
