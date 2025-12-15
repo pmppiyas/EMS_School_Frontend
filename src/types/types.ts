@@ -1,3 +1,5 @@
+export type IRole = "ADMIN" | "TEACHER" | "STUDENT";
+
 export interface IUser {
   id: string;
   email: string;
