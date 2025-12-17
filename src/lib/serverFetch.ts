@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/config/env";
 import { getCookie } from "@/lib/JwtToken";
 
@@ -10,12 +9,18 @@ const serverFetchHelper = async (
 
   const accessToken = await getCookie("accessToken");
 
+  const defaultHeaders: HeadersInit = {
+    ...(headers || {}),
+    cookie: accessToken ? `accessToken=${accessToken}` : "",
+  };
+
+  if (!(restOptions.body instanceof FormData)) {
+    (defaultHeaders as Record<string, string>)["Content-Type"] =
+      "application/json";
+  }
+
   return fetch(`${env.NEXT_PUBLIC_BACKEND_URL}/${endpoint}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(headers || {}),
-      cookie: accessToken ? `accessToken=${accessToken}` : "",
-    },
+    headers: defaultHeaders,
     ...restOptions,
   });
 };
@@ -29,26 +34,32 @@ export const serverFetch = {
   },
 
   post: async (endpoint: string, body?: any, options: RequestInit = {}) => {
+    const finalBody = body instanceof FormData ? body : JSON.stringify(body);
+
     return serverFetchHelper(endpoint, {
       ...options,
       method: "POST",
-      body: JSON.stringify(body),
+      body: finalBody,
     });
   },
 
   patch: async (endpoint: string, body?: any, options: RequestInit = {}) => {
+    const finalBody = body instanceof FormData ? body : JSON.stringify(body);
+
     return serverFetchHelper(endpoint, {
       ...options,
       method: "PATCH",
-      body: JSON.stringify(body),
+      body: finalBody,
     });
   },
 
   put: async (endpoint: string, body?: any, options: RequestInit = {}) => {
+    const finalBody = body instanceof FormData ? body : JSON.stringify(body);
+
     return serverFetchHelper(endpoint, {
       ...options,
       method: "PUT",
-      body: JSON.stringify(body),
+      body: finalBody,
     });
   },
 
