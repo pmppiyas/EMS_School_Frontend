@@ -1,8 +1,20 @@
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Edit, Eye, MoreHorizontal, Trash } from 'lucide-react';
-import React from "react";
+import React from 'react';
 
 export interface IColumn<T> {
   header: string;
@@ -28,11 +40,9 @@ function ManagementTable<T>({
   onEdit,
   onDelete,
   getRowKey,
-  emptyMessage = "No records found.",
+  emptyMessage = 'No records found.',
   isRefreshing = false,
 }: IManagementTableProps<T>) {
-
-
   const hasActions = onView || onEdit || onDelete;
   return (
     <div className="w-full overflow-x-scroll border rounded-md  max-w-7xl mx-auto px-2">
@@ -43,77 +53,67 @@ function ManagementTable<T>({
       )}
 
       <Table>
-
         <TableHeader>
           <TableRow>
             {columns.map((column, colIdx) => (
-              <TableHead key={colIdx}>
-                {column.header}
-              </TableHead>
+              <TableHead key={colIdx}>{column.header}</TableHead>
             ))}
-            {hasActions && <TableHead>
-              Actions
-            </TableHead>}
+            {hasActions && <TableHead>Actions</TableHead>}
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {
-            data.length === 0 ? (
-              <TableCell colSpan={columns.length + (hasActions ? 1 : 0)}>
-                {emptyMessage}
-
-              </TableCell>
-            ) : (
-
-              data?.map((item) => (
-                <TableRow key={getRowKey(item)} >
-                  {columns.map((col, idx) => (
-                    <TableCell key={idx} className={`${col.className} `}>
-                      {typeof col.accessor === "function"
-                        ? col.accessor(item)
-                        : String(item[col.accessor])}
-                    </TableCell>
-                  ))}
-                  {hasActions && (
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          {onView && (
-                            <DropdownMenuItem onClick={() => onView(item)}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View
-                            </DropdownMenuItem>
-                          )}
-                          {onEdit && (
-                            <DropdownMenuItem onClick={() => onEdit(item)}>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                          )}
-                          {onDelete && (
-                            <DropdownMenuItem
-                              onClick={() => onDelete(item)}
-                              className="text-destructive"
-                            >
-                              <Trash className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  )}
-                </TableRow>
-
-              )))
-
-          }
+          {data.length === 0 ? (
+            <TableCell colSpan={columns.length + (hasActions ? 1 : 0)}>
+              {emptyMessage}
+            </TableCell>
+          ) : (
+            data?.map((item) => (
+              <TableRow key={getRowKey(item)}>
+                {columns.map((col, idx) => (
+                  <TableCell key={idx} className={`${col.className} `}>
+                    {typeof col.accessor === 'function'
+                      ? col.accessor(item)
+                      : String(item[col.accessor])}
+                  </TableCell>
+                ))}
+                {hasActions && (
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {onView && (
+                          <DropdownMenuItem onClick={() => onView(item)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View
+                          </DropdownMenuItem>
+                        )}
+                        {onEdit && (
+                          <DropdownMenuItem onClick={() => onEdit(item)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                        )}
+                        {onDelete && (
+                          <DropdownMenuItem
+                            onClick={() => onDelete(item)}
+                            className="text-destructive"
+                          >
+                            <Trash className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>
