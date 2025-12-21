@@ -1,4 +1,4 @@
-import { Gender } from "@/types/types";
+import { Gender } from '@/types/types';
 
 export interface ITeacher {
   id?: string;
@@ -7,7 +7,7 @@ export interface ITeacher {
   email: string;
   phoneNumber?: string | null;
   address?: string | null;
-  dateOfBirth?: string | null;
+  dateOfBirth?: Date | null;
   designation?: string | null;
   gender?: Gender | null;
   userId?: string;

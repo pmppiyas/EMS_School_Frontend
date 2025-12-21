@@ -8,6 +8,7 @@ import TeacherColumns from './TeacherColumns';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
 import { deleteTeacher } from '@/app/services/tecaher/deleteTeacher';
 import { toast } from 'sonner';
+import TeacherFormDialog from './TeacherFormData';
 
 const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
   const router = useRouter();
@@ -16,8 +17,12 @@ const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
   const [deletingTeacher, setDeletingTeacher] = useState<ITeacher | null>(null);
   const [isDeletingDialog, setIsDeletingDialog] = useState(false);
 
-  const [viewingTeacher, setViewingTeacher] = useState<ITeacher | null>(null);
-  const [editingTeacher, setEditingTeacher] = useState<ITeacher | null>(null);
+  const [viewingTeacher, setViewingTeacher] = useState<ITeacher | undefined>(
+    undefined
+  );
+  const [editingTeacher, setEditingTeacher] = useState<ITeacher | undefined>(
+    undefined
+  );
 
   const handleRefresh = () => {
     startTransition(() => {
@@ -67,7 +72,18 @@ const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
         onEdit={handleEdit}
         emptyMessage="No Teachers Found."
       />
+      {/* Edit Doctor Details*/}
+      <TeacherFormDialog
+        open={!!editingTeacher}
+        teacher={editingTeacher}
+        onClose={() => setEditingTeacher(undefined)}
+        onSuccess={() => {
+          setEditingTeacher(undefined);
+          handleRefresh();
+        }}
+      />
 
+      {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog
         open={isDeletingDialog}
         onOpenChange={setIsDeletingDialog}
