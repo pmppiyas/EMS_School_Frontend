@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import TeacherColumns from './TeacherColumns';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
-import { deleteTeacher } from '@/app/services/tecaher/deleteTeacher';
+import { deleteTeacher } from '@/app/services/teacher/deleteTeacher';
 import { toast } from 'sonner';
 import TeacherFormDialog from './TeacherFormData';
 
@@ -17,9 +17,6 @@ const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
   const [deletingTeacher, setDeletingTeacher] = useState<ITeacher | null>(null);
   const [isDeletingDialog, setIsDeletingDialog] = useState(false);
 
-  const [viewingTeacher, setViewingTeacher] = useState<ITeacher | undefined>(
-    undefined
-  );
   const [editingTeacher, setEditingTeacher] = useState<ITeacher | undefined>(
     undefined
   );
@@ -55,8 +52,13 @@ const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
   };
 
   const handleView = (teacher: ITeacher) => {
-    setViewingTeacher(teacher);
+    if (teacher.id) {
+      router.push(`/admin/dashboard/teachers/${teacher.id}`);
+    } else {
+      toast.error('Teacher ID not found');
+    }
   };
+
   const handleEdit = (teacher: ITeacher) => {
     setEditingTeacher(teacher);
   };

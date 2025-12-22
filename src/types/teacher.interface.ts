@@ -1,6 +1,7 @@
 import { Gender } from '@/types/types';
 
 export interface ITeacher {
+  user: any;
   id?: string;
   firstName: string;
   lastName: string;

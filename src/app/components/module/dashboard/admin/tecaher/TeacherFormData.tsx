@@ -1,7 +1,7 @@
 'use client';
 
 import FieldError from '@/app/components/shared/FieldError';
-import { createTeacher } from '@/app/services/tecaher/addTeacher';
+import { createTeacher } from '@/app/services/teacher/addTeacher';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -21,7 +21,7 @@ import {
 import { ITeacher } from '@/types/teacher.interface';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { updateTeacher } from '@/app/services/tecaher/updateTeacher';
+import { updateTeacher } from '@/app/services/teacher/updateTeacher';
 
 interface ITeacherFormDialogProps {
   open: boolean;

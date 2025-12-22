@@ -1,6 +1,6 @@
 import TeacherHeader from '@/app/components/module/dashboard/admin/tecaher/TeacherHeader';
 import TeachersTable from '@/app/components/module/dashboard/admin/tecaher/TeachersTable';
-import { getTeachers } from '@/app/services/tecaher/getTeachers';
+import { getTeachers } from '@/app/services/teacher/getTeachers';
 
 const TeacherManagement = async () => {
   const { teachers } = await getTeachers();
