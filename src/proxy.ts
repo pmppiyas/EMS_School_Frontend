@@ -1,35 +1,31 @@
-import { env } from "@/config/env";
-import {
-  getDefaultDashboardRoutes,
-  getRouteOwner,
-  isAuthRoutes,
-} from "@/lib/auth";
-import { IRole } from "@/types/types";
-import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { getDefaultDashboardRoutes, getRouteOwner, isAuthRoutes } from './lib/auth';
+import { IRole } from './types/types';
+import { env } from './config/env';
 
 export async function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   // Allow static files and public routes
-  if (pathname.startsWith("/_next") || pathname.startsWith("/api")) {
+  if (pathname.startsWith('/_next') || pathname.startsWith('/api')) {
     return NextResponse.next();
   }
 
-  const accessToken = req.cookies.get("accessToken")?.value || null;
+  const accessToken = req.cookies.get('accessToken')?.value || null;
   const isAuth = isAuthRoutes(pathname);
   const routeOwner = getRouteOwner(pathname);
 
   // Rule 1: Public routes (no protection)
-  if (routeOwner === null || routeOwner === "COMMON") {
+  if (routeOwner === null || routeOwner === 'COMMON') {
     return NextResponse.next();
   }
 
   // Rule 2: No token → redirect to login
   if (!accessToken) {
-    const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("redirectTo", pathname);
+    const loginUrl = new URL('/login', req.url);
+    loginUrl.searchParams.set('redirectTo', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
@@ -38,29 +34,29 @@ export async function proxy(req: NextRequest) {
   try {
     const verifiedToken = jwt.verify(accessToken, env.JWT_SECRET);
 
-    if (typeof verifiedToken !== "string") {
+    if (typeof verifiedToken !== 'string') {
       userRole = verifiedToken.role;
     } else {
       const cookieStore = cookies();
-      (await cookieStore).delete("accessToken");
-      (await cookieStore).delete("refreshToken");
-      return NextResponse.redirect(new URL("/login", req.url));
+      (await cookieStore).delete('accessToken');
+      (await cookieStore).delete('refreshToken');
+      return NextResponse.redirect(new URL('/login', req.url));
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error("JWT Error:", error);
+    console.error('JWT Error:', error);
 
-    const loginUrl = new URL("/login", req.url);
+    const loginUrl = new URL('/login', req.url);
 
-    if (error.name === "TokenExpiredError") {
-      loginUrl.searchParams.set("error", "session_expired");
+    if (error.name === 'TokenExpiredError') {
+      loginUrl.searchParams.set('error', 'session_expired');
     } else {
-      loginUrl.searchParams.set("error", "invalid_token");
+      loginUrl.searchParams.set('error', 'invalid_token');
     }
 
     const cookieStore = cookies();
-    (await cookieStore).delete("accessToken");
-    (await cookieStore).delete("refreshToken");
+    (await cookieStore).delete('accessToken');
+    (await cookieStore).delete('refreshToken');
 
     return NextResponse.redirect(loginUrl);
   }
@@ -72,9 +68,9 @@ export async function proxy(req: NextRequest) {
   }
 
   if (
-    (routeOwner === "ADMIN" && userRole !== "ADMIN") ||
-    (routeOwner === "TEACHER" && userRole !== "TEACHER") ||
-    (routeOwner === "STUDENT" && userRole !== "STUDENT")
+    (routeOwner === 'ADMIN' && userRole !== 'ADMIN') ||
+    (routeOwner === 'TEACHER' && userRole !== 'TEACHER') ||
+    (routeOwner === 'STUDENT' && userRole !== 'STUDENT')
   ) {
     return NextResponse.redirect(new URL(defaultRoute, req.url));
   }
@@ -84,6 +80,6 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|login|signup|forget_password|reset_password).*)",
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|login|signup|forget_password|reset_password).*)',
   ],
 };

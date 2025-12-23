@@ -12,7 +12,6 @@ import TeacherFormDialog from './TeacherFormData';
 
 const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
   const router = useRouter();
-
   const [_, startTransition] = useTransition();
   const [deletingTeacher, setDeletingTeacher] = useState<ITeacher | null>(null);
   const [isDeletingDialog, setIsDeletingDialog] = useState(false);
