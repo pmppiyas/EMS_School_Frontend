@@ -1,5 +1,5 @@
-import { env } from "@/config/env";
-import { getCookie } from "@/lib/JwtToken";
+import { env } from '@/config/env';
+import { getCookie } from '@/lib/JwtToken';
 
 const serverFetchHelper = async (
   endpoint: string,
@@ -7,16 +7,15 @@ const serverFetchHelper = async (
 ): Promise<Response> => {
   const { headers, ...restOptions } = options;
 
-  const accessToken = await getCookie("accessToken");
+  const accessToken = await getCookie('accessToken');
 
   const defaultHeaders: HeadersInit = {
     ...(headers || {}),
-    cookie: accessToken ? `accessToken=${accessToken}` : "",
+    Authorization: accessToken ? `Bearer ${accessToken}` : '',
   };
-
   if (!(restOptions.body instanceof FormData)) {
-    (defaultHeaders as Record<string, string>)["Content-Type"] =
-      "application/json";
+    (defaultHeaders as Record<string, string>)['Content-Type'] =
+      'application/json';
   }
 
   return fetch(`${env.NEXT_PUBLIC_BACKEND_URL}/${endpoint}`, {
@@ -29,7 +28,7 @@ export const serverFetch = {
   get: async (endpoint: string, options: RequestInit = {}) => {
     return serverFetchHelper(endpoint, {
       ...options,
-      method: "GET",
+      method: 'GET',
     });
   },
 
@@ -38,7 +37,7 @@ export const serverFetch = {
 
     return serverFetchHelper(endpoint, {
       ...options,
-      method: "POST",
+      method: 'POST',
       body: finalBody,
     });
   },
@@ -48,7 +47,7 @@ export const serverFetch = {
 
     return serverFetchHelper(endpoint, {
       ...options,
-      method: "PATCH",
+      method: 'PATCH',
       body: finalBody,
     });
   },
@@ -58,7 +57,7 @@ export const serverFetch = {
 
     return serverFetchHelper(endpoint, {
       ...options,
-      method: "PUT",
+      method: 'PUT',
       body: finalBody,
     });
   },
@@ -66,7 +65,7 @@ export const serverFetch = {
   delete: async (endpoint: string, options: RequestInit = {}) => {
     return serverFetchHelper(endpoint, {
       ...options,
-      method: "DELETE",
+      method: 'DELETE',
     });
   },
 };
