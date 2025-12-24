@@ -10,8 +10,15 @@ import ManagementTable from '@/app/components/module/dashboard/ManagementTable';
 import StudentColumns from './StudentColumns';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
 import { deleteStudent } from '../../../../../services/student/deleteStudent';
+import StudentFormDialog from './StudentFormDialog';
 
-const StudentTable = ({ students }: { students: IStudent[] }) => {
+const StudentTable = ({
+  students,
+  classes,
+}: {
+  students: IStudent[];
+  classes: { id: string; name: string }[];
+}) => {
   const router = useRouter();
   const [_, startTransition] = useTransition();
 
@@ -81,15 +88,16 @@ const StudentTable = ({ students }: { students: IStudent[] }) => {
       />
 
       {/* Student Edit Dialog - If you have one */}
-      {/* <StudentFormDialog
+      <StudentFormDialog
         open={!!editingStudent}
         student={editingStudent}
+        classes={classes}
         onClose={() => setEditingStudent(undefined)}
         onSuccess={() => {
-            setEditingStudent(undefined);
-            handleRefresh();
+          setEditingStudent(undefined);
+          handleRefresh();
         }}
-      /> */}
+      />
 
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog

@@ -1,7 +1,6 @@
-export enum Gender {
+export enum IGender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
-  OTHER = 'OTHER',
 }
 export enum IClass {
   PLAYGROUP,

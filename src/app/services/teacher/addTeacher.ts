@@ -1,26 +1,25 @@
-"use server";
+'use server';
 
-import { serverFetch } from "@/lib/serverFetch";
-import { zodValidator } from "@/lib/ZodValidator";
-import { ITeacher } from "@/types/teacher.interface";
-import { createTeacherZodSchema } from "@/zod/teacher.validation";
+import { serverFetch } from '@/lib/serverFetch';
+import { zodValidator } from '@/lib/ZodValidator';
+import { ITeacher } from '@/types/teacher.interface';
+import { createTeacherZodSchema } from '@/zod/teacher.validation';
 
 export async function createTeacher(formData: FormData) {
   try {
     const payload: ITeacher & { password: string } = {
-      firstName: formData.get("firstName") as string,
-      lastName: formData.get("lastName") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      phoneNumber: formData.get("phoneNumber") as string,
-      address: formData.get("address") as string,
-      dateOfBirth: formData.get("dateOfBirth")
-        ? new Date(formData.get("dateOfBirth") as string).toISOString()
+      firstName: formData.get('firstName') as string,
+      lastName: formData.get('lastName') as string,
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+      phoneNumber: formData.get('phoneNumber') as string,
+      address: formData.get('address') as string,
+      dateOfBirth: formData.get('dateOfBirth')
+        ? new Date(formData.get('dateOfBirth') as string).toISOString()
         : undefined,
-      designation: formData.get("designation") as string,
-      gender: formData.get("gender") as "MALE" | "FEMALE",
+      designation: formData.get('designation') as string,
+      gender: formData.get('gender') as 'MALE' | 'FEMALE',
     };
-
 
     const validation = zodValidator(payload, createTeacherZodSchema);
     if (!validation.success) {
@@ -28,22 +27,21 @@ export async function createTeacher(formData: FormData) {
     }
 
     const backendFormData = new FormData();
-    backendFormData.append("data", JSON.stringify(validation.data));
+    backendFormData.append('data', JSON.stringify(validation.data));
 
-    const photo = formData.get("photo");
+    const photo = formData.get('photo');
     if (photo instanceof File && photo.size > 0) {
-      backendFormData.append("photo", photo);
+      backendFormData.append('photo', photo);
     }
 
-
     const response = await serverFetch.post(
-      "user/create_teacher",
-      backendFormData,
+      'user/create_teacher',
+      backendFormData
     );
 
     return await response.json();
   } catch (err: any) {
-    console.error("CREATE TEACHER ERROR:", err);
+    console.error('CREATE TEACHER ERROR:', err);
     return { success: false, message: err.message };
   }
 }
