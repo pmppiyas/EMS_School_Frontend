@@ -107,7 +107,7 @@ export default async function StudentProfile(props: { params: Params }) {
           <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
             <h3 className="text-lg font-semibold mb-2">Academic Info</h3>
             <p className="text-sm text-muted-foreground italic">
-              Currently no schedules assigned for this term.
+              Currently no ClassTimes assigned for this term.
             </p>
           </section>
         </div>
