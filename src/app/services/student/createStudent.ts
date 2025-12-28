@@ -3,11 +3,10 @@
 import { serverFetch } from '@/lib/serverFetch';
 import { zodValidator } from '@/lib/ZodValidator';
 import { createStudentZodSchema } from '../../../zod/student.validation';
-// import { createStudentZodSchema } from '@/zod/student.validation'; // Ensure this exists
 
 export async function createStudent(formData: FormData) {
   try {
-    // 1. Extract plain fields from FormData into a payload object
+
     const payload = {
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
@@ -25,20 +24,18 @@ export async function createStudent(formData: FormData) {
     const validation = zodValidator(payload, createStudentZodSchema);
     if (!validation.success) {
       return { success: false, errors: validation.errors };
-    } 
+    }
 
-    // 3. Prepare the final FormData for the backend
+
     const backendFormData = new FormData();
-
-    // Most backends using multer/file-upload expect a "data" string and a "file"
     backendFormData.append('data', JSON.stringify(payload));
 
     const photo = formData.get('photo');
     if (photo instanceof File && photo.size > 0) {
-      backendFormData.append('file', photo); // Use 'file' or 'photo' depending on your backend field name
+      backendFormData.append('file', photo);
     }
 
-    // 4. Send to Backend
+
     const response = await serverFetch.post(
       'user/create_student',
       backendFormData

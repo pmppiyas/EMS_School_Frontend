@@ -8,7 +8,7 @@ export interface IStudent {
   firstName: string;
   lastName: string;
   email: string;
-  roll: string;
+  roll: number;
   gender: Gender;
   userId: string;
   createdAt: string | Date;

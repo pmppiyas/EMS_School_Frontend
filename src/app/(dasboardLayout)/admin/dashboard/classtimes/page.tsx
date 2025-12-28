@@ -5,7 +5,6 @@ import { getAllClassTimes } from '../../../../services/classTime/getAllClassTime
 const ClassTimesPage = async () => {
   const res = await getAllClassTimes();
   const { classes } = res.data;
-  console.log(classes);
 
   return (
     <div>

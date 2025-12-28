@@ -2,7 +2,11 @@ import { NavItem } from '@/types/types';
 
 export const adminRoutes: NavItem[] = [
   { title: 'Dashboard', href: '/admin/dashboard', iconName: 'IconBook' },
-
+  {
+    title: 'Attendance',
+    href: '/admin/dashboard/attendance',
+    iconName: 'IconClock2',
+  },
   {
     title: 'Teachers',
     href: '/admin/dashboard/teachers',
@@ -12,6 +16,12 @@ export const adminRoutes: NavItem[] = [
     title: 'Students',
     href: '/admin/dashboard/students',
     iconName: 'IconClock2',
+  },
+
+  {
+    title: 'Schedules',
+    href: '/admin/dashboard/schedules',
+    iconName: 'IconStethoscope',
   },
   {
     title: 'Class Times',

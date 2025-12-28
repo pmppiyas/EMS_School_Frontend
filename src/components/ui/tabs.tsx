@@ -1,9 +1,8 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
-
-import { cn } from "@/lib/utils"
+import * as React from 'react';
+import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { cn } from '@/lib/utils';
 
 function Tabs({
   className,
@@ -12,10 +11,10 @@ function Tabs({
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn('flex flex-col gap-4', className)}
       {...props}
     />
-  )
+  );
 }
 
 function TabsList({
@@ -26,12 +25,12 @@ function TabsList({
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+        'bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-md inline-flex h-11 w-fit items-center justify-center rounded-xl p-1.5 shadow-inner border border-slate-200 dark:border-slate-700',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TabsTrigger({
@@ -42,12 +41,15 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-1.5 text-sm font-semibold transition-all duration-300 ease-in-out whitespace-nowrap',
+        'text-slate-500 hover:text-primary hover:bg-white/50 dark:hover:bg-slate-700/50',
+        'data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TabsContent({
@@ -57,10 +59,13 @@ function TabsContent({
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
+      className={cn(
+        'mt-2 ring-offset-background focus-visible:outline-none animate-in fade-in-50 duration-300',
+        className
+      )}
       {...props}
     />
-  )
+  );
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabs, TabsList, TabsTrigger, TabsContent };
