@@ -44,7 +44,7 @@ const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
   };
 
   const handleView = (classTime: IClassTimeTableProps) => {
-    router.push(`/admin/dashboard/ClassTimes/${classTime.id}`);
+    router.push(`/admin/dashboard/classtimes/${classTime.id}`);
   };
 
   const handleEdit = (classTime: IClassTimeTableProps) => {

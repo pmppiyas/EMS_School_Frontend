@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AttendanceRecords = () => {
+const AttendanceRecords = ({ attendance }: { attendance: any }) => {
   return <div>AttendanceRecords</div>;
 };
 

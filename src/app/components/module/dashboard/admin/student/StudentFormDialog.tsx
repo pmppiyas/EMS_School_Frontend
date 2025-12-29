@@ -70,7 +70,7 @@ const StudentFormDialog = ({
           lastName: formData.get('lastName') as string,
           phoneNumber: formData.get('phoneNumber') as string,
           address: formData.get('address') as string,
-          roll: formData.get('roll') as string,
+          roll: formData.get('roll') as unknown as number,
           gender: gender,
           dateOfBirth: formData.get('dateOfBirth')
             ? new Date(formData.get('dateOfBirth') as string)

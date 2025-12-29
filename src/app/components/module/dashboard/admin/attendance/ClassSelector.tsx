@@ -66,6 +66,13 @@ const ClassSelector = ({
         </SelectTrigger>
 
         <SelectContent className="bg-popover text-popover-foreground rounded-xl border-border shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
+          <SelectItem
+            key="teacher"
+            value="teacher"
+            className="py-2.5 px-3 focus:bg-accent focus:text-accent-foreground cursor-pointer transition-colors font-medium"
+          >
+            TEACHER
+          </SelectItem>
           {classes.map((cls) => (
             <SelectItem
               key={cls.id}

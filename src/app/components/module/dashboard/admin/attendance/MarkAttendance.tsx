@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useTransition } from 'react';
 import {
   Table,
   TableBody,
@@ -12,168 +12,239 @@ import {
 } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { markAttendance } from '../../../../../services/attendance/markAttendance';
-import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { buildPayloadRecords } from '../../../../../../lib/buildAttendPayload';
+import {
+  IAttendance,
+  IUserAttend,
+} from '../../../../../../types/attendance.interface';
 
-interface IStudent {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  roll: number;
-}
-
-const MarkAttendance = ({ students }: { students: IStudent[] }) => {
-  const searchParams = useSearchParams();
-  const classId = searchParams.get('classId');
-
-  const [attendance, setAttendance] = useState<
-    { userId: string; isPresent: boolean }[]
-  >([]);
+const MarkAttendance = ({
+  data,
+  isTeacherMode,
+}: {
+  data: IUserAttend[];
+  isTeacherMode: boolean;
+}) => {
+  const [attendance, setAttendance] = useState<IAttendance[]>([]);
+  const initialAttendance = useRef<IAttendance[]>([]);
   const [loading, setLoading] = useState(false);
+  const [, startTransition] = useTransition();
+  const router = useRouter();
+  const getTodayString = () => {
+    const d = new Date();
+    return d.toLocaleDateString('en-CA');
+  };
 
   useEffect(() => {
-    if (students?.length > 0) {
-      setAttendance(
-        students.map((s) => ({ userId: s.userId, isPresent: true }))
-      );
-    }
-  }, [students]);
+    if (!data?.length) return;
 
-  const toggleAttendance = (userId: string) => {
+    const todayStr = getTodayString();
+    console.log(todayStr);
+
+    const mapped = data.map((item) => {
+      const attendances = item?.user?.attendances ?? [];
+
+      const todayAttendance = attendances.find((a: any) => {
+        const createdAtDate = a.createdAt?.split('T')[0];
+        return createdAtDate === todayStr;
+      });
+
+      const status = todayAttendance?.status;
+
+      const isPresentLike =
+        !!todayAttendance?.inTime ||
+        ['PRESENT', 'LATE', 'LEAVE'].includes(status);
+
+      return {
+        userId: item.userId,
+        isInChecked: isPresentLike,
+        isOutChecked: status === 'LEAVE' || !!todayAttendance?.outTime,
+        inTime:
+          todayAttendance?.inTime || todayAttendance?.createdAt || undefined,
+        outTime: todayAttendance?.outTime || undefined,
+      };
+    });
+
+    setAttendance(mapped);
+    initialAttendance.current = JSON.parse(JSON.stringify(mapped));
+  }, [data]);
+
+  const updateRecord = (
+    userId: string,
+    type: 'IN' | 'OUT',
+    checked: boolean
+  ) => {
     setAttendance((prev) =>
-      prev.map((item) =>
-        item.userId === userId ? { ...item, isPresent: !item.isPresent } : item
-      )
+      prev.map((item) => {
+        if (item.userId !== userId) return item;
+        const now = new Date().toISOString();
+
+        if (type === 'IN') {
+          return {
+            ...item,
+            isInChecked: checked,
+            inTime: checked ? now : undefined,
+            isOutChecked: checked ? item.isOutChecked : false,
+            outTime: checked ? item.outTime : undefined,
+          };
+        }
+
+        return {
+          ...item,
+          isOutChecked: checked,
+          outTime: checked ? now : undefined,
+        };
+      })
     );
   };
 
   const handleSubmit = async () => {
-    if (!classId) {
-      toast.error('Please select a class from the header first!');
+    const records = buildPayloadRecords(attendance, initialAttendance);
+    if (!records.length) {
+      toast.info('No changes detected');
       return;
     }
 
-    setLoading(true);
-    const now = new Date();
-    const fixedInTime = new Date(
-      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0)
-    );
-
     try {
-      const payload = {
-        classId,
-        records: attendance.map((item) => ({
-          userId: item.userId,
-          inTime: item.isPresent ? fixedInTime.toISOString() : undefined,
-        })),
-      };
-      const res = await markAttendance(payload);
-      toast.success(res.message);
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to submit attendance');
+      setLoading(true);
+      const res = await markAttendance({ records });
+
+      if (res.success || res.statusCode === 200 || res.statusCode === 201) {
+        toast.success(res.message || 'Attendance updated successfully');
+
+        startTransition(() => {
+          router.refresh();
+        });
+
+        initialAttendance.current = JSON.parse(JSON.stringify(attendance));
+      } else {
+        toast.error(res.message || 'Failed to save');
+      }
+    } catch (e: any) {
+      toast.error(e.message || 'Server connection failed');
     } finally {
       setLoading(false);
     }
   };
 
-  if (!students || students.length === 0) {
-    return (
-      <div className="p-10 text-center border-2 border-dashed border-border rounded-xl mt-6 text-muted-foreground bg-card">
-        No students found for the selected class.
-      </div>
-    );
-  }
-
   return (
-    <div className="mt-4 border border-border rounded-xl overflow-hidden shadow-sm bg-card">
-      <div className="flex justify-between items-center p-4 md:p-6 border-b border-border bg-muted/30">
-        <div>
-          <h2 className="text-xl font-bold text-foreground tracking-tight">
-            Attendance Sheet
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Date:{' '}
-            <span className="font-medium text-foreground">
-              {new Date().toLocaleDateString('en-GB')}
-            </span>
-          </p>
-        </div>
-
+    <div className="mt-4 border rounded-xl overflow-hidden bg-card shadow-sm">
+      <div className="flex justify-between items-center p-4 border-b bg-muted/30">
+        <h2 className="text-xl font-bold">
+          {isTeacherMode ? 'Teacher Attendance' : 'Student Attendance'}
+        </h2>
         <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="px-6 h-10 shadow-md font-semibold"
+          className="px-6 font-bold"
         >
-          {loading ? 'Submitting...' : 'Confirm Attendance'}
+          {loading ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
 
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader className="bg-muted/50">
-            <TableRow className="hover:bg-transparent border-b border-border">
-              <TableHead className="w-[100px] py-4 pl-6 text-primary font-bold">
-                Roll
-              </TableHead>
-              <TableHead className="text-primary font-bold">
-                Student Name
-              </TableHead>
-              <TableHead className="text-right py-4 pr-6 text-primary font-bold">
-                Status
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+      <Table>
+        <TableHeader className="bg-muted/50">
+          <TableRow>
+            {!isTeacherMode && (
+              <TableHead className="pl-6 w-20">Roll</TableHead>
+            )}
+            <TableHead className="pl-6">Name</TableHead>
+            <TableHead className="text-center">IN</TableHead>
+            <TableHead className="text-center pr-6">OUT</TableHead>
+          </TableRow>
+        </TableHeader>
 
-          <TableBody>
-            {students.map((student) => {
-              const isPresent = attendance.find(
-                (a) => a.userId === student.userId
-              )?.isPresent;
+        <TableBody>
+          {data.map((user) => {
+            const record = attendance.find((a) => a.userId === user.userId);
+            const todayStr = getTodayString();
 
-              return (
-                <TableRow
-                  key={student.userId}
-                  className={cn(
-                    'transition-colors border-b border-border/50',
-                    isPresent
-                      ? 'hover:bg-accent/50'
-                      : 'bg-destructive/5 hover:bg-destructive/10'
-                  )}
-                >
-                  <TableCell className="font-bold text-foreground/70 pl-6">
-                    {student.roll}
+            const todayAttendance = user.user?.attendances?.find(
+              (a: any) => a.createdAt?.split('T')[0] === todayStr
+            );
+            const status = todayAttendance?.status;
+
+            return (
+              <TableRow
+                key={user.userId}
+                className="hover:bg-accent/5 transition-colors"
+              >
+                {!isTeacherMode && (
+                  <TableCell className="font-medium text-muted-foreground pl-6">
+                    {user.roll}
                   </TableCell>
-                  <TableCell className="font-medium text-foreground">
-                    {student.firstName} {student.lastName}
-                  </TableCell>
-                  <TableCell className="text-right pr-6">
-                    <div className="flex justify-end items-center gap-4">
-                      <span
-                        className={cn(
-                          'text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md border',
-                          isPresent
-                            ? 'text-green-600 bg-green-50 border-green-200'
-                            : 'text-destructive bg-destructive/10 border-destructive/20'
-                        )}
-                      >
-                        {isPresent ? 'Present' : 'Absent'}
+                )}
+
+                <TableCell className="pl-6">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold">
+                      {user.firstName} {user.lastName}
+                    </span>
+                    {status === 'LATE' && (
+                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
+                        LATE
                       </span>
+                    )}
+                    {status === 'LEAVE' && (
+                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-green-100 text-green-800 border border-green-200">
+                        LEAVE
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
 
-                      <Checkbox
-                        checked={isPresent}
-                        onCheckedChange={() => toggleAttendance(student.userId)}
-                        className="h-6 w-6 rounded-md border-input data-[state=checked]:bg-primary data-[state=checked]:border-primary transition-transform active:scale-90"
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                <TableCell className="text-center">
+                  <div className="flex flex-col items-center justify-center min-h-[55px] gap-1">
+                    <Checkbox
+                      checked={!!record?.isInChecked}
+                      onCheckedChange={(v) =>
+                        updateRecord(user.userId, 'IN', !!v)
+                      }
+                      className="size-6 ring-1"
+                    />
+                    {record?.isInChecked && (
+                      <span className="text-[11px] font-bold text-primary">
+                        {record.inTime && !isNaN(Date.parse(record.inTime))
+                          ? new Date(record.inTime).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })
+                          : 'PRESENT'}
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell className="text-center pr-6">
+                  <div className="flex flex-col items-center justify-center min-h-[55px] gap-1">
+                    <Checkbox
+                      checked={!!record?.isOutChecked}
+                      onCheckedChange={(v) =>
+                        updateRecord(user.userId, 'OUT', !!v)
+                      }
+                      disabled={!record?.isInChecked}
+                      className="size-6 ring-1"
+                    />
+                    {record?.isOutChecked && (
+                      <span className="text-[11px] font-bold text-primary">
+                        {record.outTime && !isNaN(Date.parse(record.outTime))
+                          ? new Date(record.outTime).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })
+                          : 'OUT'}
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 };
