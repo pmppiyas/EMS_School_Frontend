@@ -42,7 +42,6 @@ const MarkAttendance = ({
     if (!data?.length) return;
 
     const todayStr = getTodayString();
-    console.log(todayStr);
 
     const mapped = data.map((item) => {
       const attendances = item?.user?.attendances ?? [];

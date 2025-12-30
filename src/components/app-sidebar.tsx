@@ -1,7 +1,7 @@
-import NavLinkClient from '@/app/components/module/dashboard/NavlinkClient'
-import Logo from '@/app/components/shared/Logo'
-import { getUserInfo } from '@/app/services/auth/userInfo'
-import { NavUser } from "@/components/nav-user"
+import NavLinkClient from '@/app/components/module/dashboard/NavlinkClient';
+import Logo from '@/app/components/shared/Logo';
+import { getUserInfo } from '@/app/services/auth/userInfo';
+import { NavUser } from '@/components/nav-user';
 import {
   Sidebar,
   SidebarContent,
@@ -9,19 +9,18 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { commonRoutes, getRoutesByRole } from '@/routes/routes'
-
+} from '@/components/ui/sidebar';
+import { commonRoutes, getRoutesByRole } from '@/routes/routes';
 
 export default async function AppSidebar() {
-  const user = await getUserInfo()
+  const user = await getUserInfo();
   if (!user) {
-    return null
+    return null;
   }
   const routes = getRoutesByRole(user.role);
 
   return (
-    <Sidebar collapsible="offcanvas" >
+    <Sidebar collapsible="offcanvas">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -58,5 +57,5 @@ export default async function AppSidebar() {
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

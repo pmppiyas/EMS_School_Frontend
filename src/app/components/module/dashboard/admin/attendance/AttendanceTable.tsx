@@ -1,14 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MarkAttendance from './MarkAttendance';
-import AttendanceRecords from './AttendanceRecords';
 import ClassSelector from './ClassSelector';
 import { getAllStudents } from '../../../../../services/student/getAllStudents';
 import { getTeachers } from '../../../../../services/teacher/getTeachers';
-
-interface IClass {
-  id: string;
-  name: string;
-}
+import { IClass } from '../../../../../../types/attendance.interface';
+import { getTeacherAttendance } from '../../../../../services/attendance/getTeacherAttendance';
+import { getStudentAttendance } from '../../../../../services/attendance/getStudentAttendance';
+import TodayAttends from './TodayAttends';
+import AllAttends from './AllAttends';
 
 const AttendanceTable = async ({
   selectedClassId,
@@ -18,14 +17,19 @@ const AttendanceTable = async ({
   classes: IClass[];
 }) => {
   let displayData = [];
+  let attendance = [];
 
   if (selectedClassId) {
     if (selectedClassId === 'teacher') {
       const teacherRes = await getTeachers();
       displayData = teacherRes?.teachers || [];
+      const teacherAttendance = await getTeacherAttendance();
+      attendance = teacherAttendance?.data;
     } else {
       const studentRes = await getAllStudents(selectedClassId);
       displayData = studentRes?.students || [];
+      const studentAttendance = await getStudentAttendance();
+      attendance = studentAttendance.data;
     }
   }
 
@@ -35,7 +39,8 @@ const AttendanceTable = async ({
         <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
           <TabsList>
             <TabsTrigger value="attendance">Attendance Book</TabsTrigger>
-            <TabsTrigger value="records">Today's Records</TabsTrigger>
+            <TabsTrigger value="todayrecords">Today's Records</TabsTrigger>
+            <TabsTrigger value="allrecords">Monthly Records</TabsTrigger>
           </TabsList>
           <ClassSelector classes={classes} selectedClassId={selectedClassId} />
         </div>
@@ -47,8 +52,17 @@ const AttendanceTable = async ({
           />
         </TabsContent>
 
-        <TabsContent value="records" className="mt-0 outline-none">
-          <AttendanceRecords attendance={displayData} />
+        <TabsContent value="todayrecords" className="mt-0 outline-none">
+          <TodayAttends
+            attendance={attendance}
+            isTeacherMode={selectedClassId === 'teacher'}
+          />
+        </TabsContent>
+        <TabsContent value="allrecords" className="mt-0 outline-none">
+          <AllAttends
+            attendance={displayData}
+            isTeacherMode={selectedClassId === 'teacher'}
+          />
         </TabsContent>
       </Tabs>
     </div>

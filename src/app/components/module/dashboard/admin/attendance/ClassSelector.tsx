@@ -33,7 +33,7 @@ const ClassSelector = ({
     if (!currentClassId && savedClassId) {
       const isClassExist = classes.find((cls) => cls.id === savedClassId);
 
-      if (isClassExist) {
+      if (isClassExist || savedClassId === 'teacher') {
         router.push(`?classId=${savedClassId}`);
       }
     }
@@ -44,40 +44,31 @@ const ClassSelector = ({
     router.push(`?classId=${value}`);
   };
 
-  if (!classes || classes.length === 0) {
-    return (
-      <div className="h-11 px-4 flex items-center bg-destructive/10 text-destructive rounded-xl border border-destructive/20 text-sm font-semibold">
-        No Class Found
-      </div>
-    );
-  }
-
   return (
     <div className="flex items-center">
       <Select
         onValueChange={handleValueChange}
-        value={selectedClassId || undefined}
+        value={selectedClassId}
       >
-        <SelectTrigger className="w-[220px] h-11 bg-card text-card-foreground border-border rounded-xl shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md focus:ring-2 focus:ring-primary focus:outline-none">
+        <SelectTrigger className="w-[220px] h-11 bg-card text-card-foreground border-border rounded-xl shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md">
           <div className="flex items-center gap-2.5">
             <GraduationCap className="size-5 text-primary" />
             <SelectValue placeholder="Select Class" />
           </div>
         </SelectTrigger>
 
-        <SelectContent className="bg-popover text-popover-foreground rounded-xl border-border shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
+        <SelectContent className="bg-popover text-popover-foreground rounded-xl border-border shadow-xl overflow-hidden">
           <SelectItem
-            key="teacher"
             value="teacher"
-            className="py-2.5 px-3 focus:bg-accent focus:text-accent-foreground cursor-pointer transition-colors font-medium"
+            className="py-2.5 px-3 focus:bg-accent cursor-pointer font-medium"
           >
             TEACHER
           </SelectItem>
-          {classes.map((cls) => (
+          {classes?.map((cls) => (
             <SelectItem
               key={cls.id}
               value={cls.id}
-              className="py-2.5 px-3 focus:bg-accent focus:text-accent-foreground cursor-pointer transition-colors font-medium"
+              className="py-2.5 px-3 focus:bg-accent cursor-pointer font-medium"
             >
               {cls.name}
             </SelectItem>

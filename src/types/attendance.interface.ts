@@ -13,3 +13,8 @@ export interface IUserAttend {
   lastName: string;
   roll?: number;
 }
+
+export interface IClass {
+  id: string;
+  name: string;
+}
