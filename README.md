@@ -58,5 +58,5 @@ EMS_Eschool automates the essential daily tasks of educational institutions:
 ### Installation
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/ems_eschool.git](https://github.com/your-username/ems_eschool.git)
+   git clone [https://github.com/pmppiyas/EMS_School_Frontend.git)
    cd ems_eschool
