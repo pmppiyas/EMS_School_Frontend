@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   IconCreditCard,
@@ -6,12 +6,9 @@ import {
   IconLogout,
   IconNotification,
   IconUserCircle,
-} from "@tabler/icons-react"
-
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar"
+} from '@tabler/icons-react';
+import { toast } from 'sonner';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,22 +17,34 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-
+} from '@/components/ui/sidebar';
+import { logout } from '../app/services/auth/logout';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 export function NavUser({
   user,
 }: {
   user: {
-    email: string
-  }
+    email: string;
+  };
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
+  const [, startTransition] = useTransition();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const res = await logout();
+    if (res.success) {
+      startTransition(() => router.refresh());
+      toast.success(res.message as string);
+    } else toast.error(res.message as string);
+  };
 
   return (
     <SidebarMenu>
@@ -61,7 +70,7 @@ export function NavUser({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             align="end"
             sideOffset={4}
           >
@@ -95,7 +104,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLogout()}>
               <IconLogout />
               Log out
             </DropdownMenuItem>
@@ -103,5 +112,5 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

@@ -13,6 +13,7 @@ const serverFetchHelper = async (
     ...(headers || {}),
     Authorization: accessToken ? `Bearer ${accessToken}` : '',
   };
+
   if (!(restOptions.body instanceof FormData)) {
     (defaultHeaders as Record<string, string>)['Content-Type'] =
       'application/json';
@@ -20,6 +21,7 @@ const serverFetchHelper = async (
 
   return fetch(`${env.NEXT_PUBLIC_BACKEND_URL}/${endpoint}`, {
     headers: defaultHeaders,
+    credentials: 'include',
     ...restOptions,
   });
 };
