@@ -65,6 +65,7 @@ const TeachersTable = ({ teachers }: { teachers: ITeacher[] }) => {
   return (
     <>
       <ManagementTable
+        isAdmin={true}
         data={teachers}
         columns={TeacherColumns}
         getRowKey={(teacher) => teacher.id!}

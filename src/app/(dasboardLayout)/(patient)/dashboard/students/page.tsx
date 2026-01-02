@@ -9,7 +9,7 @@ const page = async () => {
 
   return (
     <div>
-      <StudentHeader classes={classes} />
+      <StudentHeader />
       <StudentTable students={students} classes={classes} />
     </div>
   );

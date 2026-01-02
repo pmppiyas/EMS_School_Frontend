@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -21,6 +22,7 @@ import {
 } from '@/components/ui/select';
 import { IStudent } from '@/types/student.interface';
 import { IGender } from '../../../../../../types/shared.interface';
+import { IClass } from '../../../../../../types/attendance.interface';
 import { createStudent } from '../../../../../services/student/createStudent';
 import { updateStudent } from '../../../../../services/student/updateStudent';
 
@@ -29,7 +31,7 @@ interface IStudentFormDialogProps {
   onClose: () => void;
   onSuccess: () => void;
   student?: IStudent;
-  classes?: { id: string; name: string }[];
+  classes?: IClass[];
 }
 
 const StudentFormDialog = ({
@@ -37,49 +39,52 @@ const StudentFormDialog = ({
   onClose,
   onSuccess,
   student,
-  classes,
+  classes = [],
 }: IStudentFormDialogProps) => {
-  console.log(classes);
   const isEdit = !!student;
   const [loading, setLoading] = useState(false);
   const [gender, setGender] = useState<IGender>(
     (student?.gender as IGender) ?? IGender.MALE
   );
-
+  const [classId, setClassId] = useState<string>(
+    (student as any)?.classId ?? (student as any)?.class ?? classes[0]?.id ?? ''
+  );
   const [apiErrors, setApiErrors] = useState<
     { field: string; message: string }[] | null
   >(null);
 
   useEffect(() => {
-    if (student) {
-      setGender(student.gender as IGender);
+    if (!open) {
+      setGender(IGender.MALE);
+      setClassId(classes[0]?.id ?? '');
+      setApiErrors(null);
     }
-  }, [student]);
+  }, [open, classes]);
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (form: HTMLFormElement) => {
     setLoading(true);
     setApiErrors(null);
 
-    formData.set('gender', gender);
-    formData.set('class', 'ade00077-4cea-4632-a160-5d44ac6b89ef');
     try {
-      let response;
+      const formData = new FormData(form);
+
+      formData.set('gender', gender);
+      formData.set('classId', classId);
+
+      const dob = formData.get('dateOfBirth') as string;
+      if (dob) {
+        formData.set('dateOfBirth', new Date(dob).toISOString());
+      }
+
+      let response: any;
+
       if (isEdit && student?.id) {
-        response = await updateStudent(student.id, {
-          firstName: formData.get('firstName') as string,
-          lastName: formData.get('lastName') as string,
-          phoneNumber: formData.get('phoneNumber') as string,
-          address: formData.get('address') as string,
-          roll: formData.get('roll') as unknown as number,
-          gender: gender,
-          dateOfBirth: formData.get('dateOfBirth')
-            ? new Date(formData.get('dateOfBirth') as string)
-            : null,
-        });
-        toast.error('Student update functionality not implemented yet.');
+        response = await updateStudent(student.id, formData);
       } else {
         response = await createStudent(formData);
       }
+
+      if (!response) throw new Error('No response from server');
 
       if (response.success) {
         toast.success(
@@ -89,13 +94,11 @@ const StudentFormDialog = ({
         onSuccess();
         onClose();
       } else {
-        console.error('API Errors:', response.errors);
         setApiErrors(response.errors || []);
         toast.error(response.message || 'Validation failed');
       }
     } catch (err: any) {
-      console.error(err);
-      toast.error('An unexpected error occurred');
+      toast.error(err.message || 'Unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -114,61 +117,80 @@ const StudentFormDialog = ({
           className="flex flex-col flex-1 min-h-0"
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit(new FormData(e.currentTarget));
+            handleSubmit(e.currentTarget);
           }}
         >
           <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-5">
+            {/* Name Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* First Name */}
               <Field>
                 <FieldLabel>First Name</FieldLabel>
                 <Input
                   name="firstName"
                   defaultValue={student?.firstName || ''}
                   placeholder="e.g. Md Rahim"
+                  required
                 />
                 <FieldError errors={apiErrors} field="firstName" />
               </Field>
 
-              {/* Last Name */}
               <Field>
                 <FieldLabel>Last Name</FieldLabel>
                 <Input
                   name="lastName"
                   defaultValue={student?.lastName || ''}
                   placeholder="e.g. Uddin"
+                  required
                 />
                 <FieldError errors={apiErrors} field="lastName" />
               </Field>
             </div>
 
+            {/* Roll, Class, Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Roll Number */}
               <Field>
                 <FieldLabel>Roll Number</FieldLabel>
                 <Input
                   name="roll"
                   defaultValue={student?.roll || ''}
                   placeholder="e.g. 101"
+                  required
                 />
                 <FieldError errors={apiErrors} field="roll" />
               </Field>
 
-              {/* Email */}
               <Field>
-                <FieldLabel>Email Address</FieldLabel>
-                <Input
-                  name="email"
-                  type="email"
-                  disabled={isEdit}
-                  defaultValue={student?.email || ''}
-                  placeholder="student@school.com"
-                />
-                <FieldError errors={apiErrors} field="email" />
+                <FieldLabel>Select Class</FieldLabel>
+                <Select value={classId} onValueChange={(v) => setClassId(v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a class" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {classes.map((cls) => (
+                      <SelectItem key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FieldError errors={apiErrors} field="class" />
               </Field>
             </div>
 
-            {/* Password - Only for New Students */}
+            <Field>
+              <FieldLabel>Email Address</FieldLabel>
+              <Input
+                name="email"
+                type="email"
+                disabled={isEdit}
+                defaultValue={student?.email || ''}
+                placeholder="student@school.com"
+                required
+              />
+              <FieldError errors={apiErrors} field="email" />
+            </Field>
+
+            {/* Password only for new students */}
             {!isEdit && (
               <Field>
                 <FieldLabel>Account Password</FieldLabel>
@@ -176,6 +198,7 @@ const StudentFormDialog = ({
                   name="password"
                   type="password"
                   placeholder="Min 6 characters"
+                  required
                 />
                 <FieldError errors={apiErrors} field="password" />
               </Field>
@@ -188,6 +211,7 @@ const StudentFormDialog = ({
                 <Input
                   name="phoneNumber"
                   defaultValue={student?.phoneNumber || ''}
+                  placeholder="01XXXXXXXXX"
                 />
                 <FieldError errors={apiErrors} field="phoneNumber" />
               </Field>
@@ -209,13 +233,17 @@ const StudentFormDialog = ({
 
             <Field>
               <FieldLabel>Address</FieldLabel>
-              <Input name="address" defaultValue={student?.address || ''} />
+              <Input
+                name="address"
+                defaultValue={student?.address || ''}
+                placeholder="Enter full address"
+              />
               <FieldError errors={apiErrors} field="address" />
             </Field>
 
-            {/* Gender Selection */}
+            {/* Gender */}
             <Field>
-              <FieldLabel>Gender</FieldLabel>
+              <FieldLabel>Gender *</FieldLabel>
               <Select
                 value={gender}
                 onValueChange={(v) => setGender(v as IGender)}
@@ -231,19 +259,16 @@ const StudentFormDialog = ({
               <FieldError errors={apiErrors} field="gender" />
             </Field>
 
-            {/* Profile Photo - Only for New Registration */}
-            {!isEdit && (
-              <Field>
-                <FieldLabel>Profile Photo</FieldLabel>
-                <Input
-                  name="photo"
-                  type="file"
-                  accept="image/*"
-                  className="cursor-pointer"
-                />
-                <FieldError errors={apiErrors} field="photo" />
-              </Field>
-            )}
+            <Field>
+              <FieldLabel>Profile Photo</FieldLabel>
+              <Input
+                name="photo"
+                type="file"
+                accept="image/*"
+                className="cursor-pointer"
+              />
+              <FieldError errors={apiErrors} field="photo" />
+            </Field>
           </div>
 
           {/* Dialog Footer */}

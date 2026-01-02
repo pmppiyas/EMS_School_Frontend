@@ -1,12 +1,13 @@
 'use client';
+
 import ManagementPageHeader from '../../ManagementPageHeader';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import StudentFormDialog from './StudentFormDialog';
+import { IClass } from '../../../../../../types/attendance.interface';
 
-const StudentHeader = () => {
+const StudentHeader = ({ classes }: { classes: IClass[] }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   return (
     <div>
       <ManagementPageHeader
@@ -22,6 +23,7 @@ const StudentHeader = () => {
       />
 
       <StudentFormDialog
+        classes={classes}
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onSuccess={() => setIsDialogOpen(false)}

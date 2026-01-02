@@ -1,13 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import MarkAttendance from './MarkAttendance';
-import ClassSelector from '../../teacher/attendance/ClassSelector';
+
 import { getAllStudents } from '../../../../../services/student/getAllStudents';
-import { getTeachers } from '../../../../../services/teacher/getTeachers';
 import { IClass } from '../../../../../../types/attendance.interface';
-import { getTeacherAttendance } from '../../../../../services/attendance/getTeacherAttendance';
 import { getStudentAttendance } from '../../../../../services/attendance/getStudentAttendance';
 import TodayAttends from './TodayAttends';
 import AllAttends from './AllAttends';
+import ClassSelector from './ClassSelector';
+import MarkAttendance from './MarkAttendance';
 
 const AttendanceTable = async ({
   selectedClassId,
@@ -20,17 +19,10 @@ const AttendanceTable = async ({
   let attendance = [];
 
   if (selectedClassId) {
-    if (selectedClassId === 'teacher') {
-      const teacherRes = await getTeachers();
-      displayData = teacherRes?.teachers || [];
-      const teacherAttendance = await getTeacherAttendance();
-      attendance = teacherAttendance?.data;
-    } else {
-      const studentRes = await getAllStudents(selectedClassId);
-      displayData = studentRes?.students || [];
-      const studentAttendance = await getStudentAttendance();
-      attendance = studentAttendance.data;
-    }
+    const studentRes = await getAllStudents(selectedClassId);
+    displayData = studentRes?.students || [];
+    const studentAttendance = await getStudentAttendance();
+    attendance = studentAttendance.data;
   }
 
   return (
@@ -46,23 +38,14 @@ const AttendanceTable = async ({
         </div>
 
         <TabsContent value="attendance" className="mt-0 outline-none">
-          <MarkAttendance
-            data={displayData}
-            isTeacherMode={selectedClassId === 'teacher'}
-          />
+          <MarkAttendance data={displayData} />
         </TabsContent>
 
         <TabsContent value="todayrecords" className="mt-0 outline-none">
-          <TodayAttends
-            attendance={attendance}
-            isTeacherMode={selectedClassId === 'teacher'}
-          />
+          <TodayAttends attendance={attendance} />
         </TabsContent>
         <TabsContent value="allrecords" className="mt-0 outline-none">
-          <AllAttends
-            attendance={displayData}
-            isTeacherMode={selectedClassId === 'teacher'}
-          />
+          <AllAttends attendance={displayData} />
         </TabsContent>
       </Tabs>
     </div>

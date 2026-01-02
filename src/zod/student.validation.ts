@@ -8,7 +8,18 @@ export const createStudentZodSchema = zod.object({
   phoneNumber: zod.string().optional(),
   address: zod.string().optional(),
   dateOfBirth: zod.string().datetime().optional(),
-  class: zod.string().min(1, 'Class is required'),
+  classId: zod.string().min(1, 'Class is required'),
+  roll: zod.string().min(1, 'Roll is required'),
+  gender: zod.enum(['MALE', 'FEMALE']),
+});
+
+export const updateStudentSchema = zod.object({
+  firstName: zod.string().min(1, 'First name is required'),
+  lastName: zod.string().min(1, 'Last name is required'),
+  phoneNumber: zod.string().optional(),
+  address: zod.string().optional(),
+  dateOfBirth: zod.string().datetime().optional(),
+  classId: zod.string().min(1, 'Class is required'),
   roll: zod.string().min(1, 'Roll is required'),
   gender: zod.enum(['MALE', 'FEMALE']),
 });

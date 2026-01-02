@@ -3,16 +3,10 @@
 
 import { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
-import MonthlyAttendanceTable from './MonthlyAttendanceTable';
 import MonthSelector from '../../../../shared/MonthSelector';
+import MonthlyAttendanceTable from '../../admin/attendance/MonthlyAttendanceTable';
 
-const AllAttends = ({
-  attendance,
-  isTeacherMode,
-}: {
-  attendance: any[];
-  isTeacherMode: boolean;
-}) => {
+const AllAttends = ({ attendance }: { attendance: any[] }) => {
   const [month, setMonth] = useState(dayjs().month());
   const [year, setYear] = useState(dayjs().year());
 
@@ -49,7 +43,7 @@ const AllAttends = ({
 
       <MonthlyAttendanceTable
         data={attendByMonth}
-        isTeacherMode={isTeacherMode}
+        isTeacherMode={false}
         month={month}
         year={year}
       />

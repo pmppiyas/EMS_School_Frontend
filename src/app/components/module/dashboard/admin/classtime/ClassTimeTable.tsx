@@ -3,38 +3,25 @@
 import { useTransition, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-
 import ManagementTable from '../../ManagementTable';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
 import { deleteClassTime } from '../../../../../services/classTime/deleteClassTime';
-
 import ClassTimeColumns from './ClassTimeColumns';
-import ClassTimeFormDialog from './ClassTimeFormDiolog';
+import ClassTimeFormDialog, {
+  IClassTimeTableProps,
+} from './ClassTimeFormDiolog';
 import EditClassTimeDialog from './EditClassTimeDialog';
-
-export interface IClassTimeTableProps {
-  id: string;
-  period: string;
-  startTime: string;
-  endTime: string;
-}
-
-interface IClassTimeTableComponentProps {
-  ClassTimes: IClassTimeTableProps[];
-}
+import { IClassTimeTableComponentProps } from '../../../../../../types/classTime.interface';
 
 const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
-  /** CREATE modal */
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  /** EDIT modal */
   const [editingClassTime, setEditingClassTime] =
     useState<IClassTimeTableProps | null>(null);
 
-  /** DELETE modal */
   const [deletingClassTime, setDeletingClassTime] =
     useState<IClassTimeTableProps | null>(null);
   const [isDeletingDialog, setIsDeletingDialog] = useState(false);
@@ -78,6 +65,7 @@ const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
   return (
     <div>
       <ManagementTable
+        isAdmin={true}
         data={ClassTimes}
         columns={ClassTimeColumns}
         getRowKey={(row) => row.id}

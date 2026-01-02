@@ -36,7 +36,22 @@ export const adminRoutes: NavItem[] = [
 ];
 
 export const teacherRoutes: NavItem[] = [
-  { title: 'Dashboard', href: '/dashboard', iconName: 'dashboard' },
+  { title: 'Dashboard', href: '/teacher/dashboard', iconName: 'IconBook' },
+  {
+    title: 'Attendance',
+    href: '/teacher/dashboard/attendance',
+    iconName: 'IconClock2',
+  },
+  {
+    title: 'Schedules',
+    href: '/teacher/dashboard/schedules',
+    iconName: 'IconStethoscope',
+  },
+  {
+    title: 'Students',
+    href: '/teacher/dashboard/students',
+    iconName: 'IconClock2',
+  },
 ];
 
 export const studentRoutes: NavItem[] = [

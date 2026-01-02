@@ -33,7 +33,7 @@ const ClassSelector = ({
     if (!currentClassId && savedClassId) {
       const isClassExist = classes.find((cls) => cls.id === savedClassId);
 
-      if (isClassExist || savedClassId === 'teacher') {
+      if (isClassExist) {
         router.push(`?classId=${savedClassId}`);
       }
     }
@@ -46,10 +46,7 @@ const ClassSelector = ({
 
   return (
     <div className="flex items-center">
-      <Select
-        onValueChange={handleValueChange}
-        value={selectedClassId}
-      >
+      <Select onValueChange={handleValueChange} value={selectedClassId}>
         <SelectTrigger className="w-[220px] h-11 bg-card text-card-foreground border-border rounded-xl shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md">
           <div className="flex items-center gap-2.5">
             <GraduationCap className="size-5 text-primary" />
@@ -58,12 +55,6 @@ const ClassSelector = ({
         </SelectTrigger>
 
         <SelectContent className="bg-popover text-popover-foreground rounded-xl border-border shadow-xl overflow-hidden">
-          <SelectItem
-            value="teacher"
-            className="py-2.5 px-3 focus:bg-accent cursor-pointer font-medium"
-          >
-            TEACHER
-          </SelectItem>
           {classes?.map((cls) => (
             <SelectItem
               key={cls.id}

@@ -1,23 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-
-// Aliased Imports
 import { IStudent } from '@/types/student.interface';
 import ManagementTable from '@/app/components/module/dashboard/ManagementTable';
+import StudentFormDialog from './StudentFormDialog';
+import { IClass } from '../../../../../../types/attendance.interface';
 import StudentColumns from './StudentColumns';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
 import { deleteStudent } from '../../../../../services/student/deleteStudent';
-import StudentFormDialog from './StudentFormDialog';
 
 const StudentTable = ({
   students,
   classes,
 }: {
   students: IStudent[];
-  classes: { id: string; name: string }[];
+  classes: IClass[];
 }) => {
   const router = useRouter();
   const [_, startTransition] = useTransition();
@@ -56,21 +57,19 @@ const StudentTable = ({
     try {
       const result = await deleteStudent(deletingStudent.id);
 
-      console.log('Delete student result:', result);
       if (result?.success) {
-        toast.success(result.message || 'Student deleted successfully');
+        handleRefresh();
         setIsDeletingDialog(false);
         setDeletingStudent(null);
-        handleRefresh();
+        toast.success(result.message || 'Student deleted successfully');
       } else {
         toast.error(result.message || 'Failed to delete student');
       }
 
-      toast.success('Delete student functionality not implemented yet.');
       setIsDeletingDialog(false);
       setDeletingStudent(null);
       handleRefresh();
-    } catch (err) {
+    } catch (err: any) {
       toast.error('Something went wrong. Please try again.');
     }
   };
@@ -78,6 +77,7 @@ const StudentTable = ({
   return (
     <>
       <ManagementTable
+        isAdmin={true}
         data={students}
         columns={StudentColumns}
         getRowKey={(student) => student.id}
@@ -87,19 +87,19 @@ const StudentTable = ({
         emptyMessage="No Students Found."
       />
 
-      {/* Student Edit Dialog - If you have one */}
       <StudentFormDialog
         open={!!editingStudent}
         student={editingStudent}
         classes={classes}
-        onClose={() => setEditingStudent(undefined)}
+        onClose={() => {
+          setEditingStudent(undefined);
+        }}
         onSuccess={() => {
           setEditingStudent(undefined);
           handleRefresh();
         }}
       />
 
-      {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog
         open={isDeletingDialog}
         onOpenChange={setIsDeletingDialog}

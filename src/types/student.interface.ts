@@ -17,7 +17,6 @@ export interface IStudent {
   address?: string | null;
   dateOfBirth?: string | Date | null;
   classId?: string | null;
-
   user?: IUser;
   class?: IClass;
 }
