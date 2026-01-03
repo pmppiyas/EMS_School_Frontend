@@ -4,16 +4,16 @@ import { formatDate } from '../../../../../../lib/formatter';
 
 const StudentColumns: IColumn<IStudent>[] = [
   {
+    header: 'Roll',
+    accessor: (student: IStudent) => student.roll,
+  },
+  {
     header: 'Name',
     accessor: (student: IStudent) => `${student.firstName} ${student.lastName}`,
   },
   {
     header: 'Class',
     accessor: (student: IStudent) => student.class?.name || 'N/A',
-  },
-  {
-    header: 'Roll',
-    accessor: (student: IStudent) => student.roll,
   },
 
   {

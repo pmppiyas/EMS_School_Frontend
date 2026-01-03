@@ -8,6 +8,7 @@ import { getTeacherAttendance } from '../../../../../services/attendance/getTeac
 import { getStudentAttendance } from '../../../../../services/attendance/getStudentAttendance';
 import TodayAttends from './TodayAttends';
 import AllAttends from './AllAttends';
+import ClassSelectorWithTeacher from './ClassSelectorWithTeacher';
 
 const AttendanceTable = async ({
   selectedClassId,
@@ -42,7 +43,10 @@ const AttendanceTable = async ({
             <TabsTrigger value="todayrecords">Today's Records</TabsTrigger>
             <TabsTrigger value="allrecords">Monthly Records</TabsTrigger>
           </TabsList>
-          <ClassSelector classes={classes} selectedClassId={selectedClassId} />
+          <ClassSelectorWithTeacher
+            classes={classes}
+            selectedClassId={selectedClassId}
+          />
         </div>
 
         <TabsContent value="attendance" className="mt-0 outline-none">

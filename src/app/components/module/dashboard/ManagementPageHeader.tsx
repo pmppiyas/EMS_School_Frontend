@@ -1,9 +1,11 @@
+import React from 'react';
 import HeaderActionButton from '@/app/components/module/dashboard/HeaderActionButton';
-import { IManagementPageHeaderProps } from '@/app/components/module/dashboard/interfaces';
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import React from "react";
-
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import {
+  IAction,
+  IManagementPageHeaderProps,
+} from '@/app/components/module/dashboard/interfaces';
 
 const ManagementPageHeader = ({
   title,
@@ -11,12 +13,12 @@ const ManagementPageHeader = ({
   breadcrumbs = [],
   actions = [],
   showSearch = false,
+  searchField,
+  classSelector,
   isLoading = false,
-}: IManagementPageHeaderProps) => {
+}: IManagementPageHeaderProps & { searchField?: React.ReactNode }) => {
   return (
-    <header
-      className="pb-6 border-b flex flex-col gap-4 container max-w-7xl mx-auto"
-    >
+    <header className="pb-6 border-b flex flex-col gap-4 container max-w-7xl mx-auto">
       {/* Breadcrumbs */}
       {breadcrumbs.length > 0 && (
         <nav className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -29,7 +31,6 @@ const ManagementPageHeader = ({
               ) : (
                 <span>{item.label}</span>
               )}
-
               {i < breadcrumbs.length - 1 && <span>/</span>}
             </React.Fragment>
           ))}
@@ -54,18 +55,21 @@ const ManagementPageHeader = ({
           )}
         </div>
 
-        {/* Right-aligned Actions */}
-        {actions.length > 0 && (
+        {/* Right Actions */}
+        {actions?.length > 0 && (
           <div className="flex items-center gap-3">
             {actions.map((action, idx) => {
-              const Icon = action.icon;
+              if (React.isValidElement(action)) {
+                return <React.Fragment key={idx}>{action}</React.Fragment>;
+              }
+              const act = action as IAction;
               return (
                 <HeaderActionButton
                   key={idx}
-                  Icon={Icon}
-                  label={action.label}
-                  onClick={action.onClick}
-                  href={action.href}
+                  Icon={act.icon}
+                  label={act.label}
+                  onClick={act.onClick}
+                  href={act.href}
                 />
               );
             })}
@@ -73,23 +77,28 @@ const ManagementPageHeader = ({
         )}
       </div>
 
-      {/* Search Bar */}
-      {showSearch && !isLoading && (
-        <>
-          <Separator />
-          <div>
-            <Input
-              placeholder="Search..."
-              className="max-w-sm"
-            />
-          </div>
-        </>
-      )}
+      <Separator />
+      <div className="flex gap-4">
+        {/* Select Class */}
+        {classSelector && !isLoading && <>{classSelector}</>}
 
-      {/* Search skeleton */}
-      {showSearch && isLoading && (
-        <div className="max-w-sm h-10 bg-muted animate-pulse rounded" />
-      )}
+        {classSelector && isLoading && (
+          <div className="max-w-sm h-10 bg-muted animate-pulse rounded" />
+        )}
+
+        {/* Search Bar */}
+        {showSearch && !isLoading && (
+          <>
+            {searchField || (
+              <Input placeholder="Search..." className="max-w-sm" />
+            )}
+          </>
+        )}
+
+        {showSearch && isLoading && (
+          <div className="max-w-sm h-10 bg-muted animate-pulse rounded" />
+        )}
+      </div>
     </header>
   );
 };

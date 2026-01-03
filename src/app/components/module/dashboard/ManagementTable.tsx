@@ -31,7 +31,7 @@ interface IManagementTableProps<T> {
   getRowKey: (row: T) => string;
   emptyMessage?: string;
   isRefreshing?: boolean;
-  isAdmin?: boolean; // admin flag
+  isAdmin?: boolean;
 }
 
 function ManagementTable<T>({
@@ -46,7 +46,7 @@ function ManagementTable<T>({
   isAdmin = false,
 }: IManagementTableProps<T>) {
   return (
-    <div className="w-full overflow-x-scroll border rounded-md max-w-7xl mx-auto px-2">
+    <div className="w-full min-h-[300px] overflow-x-scroll border rounded-md max-w-7xl mx-auto px-2">
       {isRefreshing && (
         <div>
           <h2>Loading</h2>
@@ -111,7 +111,6 @@ function ManagementTable<T>({
                         </DropdownMenuContent>
                       </DropdownMenu>
                     ) : (
-                      // Non-admin: just direct View button
                       onView && (
                         <Button
                           size="sm"

@@ -16,7 +16,7 @@ interface IClass {
   name: string;
 }
 
-const ClassSelector = ({
+const ClassSelectorWithTeacher = ({
   classes,
   selectedClassId,
 }: {
@@ -32,24 +32,16 @@ const ClassSelector = ({
 
     if (!currentClassId && savedClassId) {
       const isClassExist = classes.find((cls) => cls.id === savedClassId);
+
       if (isClassExist) {
-        router.replace(
-          `?${new URLSearchParams({
-            ...Object.fromEntries(searchParams.entries()),
-            classId: savedClassId,
-          }).toString()}`
-        );
+        router.push(`?classId=${savedClassId}`);
       }
     }
   }, [classes, router, searchParams]);
 
   const handleValueChange = (value: string) => {
     localStorage.setItem('selectedClassId', value);
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('classId', value);
-
-    router.push(`?${params.toString()}`);
+    router.push(`?classId=${value}`);
   };
 
   return (
@@ -63,6 +55,13 @@ const ClassSelector = ({
         </SelectTrigger>
 
         <SelectContent className="bg-popover text-popover-foreground rounded-xl border-border shadow-xl overflow-hidden">
+          <SelectItem
+            key={'teacher'}
+            value="teacher"
+            className="py-2.5 px-3 focus:bg-accent cursor-pointer font-medium "
+          >
+            Teacher
+          </SelectItem>
           {classes?.map((cls) => (
             <SelectItem
               key={cls.id}
@@ -78,4 +77,4 @@ const ClassSelector = ({
   );
 };
 
-export default ClassSelector;
+export default ClassSelectorWithTeacher;
