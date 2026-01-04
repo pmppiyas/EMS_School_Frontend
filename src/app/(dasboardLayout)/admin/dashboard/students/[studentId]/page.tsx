@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ChevronLeft, Mail, Phone, MapPin } from 'lucide-react';
 import { getStudentById } from '../../../../../services/student/getStudentById';
 
+export const dynamic = 'force-dynamic';
+
 type Params = Promise<{ studentId: string }>;
 
 export default async function StudentProfile(props: { params: Params }) {
@@ -62,18 +64,6 @@ export default async function StudentProfile(props: { params: Params }) {
                 label="Address"
                 value={student.address || 'N/A'}
               />
-            </div>
-          </section>
-
-          <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-card-foreground mb-4">
-              Account Status
-            </h2>
-            <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
-              <span className="text-sm font-medium">Status</span>
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {student.user?.status}
-              </span>
             </div>
           </section>
         </div>

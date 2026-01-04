@@ -40,7 +40,9 @@ const AttendanceTable = async ({
         <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
           <TabsList>
             <TabsTrigger value="attendance">Attendance Book</TabsTrigger>
-            <TabsTrigger value="todayrecords">Today's Records</TabsTrigger>
+            <TabsTrigger value="todayrecords">
+              Today&rsquo;s Records
+            </TabsTrigger>
             <TabsTrigger value="allrecords">Monthly Records</TabsTrigger>
           </TabsList>
           <ClassSelectorWithTeacher

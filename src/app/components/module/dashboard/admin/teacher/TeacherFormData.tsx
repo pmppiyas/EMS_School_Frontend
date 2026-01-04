@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import FieldError from '@/app/components/shared/FieldError';
@@ -163,7 +164,9 @@ const TeacherFormDialog = ({
                 name="dateOfBirth"
                 type="date"
                 defaultValue={
-                  teacher?.dateOfBirth ? teacher.dateOfBirth.slice(0, 10) : ''
+                  teacher?.dateOfBirth
+                    ? new Date(teacher.dateOfBirth).toISOString().slice(0, 10)
+                    : ''
                 }
               />
               <FieldError errors={apiErrors} field="dateOfBirth" />

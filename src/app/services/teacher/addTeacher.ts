@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
 
 import { serverFetch } from '@/lib/serverFetch';
 import { zodValidator } from '@/lib/ZodValidator';
 import { ITeacher } from '@/types/teacher.interface';
 import { createTeacherZodSchema } from '@/zod/teacher.validation';
+import { revalidateTag } from 'next/cache';
 
 export async function createTeacher(formData: FormData) {
   try {
@@ -39,7 +41,13 @@ export async function createTeacher(formData: FormData) {
       backendFormData
     );
 
-    return await response.json();
+    const result = await response.json();
+    if (result.success) {
+      revalidateTag('teachers', 'default');
+      console.log('✅ Teachers cache cleared');
+    }
+
+    return result;
   } catch (err: any) {
     console.error('CREATE TEACHER ERROR:', err);
     return { success: false, message: err.message };

@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '../../../components/ui/button';
 
+export const dynamic = 'force-dynamic';
+
 interface ISearchFieldProps {
   queryKey?: string;
   placeholder?: string;

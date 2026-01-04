@@ -10,7 +10,7 @@ import ClassTimeColumns from './ClassTimeColumns';
 import ClassTimeFormDialog, {
   IClassTimeTableProps,
 } from './ClassTimeFormDiolog';
-import EditClassTimeDialog from './EditClassTimeDialog';
+
 import { IClassTimeTableComponentProps } from '../../../../../../types/classTime.interface';
 
 const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
@@ -47,7 +47,7 @@ const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
     if (!deletingClassTime) return;
 
     try {
-      const result = await deleteClassTime(deletingClassTime.id);
+      const result = await deleteClassTime(deletingClassTime.id as string);
 
       if (result?.success) {
         toast.success(result.message);
@@ -86,15 +86,15 @@ const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
       />
 
       {/* EDIT MODAL */}
-      <EditClassTimeDialog
+      {/* <EditClassTimeDialog
         open={!!editingClassTime}
-        classTime={editingClassTime!}
+        classTime={editingClassTime! }
         onClose={() => setEditingClassTime(null)}
         onSuccess={() => {
           setEditingClassTime(null);
           handleRefresh();
         }}
-      />
+      /> */}
 
       {/* DELETE MODAL */}
       <DeleteConfirmationDialog

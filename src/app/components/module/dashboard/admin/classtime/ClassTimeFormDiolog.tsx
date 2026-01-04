@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState } from 'react';
@@ -61,7 +62,6 @@ const ClassTimeFormDialog = ({
     classTime?.classId || ''
   );
 
-  // State for multiple time slots
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>(
     classTime
       ? [
@@ -100,7 +100,6 @@ const ClassTimeFormDialog = ({
     setApiErrors(null);
 
     try {
-      // Validate all time slots
       const hasEmptyFields = timeSlots.some(
         (slot) => !slot.period || !slot.startTime || !slot.endTime
       );
@@ -111,7 +110,6 @@ const ClassTimeFormDialog = ({
         return;
       }
 
-      // Prepare payload
       const payload = timeSlots.map((slot) => ({
         period: slot.period,
         startTime: slot.startTime,
@@ -119,13 +117,9 @@ const ClassTimeFormDialog = ({
         ...(selectedClass && { classId: selectedClass }),
       }));
 
-      // If single item and editing, send as object; otherwise send as array
       if (isEdit && classTime?.id) {
-        // For update, you might want to call updateClassTime instead
-        // await updateClassTime(classTime.id, payload[0]);
         toast.info('Update functionality - implement updateClassTime');
       } else {
-        // Send array of time slots to the API
         await AddClassTime(payload);
         toast.success(
           `Successfully added ${payload.length} class period${

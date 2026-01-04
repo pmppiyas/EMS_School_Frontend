@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
 
 import { serverFetch } from '@/lib/serverFetch';
 import { zodValidator } from '@/lib/ZodValidator';
 import { createStudentZodSchema } from '../../../zod/student.validation';
+import { revalidateTag } from 'next/cache';
 
 export async function createStudent(formData: FormData) {
   try {
@@ -49,7 +51,7 @@ export async function createStudent(formData: FormData) {
         errors: result.errorSources || result.errors,
       };
     }
-
+    revalidateTag('students', 'default');
     return result;
   } catch (err: any) {
     console.error('CREATE STUDENT ERROR:', err);

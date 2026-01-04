@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import ManagementPageHeader from '../../ManagementPageHeader';
 import ClassTimeFormDialog from './ClassTimeFormDiolog';

@@ -4,6 +4,8 @@ import Pagination from '../../../../components/shared/Pagination';
 import { getAllClasses } from '../../../../services/class/getAllClasses';
 import { getAllStudents } from '../../../../services/student/getAllStudents';
 
+export const dynamic = 'force-dynamic';
+
 const page = async ({
   searchParams,
 }: {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 const TodayAttends = ({
@@ -21,10 +22,10 @@ const TodayAttends = ({
       ...attendance.student.present.list,
       ...attendance.student.absent.list,
       ...attendance.student.late.list,
-      // ...attendance?.student?.leave?.list,
+      ...attendance?.student?.leave?.list,
     ];
   }
-  // console.log(reports);
+
   return (
     <div className="space-y-3">
       {reports.map((t: any) => (

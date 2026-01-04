@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/purity */
 'use client';
 
@@ -25,7 +26,6 @@ const COLORS = {
 interface AttendanceRecord {
   date?: string;
   status?: string;
-  // Add other fields as needed
 }
 
 interface AttendanceList {
@@ -45,7 +45,6 @@ interface Props {
 const AttendanceCharts = ({ student }: Props) => {
   console.log(student);
 
-  // Pie Chart Data - combining present + late as "Present"
   const presentTotal = student.present.total + student.late.total;
 
   const pieData = [

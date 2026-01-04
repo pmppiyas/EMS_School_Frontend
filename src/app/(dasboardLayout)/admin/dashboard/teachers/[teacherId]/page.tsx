@@ -3,6 +3,8 @@ import { getTeacherById } from '@/app/services/teacher/getById';
 import Link from 'next/link';
 import { ChevronLeft, Mail, Phone, MapPin } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 type Params = Promise<{ teacherId: string }>;
 
 export default async function TeacherProfile(props: { params: Params }) {

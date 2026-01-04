@@ -1,6 +1,6 @@
 import { formatTime12h } from '../../../../../../lib/formatter';
 import { IColumn } from '../../ManagementTable';
-import { IClassTimeTableProps } from './ClassTimeTable';
+import { IClassTimeTableProps } from './ClassTimeFormDiolog';
 
 const ClassTimeColumns: IColumn<IClassTimeTableProps>[] = [
   {

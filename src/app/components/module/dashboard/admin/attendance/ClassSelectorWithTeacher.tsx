@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/select';
 import { GraduationCap } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 interface IClass {
   id: string;
   name: string;

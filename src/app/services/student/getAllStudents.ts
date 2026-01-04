@@ -20,7 +20,12 @@ export const getAllStudents = async (
       ? `?${queryParams.toString()}`
       : '';
 
-    const response = await serverFetch.get(`student${queryString}`);
+    const response = await serverFetch.get(`student${queryString}`, {
+      next: {
+        revalidate: 3600 * 6,
+        tags: ['students'],
+      },
+    });
     const result = await response.json();
 
     if (result.success) {

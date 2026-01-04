@@ -8,7 +8,7 @@ export const buildPayloadRecords = (
   const records: any[] = [];
   attendance.forEach((current) => {
     const initial = initialAttendance.current.find(
-      (i) => i.userId === current.userId
+      (i: { userId: string }) => i.userId === current.userId
     );
     if (!initial) return;
 
