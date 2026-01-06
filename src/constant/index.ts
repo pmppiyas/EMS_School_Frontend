@@ -14,11 +14,13 @@ export const days: IDay[] = [
 ];
 
 export const DAYS = [
-  'SATURDAY',
   'SUNDAY',
   'MONDAY',
   'TUESDAY',
   'WEDNESDAY',
   'THURSDAY',
   'FRIDAY',
+  'SATURDAY',
 ];
+
+export const PERIODS = ['1', '2', '3', '4', '5', '6'];

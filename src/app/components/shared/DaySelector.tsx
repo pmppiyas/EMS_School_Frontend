@@ -13,15 +13,13 @@ import {
 import { DAYS, days, IDay } from '@/constant';
 import { setCookie } from '@/lib/cookies';
 
-interface DaySelectorProps {
-  cookieName?: string;
-  onChange?: (dayName: string) => void;
-}
-
 const DaySelector = ({
   cookieName = 'selectedDay',
   onChange,
-}: DaySelectorProps) => {
+}: {
+  cookieName?: string;
+  onChange?: (dayName: string) => void;
+}) => {
   const [selectedDay, setSelectedDay] = useState('');
   const [, startTransition] = useTransition();
 
