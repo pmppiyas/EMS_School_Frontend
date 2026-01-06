@@ -10,8 +10,11 @@ import { ISubject } from '@/types/class.interface';
 import { IClassTime } from '@/types/classTime.interface';
 import DaySelector from '@/app/components/shared/DaySelector';
 import ClassSelector from '@/app/components/shared/ClassSelector';
+import ScheduleTable from '@/app/components/module/dashboard/admin/schedule/ScheduleTable';
+import { IScheduleRow } from '@/types/schedule.interface';
 
 interface IScheduleContentProps {
+  schedules: IScheduleRow[];
   teachers: ITeacher[];
   classes: IClass[];
   subjects: ISubject[];
@@ -19,6 +22,7 @@ interface IScheduleContentProps {
 }
 
 const ScheduleContent = ({
+  schedules,
   teachers,
   classes,
   subjects,
@@ -40,7 +44,7 @@ const ScheduleContent = ({
         selectOption={<ScheduleOptionSelect mode={mode} onChange={setMode} />}
       />
 
-      {mode === 'view' && <div>Schedule Table Here</div>}
+      {mode === 'view' && <ScheduleTable data={schedules} />}
 
       {mode === 'edit' && (
         <ScheduleRoom
