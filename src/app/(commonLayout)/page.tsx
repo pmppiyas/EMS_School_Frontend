@@ -15,8 +15,8 @@ export default function Home() {
       <HeroSection />
       <NoticeBoard />
       <Information />
-      <OurTeacher />
       <Featured />
+      <OurTeacher />
       <Testimonial />
       <Footer />
     </div>

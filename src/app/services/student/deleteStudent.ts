@@ -1,4 +1,7 @@
+'use server';
+
 import { serverFetch } from '../../../lib/serverFetch';
+import { revalidateTag } from 'next/cache';
 
 export async function deleteStudent(studentId: string) {
   try {
@@ -7,6 +10,7 @@ export async function deleteStudent(studentId: string) {
       return null;
     }
     const result = await response.json();
+    revalidateTag('students', 'default');
     return result;
   } catch (error) {
     return null;

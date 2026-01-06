@@ -9,6 +9,7 @@ export interface ITeacher {
   email: string;
   phoneNumber?: string | null;
   address?: string | null;
+  photo?: string;
   dateOfBirth?: string | Date | null;
   designation?: string | null;
   gender?: Gender | null;

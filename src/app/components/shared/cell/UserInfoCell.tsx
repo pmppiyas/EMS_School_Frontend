@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Avatar } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/formatter";
-import Image from "next/image";
+import { Avatar } from '@/components/ui/avatar';
+import { getInitials } from '@/lib/formatter';
+import Image from 'next/image';
 
 interface UserInfoCellProps {
   name: string;
-  email: string;
+  email?: string;
   photo?: string | null;
 }
 

@@ -55,22 +55,36 @@ function ManagementTable<T>({
 
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="text-center">
             {columns.map((column, colIdx) => (
-              <TableHead key={colIdx}>{column.header}</TableHead>
+              <TableHead key={colIdx} className="text-center">
+                {column.header}
+              </TableHead>
             ))}
-            {(isAdmin || onView) && <TableHead>Actions</TableHead>}
+            {(isAdmin || onView) && (
+              <TableHead className="text-center">Actions</TableHead>
+            )}
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {data.length === 0 ? (
-            <TableCell colSpan={columns.length + 1}>{emptyMessage}</TableCell>
+            <TableRow>
+              <TableCell
+                colSpan={columns.length + 1}
+                className="text-center py-4"
+              >
+                {emptyMessage}
+              </TableCell>
+            </TableRow>
           ) : (
             data.map((item) => (
-              <TableRow key={getRowKey(item)}>
+              <TableRow key={getRowKey(item)} className="text-center">
                 {columns.map((col, idx) => (
-                  <TableCell key={idx} className={col.className || ''}>
+                  <TableCell
+                    key={idx}
+                    className={`text-center ${col.className || ''}`}
+                  >
                     {typeof col.accessor === 'function'
                       ? col.accessor(item)
                       : String(item[col.accessor])}
@@ -78,7 +92,7 @@ function ManagementTable<T>({
                 ))}
 
                 {(isAdmin || onView) && (
-                  <TableCell>
+                  <TableCell className="text-center">
                     {isAdmin ? (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

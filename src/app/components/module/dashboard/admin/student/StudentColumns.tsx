@@ -1,15 +1,21 @@
 import { IColumn } from '../../ManagementTable';
 import { IStudent } from '../../../../../../types/student.interface';
 import { formatDate } from '../../../../../../lib/formatter';
+import { UserInfoCell } from '@/app/components/shared/cell/UserInfoCell';
 
 const StudentColumns: IColumn<IStudent>[] = [
   {
-    header: 'Roll',
-    accessor: (student: IStudent) => student.roll,
+    header: 'Student',
+    accessor: (student: IStudent) => (
+      <UserInfoCell
+        name={student.firstName + ' ' + student.lastName}
+        photo={student.photo}
+      />
+    ),
   },
   {
-    header: 'Name',
-    accessor: (student: IStudent) => `${student.firstName} ${student.lastName}`,
+    header: 'Roll',
+    accessor: (student: IStudent) => student.roll,
   },
   {
     header: 'Class',

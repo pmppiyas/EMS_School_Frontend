@@ -1,18 +1,11 @@
 import TeacherMagnetCard from '@/app/components/module/home/TeacherCard';
 import Header from '@/app/components/shared/Header';
 import { getTeachers } from '@/app/services/teacher/getTeachers';
+import { ITeacher } from '@/types/teacher.interface';
 
 export default async function OurTeacher() {
-  type Teacher = {
-    id: string;
-    firstName: string;
-    lastName: string;
-    designation?: string | null;
-    email: string;
-    phoneNumber?: string | null;
-    gender?: string | null;
-  };
-  const { teachers }: { teachers: Teacher[] } = await getTeachers();
+
+  const { teachers }: { teachers: ITeacher[] } = await getTeachers();
 
   return (
     <div className="bg-primary-foreground w-full mx-auto">

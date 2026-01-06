@@ -3,6 +3,8 @@ import StudentTable from '../../../../components/module/dashboard/admin/student/
 import { getAllClasses } from '../../../../services/class/getAllClasses';
 import { getAllStudents } from '../../../../services/student/getAllStudents';
 
+export const dynamic = 'force-dynamic';
+
 const page = async () => {
   const { students } = await getAllStudents();
   const { classes } = await getAllClasses();

@@ -3,13 +3,12 @@ import ClassTimeTable from '../../../../components/module/dashboard/admin/classt
 import { getAllClassTimes } from '../../../../services/classTime/getAllClassTimes';
 
 const ClassTimesPage = async () => {
-  const res = await getAllClassTimes();
-  const { classes } = res.data;
+  const { classtimes } = await getAllClassTimes();
 
   return (
     <div>
       <ClassTimeHeader />
-      <ClassTimeTable ClassTimes={classes} />
+      <ClassTimeTable ClassTimes={classtimes} />
     </div>
   );
 };

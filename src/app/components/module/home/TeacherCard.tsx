@@ -1,21 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-type Teacher = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  designation?: string | null;
-  email: string;
-  phoneNumber?: string | null;
-  gender?: string | null;
-};
+import { ITeacher } from '@/types/teacher.interface';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 
-export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
+export default function TeacherMagnetCard({ teacher }: { teacher: ITeacher }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const navigate = useRouter();
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -28,7 +20,8 @@ export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
   const handleMouseMove = (e: any) => {
     if (!cardRef.current) return;
 
-    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const { left, top, width, height } =
+      cardRef.current.getBoundingClientRect();
     const x = (e.clientX - (left + width / 2)) / (width / 2);
     const y = (e.clientY - (top + height / 2)) / (height / 2);
 
@@ -38,15 +31,11 @@ export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
     });
   };
 
-
-
-
   return (
     <motion.div
-
       ref={cardRef}
-      className="relative w-full p-5 rounded-xl border border-gray-200 dark:border-white/20 
-                 bg-card text-card-foreground backdrop-blur-sm shadow-md 
+      className="relative w-full p-5 rounded-xl border border-gray-200 dark:border-white/20
+                 bg-card text-card-foreground backdrop-blur-sm shadow-md
                  hover:shadow-xl cursor-pointer transition-all"
       animate={{
         x: position.x,
@@ -56,7 +45,7 @@ export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
         scale: isHovered ? scaleFactor : 1,
       }}
       transition={{
-        type: "spring",
+        type: 'spring',
         stiffness: 350,
         damping: 22,
       }}
@@ -71,7 +60,7 @@ export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
       {/* Teacher Image */}
       <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border shadow-sm mb-4">
         <Image
-          src="/teacher-placeholder.png"
+          src={teacher?.photo || null}
           alt="Teacher"
           width={200}
           height={200}
@@ -85,7 +74,7 @@ export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
       </h3>
 
       <p className="text-sm text-muted-foreground text-center mb-3">
-        {teacher.designation ?? "Teacher"}
+        {teacher.designation ?? 'Teacher'}
       </p>
 
       {/* Contact */}
@@ -101,11 +90,11 @@ export default function TeacherMagnetCard({ teacher }: { teacher: Teacher }) {
         animate={{
           opacity: isHovered ? 0.08 : 0,
           background: isHovered
-            ? `radial-gradient(circle at 
-                ${50 + position.x / 2}% 
-                ${50 + position.y / 2}%, 
+            ? `radial-gradient(circle at
+                ${50 + position.x / 2}%
+                ${50 + position.y / 2}%,
                 rgba(255,255,255,0.3), transparent 40%)`
-            : "none",
+            : 'none',
         }}
         transition={{ duration: 0.25 }}
       />

@@ -40,7 +40,7 @@ const MarkAttendance = ({
 
   useEffect(() => {
     if (!data?.length) return;
-
+    console.log(data);
     const todayStr = getTodayString();
 
     const mapped = data.map((item) => {

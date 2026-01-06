@@ -6,5 +6,5 @@ import { revalidateTag } from 'next/cache';
 
 export async function AddClassTime(payload: any) {
   await serverFetch.post('class/time', payload);
-  revalidateTag('teachers', 'default');
+  revalidateTag('classtime', 'default');
 }

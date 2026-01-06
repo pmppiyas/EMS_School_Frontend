@@ -20,11 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { IGender } from '@/types/shared.interface';
 import { IStudent } from '@/types/student.interface';
-import { IGender } from '../../../../../../types/shared.interface';
-import { IClass } from '../../../../../../types/attendance.interface';
-import { createStudent } from '../../../../../services/student/createStudent';
-import { updateStudent } from '../../../../../services/student/updateStudent';
+import { IClass } from '@/types/attendance.interface';
+import { updateStudent } from '@/app/services/student/updateStudent';
+import { createStudent } from '@/app/services/student/createStudent';
+import { useRouter } from 'next/navigation';
 
 interface IStudentFormDialogProps {
   open: boolean;
@@ -41,25 +42,22 @@ const StudentFormDialog = ({
   student,
   classes = [],
 }: IStudentFormDialogProps) => {
+  const router = useRouter();
   const isEdit = !!student;
   const [loading, setLoading] = useState(false);
-  const [gender, setGender] = useState<IGender>(
-    (student?.gender as IGender) ?? IGender.MALE
-  );
-  const [classId, setClassId] = useState<string>(
-    (student as any)?.classId ?? (student as any)?.class ?? classes[0]?.id ?? ''
-  );
+  const [gender, setGender] = useState<IGender>(IGender.MALE);
+  const [classId, setClassId] = useState<string>('');
   const [apiErrors, setApiErrors] = useState<
     { field: string; message: string }[] | null
   >(null);
 
   useEffect(() => {
-    if (!open) {
-      setGender(IGender.MALE);
-      setClassId(classes[0]?.id ?? '');
+    if (open) {
+      setGender((student?.gender as IGender) ?? IGender.MALE);
+      setClassId(student?.classId ?? classes[0]?.id ?? '');
       setApiErrors(null);
     }
-  }, [open, classes]);
+  }, [open, student, classes]);
 
   const handleSubmit = async (form: HTMLFormElement) => {
     setLoading(true);
@@ -93,6 +91,7 @@ const StudentFormDialog = ({
         );
         onSuccess();
         onClose();
+        router.refresh();
       } else {
         setApiErrors(response.errors || []);
         toast.error(response.message || 'Validation failed');

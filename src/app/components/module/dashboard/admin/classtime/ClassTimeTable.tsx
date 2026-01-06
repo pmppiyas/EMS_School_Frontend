@@ -68,7 +68,7 @@ const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
         isAdmin={true}
         data={ClassTimes}
         columns={ClassTimeColumns}
-        getRowKey={(row) => row.id}
+        getRowKey={(row) => row.id as string}
         onView={handleView}
         onEdit={handleEdit}
         onDelete={handleDelete}

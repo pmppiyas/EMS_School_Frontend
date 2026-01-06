@@ -1,3 +1,5 @@
+'use server';
+
 import { serverFetch } from '../../../lib/serverFetch';
 
 export const getAllStudents = async (
@@ -20,12 +22,7 @@ export const getAllStudents = async (
       ? `?${queryParams.toString()}`
       : '';
 
-    const response = await serverFetch.get(`student${queryString}`, {
-      next: {
-        revalidate: 3600 * 6,
-        tags: ['students'],
-      },
-    });
+    const response = await serverFetch.get(`student${queryString}`);
     const result = await response.json();
 
     if (result.success) {

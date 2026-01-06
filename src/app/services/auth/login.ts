@@ -1,17 +1,47 @@
-import { env } from "@/config/env";
+// app/actions/login.ts
+'use server';
 
-export const loginUser = async (payload: {
-  email: string;
-  password: string;
-}) => {
+import { cookies } from 'next/headers';
+import { env } from '@/config/env';
+
+export async function loginUser(payload: { email: string; password: string }) {
   const res = await fetch(`${env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-    body: JSON.stringify(payload),
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    method: "POST",
-    credentials: "include",
+    body: JSON.stringify(payload),
   });
 
-  return await res.json();
-};
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || 'Login failed');
+  }
+
+  const { accessToken, refreshToken } = result.data;
+
+  const cookieStore = cookies();
+
+  (await cookieStore).set({
+    name: 'accessToken',
+    value: accessToken,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7,
+  });
+
+  (await cookieStore).set({
+    name: 'refreshToken',
+    value: refreshToken,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  return result;
+}

@@ -1,4 +1,4 @@
-export interface IClassTimeTableProps {
+export interface IClassTime {
   id: string;
   period: string;
   startTime: string;
@@ -6,5 +6,5 @@ export interface IClassTimeTableProps {
 }
 
 export interface IClassTimeTableComponentProps {
-  ClassTimes: IClassTimeTableProps[];
+  ClassTimes: IClassTime[];
 }

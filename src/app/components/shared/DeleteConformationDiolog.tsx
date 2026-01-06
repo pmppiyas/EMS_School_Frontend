@@ -11,7 +11,7 @@ import {
 
 interface IDeleteConfirmDialogProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: () => void;
   onConfirm: () => void;
   title?: string;
   description?: string;

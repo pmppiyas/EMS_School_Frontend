@@ -44,7 +44,6 @@ export async function createTeacher(formData: FormData) {
     const result = await response.json();
     if (result.success) {
       revalidateTag('teachers', 'default');
-      console.log('✅ Teachers cache cleared');
     }
 
     return result;

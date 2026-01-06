@@ -1,6 +1,9 @@
+'use server';
+
 import { serverFetch } from '../../../lib/serverFetch';
 import { zodValidator } from '../../../lib/ZodValidator';
 import { updateStudentSchema } from '../../../zod/student.validation';
+import { revalidateTag } from 'next/cache';
 
 export const updateStudent = async (id: string, formData: FormData) => {
   const payload = {
@@ -43,5 +46,6 @@ export const updateStudent = async (id: string, formData: FormData) => {
     };
   }
 
+  revalidateTag('students', 'default');
   return result;
 };

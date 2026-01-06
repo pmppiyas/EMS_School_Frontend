@@ -12,16 +12,16 @@ const TodayAttends = ({
   let reports = [];
   if (isTeacherMode) {
     reports = [
-      ...attendance.teacher.present.list,
-      ...attendance.teacher.absent.list,
-      ...attendance.teacher.late.list,
-      ...attendance.teacher.leave.list,
+      ...attendance.teacher?.present.list,
+      ...attendance.teacher?.absent.list,
+      ...attendance.teacher?.late.list,
+      ...attendance.teacher?.leave.list,
     ];
   } else {
     reports = [
-      ...attendance.student.present.list,
-      ...attendance.student.absent.list,
-      ...attendance.student.late.list,
+      ...attendance.student?.present.list,
+      ...attendance.student?.absent.list,
+      ...attendance.student?.late.list,
       ...attendance?.student?.leave?.list,
     ];
   }

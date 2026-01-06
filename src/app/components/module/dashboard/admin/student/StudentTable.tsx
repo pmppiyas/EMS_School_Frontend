@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { IStudent } from '@/types/student.interface';
@@ -21,7 +21,6 @@ const StudentTable = ({
   classes: IClass[];
 }) => {
   const router = useRouter();
-  const [_, startTransition] = useTransition();
 
   const [deletingStudent, setDeletingStudent] = useState<IStudent | null>(null);
   const [isDeletingDialog, setIsDeletingDialog] = useState(false);
@@ -30,9 +29,7 @@ const StudentTable = ({
   );
 
   const handleRefresh = () => {
-    startTransition(() => {
-      router.refresh();
-    });
+    router.refresh();
   };
 
   const handleView = (student: IStudent) => {
@@ -59,6 +56,7 @@ const StudentTable = ({
 
       if (result?.success) {
         handleRefresh();
+        router.refresh();
         setIsDeletingDialog(false);
         setDeletingStudent(null);
         toast.success(result.message || 'Student deleted successfully');
@@ -69,6 +67,7 @@ const StudentTable = ({
       setIsDeletingDialog(false);
       setDeletingStudent(null);
       handleRefresh();
+    // eslint-disable-next-line no-unused-vars
     } catch (err: any) {
       toast.error('Something went wrong. Please try again.');
     }

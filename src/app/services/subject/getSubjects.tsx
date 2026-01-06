@@ -1,10 +1,10 @@
 import { serverFetch } from '@/lib/serverFetch';
 
-export const getAllClassTimes = async () => {
-  const res = await serverFetch.get('class/time', {
+export const getSubjects = async () => {
+  const res = await serverFetch.get('subject', {
     next: {
       revalidate: 3600 * 6,
-      tags: ['classtime'],
+      tags: ['subjects'],
     },
   });
 
@@ -17,7 +17,7 @@ export const getAllClassTimes = async () => {
   }
 
   if (!res.ok) {
-    throw new Error('Failed to fetch classTimes');
+    throw new Error('Failed to fetch teachers');
   }
 
   return data.data;

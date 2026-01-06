@@ -11,6 +11,7 @@ export interface IStudent {
   roll: number;
   gender: Gender;
   userId: string;
+  photo?: string;
   createdAt: string | Date;
   updatedAt: string | Date;
   phoneNumber?: string | null;

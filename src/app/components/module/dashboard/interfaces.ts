@@ -20,7 +20,6 @@ export interface IManagementPageHeaderProps {
   description?: string;
   breadcrumbs?: IBreadcrumbItem[];
 
-  // actions can be either IAction objects or ReactNode (JSX)
   actions?: (IAction | React.ReactNode)[];
 
   showSearch?: boolean;

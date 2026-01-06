@@ -4,6 +4,7 @@ import { getTeacherAttendance } from '../../../services/attendance/getTeacherAtt
 
 const page = async () => {
   const studentRes = await getStudentAttendance();
+
   const studentAttendData = studentRes.data.student;
 
   const teacherRes = await getTeacherAttendance();
