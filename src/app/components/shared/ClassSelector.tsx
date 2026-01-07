@@ -14,12 +14,14 @@ import { IClass } from '@/types/attendance.interface';
 import { setCookie } from '@/lib/cookies';
 
 interface ClassSelectProps {
+  withTeacher: boolean;
   classes: IClass[];
   cookieName?: string;
   onChange?: (classId: string) => void;
 }
 
 const ClassSelector = ({
+  withTeacher = false,
   classes,
   cookieName = 'selectedClassId',
   onChange,
@@ -53,6 +55,7 @@ const ClassSelector = ({
         <SelectValue placeholder="Choose Class" />
       </SelectTrigger>
       <SelectContent>
+        {withTeacher && <SelectItem key="teacher" value="teacher" >Teacher</SelectItem>}
         {classes.map((c) => (
           <SelectItem key={c.id} value={c.id}>
             {c.name}

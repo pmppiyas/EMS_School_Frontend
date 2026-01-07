@@ -13,7 +13,7 @@ const ScheduleHeader = ({
     <ManagementPageHeader
       title="Schedule Management"
       description="Manage schedules information and details"
-      actions={[selectDayClass, selectOption]}
+      actions={[selectOption, selectDayClass]}
     />
   );
 };

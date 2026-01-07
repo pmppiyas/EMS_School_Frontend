@@ -13,13 +13,14 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { markAttendance } from '../../../../../services/attendance/markAttendance';
+
 import { useRouter } from 'next/navigation';
-import { buildPayloadRecords } from '../../../../../../lib/buildAttendPayload';
-import {
-  IAttendance,
-  IUserAttend,
-} from '../../../../../../types/attendance.interface';
+
+import EmptyComp from '@/app/components/shared/EmptyComp';
+import { markAttendance } from '@/app/services/attendance/markAttendance';
+import { buildPayloadRecords } from '@/lib/buildAttendPayload';
+import { IAttendance, IUserAttend } from '@/types/attendance.interface';
+import { RefreshButton } from '@/app/components/shared/RefreshButton';
 
 const MarkAttendance = ({
   data,
@@ -39,8 +40,6 @@ const MarkAttendance = ({
   };
 
   useEffect(() => {
-    if (!data?.length) return;
-    console.log(data);
     const todayStr = getTodayString();
 
     const mapped = data.map((item) => {
@@ -130,120 +129,133 @@ const MarkAttendance = ({
   };
 
   return (
-    <div className="mt-4 border rounded-xl overflow-hidden bg-card shadow-sm">
-      <div className="flex justify-between items-center p-4 border-b bg-muted/30">
-        <h2 className="text-xl font-bold">
-          {isTeacherMode ? 'Teacher Attendance' : 'Student Attendance'}
-        </h2>
-        <Button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="px-6 font-bold"
-        >
-          {loading ? 'Saving...' : 'Save Changes'}
-        </Button>
-      </div>
+    <div>
+      {data.length > 0 ? (
+        <div className="mt-4 border rounded-xl overflow-hidden bg-card shadow-sm">
+          <div className="flex justify-between items-center p-4 border-b bg-muted/30">
+            <h2 className="text-xl font-bold">
+              {isTeacherMode ? 'Teacher Attendance' : 'Student Attendance'}
+            </h2>
+            <Button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="px-6 font-bold"
+            >
+              {loading ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </div>
 
-      <Table>
-        <TableHeader className="bg-muted/50">
-          <TableRow>
-            {!isTeacherMode && (
-              <TableHead className="pl-6 w-20">Roll</TableHead>
-            )}
-            <TableHead className="pl-6">Name</TableHead>
-            <TableHead className="text-center">IN</TableHead>
-            <TableHead className="text-center pr-6">OUT</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {data.map((user) => {
-            const record = attendance.find((a) => a.userId === user.userId);
-            const todayStr = getTodayString();
-
-            const todayAttendance = user.user?.attendances?.find(
-              (a: any) => a.createdAt?.split('T')[0] === todayStr
-            );
-            const status = todayAttendance?.status;
-
-            return (
-              <TableRow
-                key={user.userId}
-                className="hover:bg-accent/5 transition-colors"
-              >
+          <Table>
+            <TableHeader className="bg-muted/50">
+              <TableRow>
                 {!isTeacherMode && (
-                  <TableCell className="font-medium text-muted-foreground pl-6">
-                    {user.roll}
-                  </TableCell>
+                  <TableHead className="pl-6 w-20">Roll</TableHead>
                 )}
-
-                <TableCell className="pl-6">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold">
-                      {user.firstName} {user.lastName}
-                    </span>
-                    {status === 'LATE' && (
-                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
-                        LATE
-                      </span>
-                    )}
-                    {status === 'LEAVE' && (
-                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-green-100 text-green-800 border border-green-200">
-                        LEAVE
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-
-                <TableCell className="text-center">
-                  <div className="flex flex-col items-center justify-center min-h-[55px] gap-1">
-                    <Checkbox
-                      checked={!!record?.isInChecked}
-                      onCheckedChange={(v) =>
-                        updateRecord(user.userId, 'IN', !!v)
-                      }
-                      className="size-6 ring-1"
-                    />
-                    {record?.isInChecked && (
-                      <span className="text-[11px] font-bold text-primary">
-                        {record.inTime && !isNaN(Date.parse(record.inTime))
-                          ? new Date(record.inTime).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })
-                          : 'PRESENT'}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-
-                <TableCell className="text-center pr-6">
-                  <div className="flex flex-col items-center justify-center min-h-[55px] gap-1">
-                    <Checkbox
-                      checked={!!record?.isOutChecked}
-                      onCheckedChange={(v) =>
-                        updateRecord(user.userId, 'OUT', !!v)
-                      }
-                      disabled={!record?.isInChecked}
-                      className="size-6 ring-1"
-                    />
-                    {record?.isOutChecked && (
-                      <span className="text-[11px] font-bold text-primary">
-                        {record.outTime && !isNaN(Date.parse(record.outTime))
-                          ? new Date(record.outTime).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })
-                          : 'OUT'}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
+                <TableHead className="pl-6">Name</TableHead>
+                <TableHead className="text-center">IN</TableHead>
+                <TableHead className="text-center pr-6">OUT</TableHead>
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+            </TableHeader>
+
+            <TableBody>
+              {data.map((user) => {
+                const record = attendance.find((a) => a.userId === user.userId);
+                const todayStr = getTodayString();
+
+                const todayAttendance = user.user?.attendances?.find(
+                  (a: any) => a.createdAt?.split('T')[0] === todayStr
+                );
+                const status = todayAttendance?.status;
+
+                return (
+                  <TableRow
+                    key={user.userId}
+                    className="hover:bg-accent/5 transition-colors"
+                  >
+                    {!isTeacherMode && (
+                      <TableCell className="font-medium text-muted-foreground pl-6">
+                        {user.roll}
+                      </TableCell>
+                    )}
+
+                    <TableCell className="pl-6">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">
+                          {user.firstName} {user.lastName}
+                        </span>
+                        {status === 'LATE' && (
+                          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
+                            LATE
+                          </span>
+                        )}
+                        {status === 'LEAVE' && (
+                          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-green-100 text-green-800 border border-green-200">
+                            LEAVE
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <div className="flex flex-col items-center justify-center min-h-[55px] gap-1">
+                        <Checkbox
+                          checked={!!record?.isInChecked}
+                          onCheckedChange={(v) =>
+                            updateRecord(user.userId, 'IN', !!v)
+                          }
+                          className="size-6 ring-1"
+                        />
+                        {record?.isInChecked && (
+                          <span className="text-[11px] font-bold text-primary">
+                            {record.inTime && !isNaN(Date.parse(record.inTime))
+                              ? new Date(record.inTime).toLocaleTimeString([], {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })
+                              : 'PRESENT'}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="text-center pr-6">
+                      <div className="flex flex-col items-center justify-center min-h-[55px] gap-1">
+                        <Checkbox
+                          checked={!!record?.isOutChecked}
+                          onCheckedChange={(v) =>
+                            updateRecord(user.userId, 'OUT', !!v)
+                          }
+                          disabled={!record?.isInChecked}
+                          className="size-6 ring-1"
+                        />
+                        {record?.isOutChecked && (
+                          <span className="text-[11px] font-bold text-primary">
+                            {record.outTime &&
+                            !isNaN(Date.parse(record.outTime))
+                              ? new Date(record.outTime).toLocaleTimeString(
+                                  [],
+                                  {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                  }
+                                )
+                              : 'OUT'}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <EmptyComp
+          subject={isTeacherMode ? 'teacher' : 'student'}
+          refreshButton={<RefreshButton />}
+        />
+      )}
     </div>
   );
 };

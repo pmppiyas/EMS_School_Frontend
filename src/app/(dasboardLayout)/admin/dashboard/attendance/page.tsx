@@ -1,23 +1,41 @@
-import { IClass } from '../../../../../types/attendance.interface';
-import AttendanceTable from '../../../../components/module/dashboard/admin/attendance/AttendanceTable';
-import { getAllClasses } from '../../../../services/class/getAllClasses';
+import AttendanceContent from '@/app/components/module/dashboard/admin/attendance/AttendanceContent';
+import { getStudentAttendance } from '@/app/services/attendance/getStudentAttendance';
+import { getTeacherAttendance } from '@/app/services/attendance/getTeacherAttendance';
+import { getClasses } from '@/app/services/class/getAllClasses';
+import { getAllStudents } from '@/app/services/student/getAllStudents';
+import { getTeachers } from '@/app/services/teacher/getTeachers';
+import { getCookie } from '@/lib/cookies';
 
 export const dynamic = 'force-dynamic';
 
-const page = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ classId?: string }>;
-}) => {
-  const params = await searchParams;
-  const classId = params.classId;
+const page = async () => {
+  const { classes } = await getClasses();
+  const classId = await getCookie('selectedClassId');
+  let users = [];
+  let attendance = [];
 
-  const classRes = await getAllClasses();
-  const classes: IClass[] = classRes?.classes || [];
+  if (classId) {
+    if (classId === 'teacher') {
+      const { teachers } = await getTeachers();
+      users = teachers;
+      const { teacher } = await getTeacherAttendance();
+      attendance = teacher;
+    } else {
+      const { students } = await getAllStudents(classId);
+      users = students;
+      const { student } = await getStudentAttendance(classId);
+      attendance = student;
+    }
+  }
 
   return (
     <div>
-      <AttendanceTable selectedClassId={classId || ''} classes={classes} />
+      <AttendanceContent
+        classes={classes}
+        users={users}
+        attendance={attendance}
+        classId={classId as string}
+      />
     </div>
   );
 };
