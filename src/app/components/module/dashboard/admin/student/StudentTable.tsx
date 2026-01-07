@@ -12,6 +12,7 @@ import { IClass } from '../../../../../../types/attendance.interface';
 import StudentColumns from './StudentColumns';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
 import { deleteStudent } from '../../../../../services/student/deleteStudent';
+import { setCookie } from '@/lib/cookies';
 
 const StudentTable = ({
   students,
@@ -51,28 +52,25 @@ const StudentTable = ({
 
   const confirmDelete = async () => {
     if (!deletingStudent) return;
+
     try {
       const result = await deleteStudent(deletingStudent.id);
 
       if (result?.success) {
-        handleRefresh();
+        await setCookie('studentPage', '1');
         router.refresh();
-        setIsDeletingDialog(false);
-        setDeletingStudent(null);
-        toast.success(result.message || 'Student deleted successfully');
-      } else {
-        toast.error(result.message || 'Failed to delete student');
-      }
 
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
+    } catch {
+      toast.error('Something went wrong');
+    } finally {
       setIsDeletingDialog(false);
       setDeletingStudent(null);
-      handleRefresh();
-    // eslint-disable-next-line no-unused-vars
-    } catch (err: any) {
-      toast.error('Something went wrong. Please try again.');
     }
   };
-
   return (
     <>
       <ManagementTable
@@ -83,7 +81,6 @@ const StudentTable = ({
         onView={handleView}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        emptyMessage="No Students Found."
       />
 
       <StudentFormDialog

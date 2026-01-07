@@ -1,3 +1,5 @@
+import EmptyComp from '@/app/components/shared/EmptyComp';
+import { RefreshButton } from '@/app/components/shared/RefreshButton';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -41,7 +43,6 @@ function ManagementTable<T>({
   onEdit,
   onDelete,
   getRowKey,
-  emptyMessage = 'No records found.',
   isRefreshing = false,
   isAdmin = false,
 }: IManagementTableProps<T>) {
@@ -70,11 +71,10 @@ function ManagementTable<T>({
         <TableBody>
           {data.length === 0 ? (
             <TableRow>
-              <TableCell
-                colSpan={columns.length + 1}
-                className="text-center py-4"
-              >
-                {emptyMessage}
+              <TableCell colSpan={columns.length + 1}>
+                <div>
+                  <EmptyComp refreshButton={<RefreshButton />} />
+                </div>
               </TableCell>
             </TableRow>
           ) : (

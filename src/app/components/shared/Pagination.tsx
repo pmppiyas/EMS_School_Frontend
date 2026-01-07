@@ -1,30 +1,39 @@
 'use client';
 
-import React from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-
-export const dynamic = 'force-dynamic';
+import { getCookie, setCookie } from '@/lib/cookies';
+import { useRouter } from 'next/navigation';
 
 interface PaginationProps {
-  page: number;
   total: number;
   limit: number;
+  cookieName?: string;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ page, total, limit }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  total,
+  limit,
+  cookieName = 'studentPage',
+}) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const totalPages = Math.ceil(total / limit);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    const savedPage = getCookie(cookieName);
+    if (savedPage && !isNaN(Number(savedPage))) {
+      const pageNum = Number(savedPage);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentPage(pageNum <= totalPages ? pageNum : 1);
+      router.refresh();
+    }
+  }, [router, totalPages, cookieName]);
 
   const changePage = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (newPage === 1) {
-      params.delete('page');
-    } else {
-      params.set('page', String(newPage));
-    }
-    router.push(`?${params.toString()}`);
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    setCookie(cookieName, String(newPage));
   };
 
   if (totalPages <= 1) return null;
@@ -32,20 +41,20 @@ const Pagination: React.FC<PaginationProps> = ({ page, total, limit }) => {
   return (
     <div className="flex items-center gap-2 mt-4 justify-center">
       <Button
-        disabled={page <= 1}
-        onClick={() => changePage(page - 1)}
+        disabled={currentPage <= 1}
+        onClick={() => changePage(currentPage - 1)}
         variant="outline"
       >
         Previous
       </Button>
 
       <span>
-        Page {page} of {totalPages}
+        Page {currentPage} of {totalPages}
       </span>
 
       <Button
-        disabled={page >= totalPages}
-        onClick={() => changePage(page + 1)}
+        disabled={currentPage >= totalPages}
+        onClick={() => changePage(currentPage + 1)}
         variant="outline"
       >
         Next

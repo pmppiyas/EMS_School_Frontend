@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +12,7 @@ import {
 
 interface IDeleteConfirmDialogProps {
   open: boolean;
-  onOpenChange: () => void;
+  onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
   title?: string;
   description?: string;

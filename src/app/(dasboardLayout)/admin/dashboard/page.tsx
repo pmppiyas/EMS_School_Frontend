@@ -1,5 +1,6 @@
+import { getStudentAttendance } from '@/app/services/attendance/getStudentAttendance';
 import AttendanceCharts from '../../../components/module/dashboard/admin/overview/AttendanceCharts';
-import { getStudentAttendance } from '../../../services/attendance/getStudentAttendance';
+
 import { getTeacherAttendance } from '../../../services/attendance/getTeacherAttendance';
 
 const page = async () => {
