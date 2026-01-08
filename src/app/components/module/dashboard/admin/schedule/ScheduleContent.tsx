@@ -38,7 +38,9 @@ const ScheduleContent = ({
         selectDayClass={
           <div className="flex items-center justify-between gap-3">
             <DaySelector onChange={setSelectedDay} />
-            <ClassSelector classes={classes} onChange={setSeletedClass} />
+            {mode === 'edit' && (
+              <ClassSelector classes={classes} onChange={setSeletedClass} />
+            )}
           </div>
         }
         selectOption={<ScheduleOptionSelect mode={mode} onChange={setMode} />}

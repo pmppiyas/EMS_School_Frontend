@@ -1,8 +1,5 @@
 'use client';
 
-import EmptyComp from '@/app/components/shared/EmptyComp';
-import { RefreshButton } from '@/app/components/shared/RefreshButton';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs from 'dayjs';
 
 const STATUS_COLOR: Record<string, string> = {
@@ -51,83 +48,70 @@ const MonthlyAttendanceTable = ({
   const students = Array.from(studentMap.values());
 
   return (
-    <>
-      {students.length > 0 ? (
-        <div className="overflow-x-auto border rounded-xl">
-          <table className="w-full border-collapse">
-            <thead className="bg-muted sticky top-0 z-10">
-              <tr>
+    <div className="overflow-x-auto border rounded-xl">
+      <table className="w-full border-collapse">
+        <thead className="bg-muted sticky top-0 z-10">
+          <tr>
+            {!isTeacherMode && (
+              <th className="px-3 py-2 text-left text-sm font-semibold">
+                Roll
+              </th>
+            )}
+            <th className="px-3 py-2 text-left text-sm font-semibold">Name</th>
+
+            {Array.from({ length: daysInMonth }).map((_, i) => (
+              <th key={i} className="px-1 py-2 text-center text-xs font-medium">
+                {i + 1}
+              </th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {students.map((student) => {
+            const attendanceMap: Record<number, string> = {};
+
+            student.attendances.forEach((att: any) => {
+              const day = dayjs(att.createdAt).date();
+              attendanceMap[day] = att.status;
+            });
+
+            return (
+              <tr key={student.userId} className="border-t">
                 {!isTeacherMode && (
-                  <th className="px-3 py-2 text-left text-sm font-semibold">
-                    Roll
-                  </th>
+                  <td className="px-3 py-2 text-sm">{student.roll ?? '-'}</td>
                 )}
-                <th className="px-3 py-2 text-left text-sm font-semibold">
-                  Name
-                </th>
 
-                {Array.from({ length: daysInMonth }).map((_, i) => (
-                  <th
-                    key={i}
-                    className="px-1 py-2 text-center text-xs font-medium"
-                  >
-                    {i + 1}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+                <td className="px-3 py-2 text-sm font-medium whitespace-nowrap">
+                  {student.name}
+                </td>
 
-            <tbody>
-              {students.map((student) => {
-                const attendanceMap: Record<number, string> = {};
+                {Array.from({ length: daysInMonth }).map((_, i) => {
+                  const day = i + 1;
+                  const status = attendanceMap[day] ?? 'ABSENT';
 
-                student.attendances.forEach((att: any) => {
-                  const day = dayjs(att.createdAt).date();
-                  attendanceMap[day] = att.status;
-                });
-
-                return (
-                  <tr key={student.userId} className="border-t">
-                    {!isTeacherMode && (
-                      <td className="px-3 py-2 text-sm">
-                        {student.roll ?? '-'}
-                      </td>
-                    )}
-
-                    <td className="px-3 py-2 text-sm font-medium whitespace-nowrap">
-                      {student.name}
+                  return (
+                    <td key={day} className="px-1 py-2">
+                      <div
+                        title={`Day ${day}: ${status}`}
+                        className={`mx-auto h-4 w-4 rounded-sm ${STATUS_COLOR[status]}`}
+                      />
                     </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
 
-                    {Array.from({ length: daysInMonth }).map((_, i) => {
-                      const day = i + 1;
-                      const status = attendanceMap[day] ?? 'ABSENT';
-
-                      return (
-                        <td key={day} className="px-1 py-2">
-                          <div
-                            title={`Day ${day}: ${status}`}
-                            className={`mx-auto h-4 w-4 rounded-sm ${STATUS_COLOR[status]}`}
-                          />
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          <div className="flex flex-wrap gap-4 p-3 text-xs">
-            <Legend label="Present" color="bg-green-500" />
-            <Legend label="Late" color="bg-yellow-400" />
-            <Legend label="Leave" color="bg-blue-500" />
-            <Legend label="Absent" color="bg-gray-200" />
-          </div>
-        </div>
-      ) : (
-        <EmptyComp subject="attendance" refreshButton={<RefreshButton />} />
-      )}
-    </>
+      <div className="flex flex-wrap gap-4 p-3 text-xs">
+        <Legend label="Present" color="bg-green-500" />
+        <Legend label="Late" color="bg-yellow-400" />
+        <Legend label="Leave" color="bg-blue-500" />
+        <Legend label="Absent" color="bg-gray-200" />
+      </div>
+    </div>
   );
 };
 

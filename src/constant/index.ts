@@ -24,3 +24,14 @@ export const DAYS = [
 ];
 
 export const PERIODS = ['1', '2', '3', '4', '5', '6'];
+
+export const FeeCategories = [
+  'ADMISSION',
+  'SESSION',
+  'MONTHLY',
+  'TUITION',
+  'EXAM',
+  'TRANSPORT',
+  'LAB',
+  'OTHER',
+] as const;

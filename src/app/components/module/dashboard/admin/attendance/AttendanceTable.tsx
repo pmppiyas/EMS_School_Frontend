@@ -7,9 +7,6 @@ import { getTeacherAttendance } from '../../../../../services/attendance/getTeac
 import { getStudentAttendance } from '../../../../../services/attendance/getStudentAttendance';
 import TodayAttends from './TodayAttends';
 import AllAttends from './AllAttends';
-import ClassSelectorWithTeacher from './ClassSelectorWithTeacher';
-import AttendanceHeader from '@/app/components/module/dashboard/admin/attendance/AttendanceHeader';
-import DaySelector from '@/app/components/shared/DaySelector';
 import ClassSelector from '@/app/components/shared/ClassSelector';
 
 const AttendanceTable = async ({
@@ -48,10 +45,7 @@ const AttendanceTable = async ({
               </TabsTrigger>
               <TabsTrigger value="allrecords">Monthly Records</TabsTrigger>
             </TabsList>
-            <ClassSelectorWithTeacher
-              classes={classes}
-              selectedClassId={selectedClassId}
-            />
+            <ClassSelector classes={classes} />
           </div>
 
           <TabsContent value="attendance" className="mt-0 outline-none">

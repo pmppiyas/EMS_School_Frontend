@@ -33,6 +33,11 @@ export const adminRoutes: NavItem[] = [
     href: '/admin/dashboard/payments',
     iconName: 'IconStethoscope',
   },
+  {
+    title: 'Fee Type',
+    href: '/admin/dashboard/feetype',
+    iconName: 'IconStethoscope',
+  },
 ];
 
 export const teacherRoutes: NavItem[] = [

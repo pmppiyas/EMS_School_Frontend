@@ -66,10 +66,10 @@ const ManagementPageHeader = ({
               return (
                 <HeaderActionButton
                   key={idx}
-                  Icon={act.icon}
-                  label={act.label}
-                  onClick={act.onClick}
-                  href={act.href}
+                  Icon={act?.icon}
+                  label={act?.label}
+                  onClick={act?.onClick}
+                  href={act?.href}
                 />
               );
             })}

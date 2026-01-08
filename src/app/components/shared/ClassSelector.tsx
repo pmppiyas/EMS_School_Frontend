@@ -14,7 +14,7 @@ import { IClass } from '@/types/attendance.interface';
 import { setCookie } from '@/lib/cookies';
 
 interface ClassSelectProps {
-  withTeacher: boolean;
+  withTeacher?: boolean;
   classes: IClass[];
   cookieName?: string;
   onChange?: (classId: string) => void;

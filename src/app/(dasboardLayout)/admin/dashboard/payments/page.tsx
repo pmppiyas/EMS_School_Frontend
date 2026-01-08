@@ -1,7 +1,11 @@
-import React from 'react';
+import PaymentContent from '@/app/components/module/dashboard/admin/payment/PaymentContent';
 
 const PaymentPage = () => {
-  return <div>Payment Page</div>;
+  return (
+    <div>
+      <PaymentContent />
+    </div>
+  );
 };
 
 export default PaymentPage;
