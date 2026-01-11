@@ -1,6 +1,6 @@
-import LoginForm from '@/app/components/module/auth/LoginForm';
+'use server';
 
-export const dynamic = 'force-dynamic';
+import LoginForm from '@/app/components/module/auth/LoginForm';
 
 const LoginPage = async ({
   searchParams,

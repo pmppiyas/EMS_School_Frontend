@@ -11,7 +11,8 @@ export async function deleteClassTime(classTimeId: string) {
     const result = await response.json();
     revalidateTag('classtime', 'default');
     return result;
-  } catch (error) {
+  } catch (err) {
+    console.log(err);
     return null;
   }
 }

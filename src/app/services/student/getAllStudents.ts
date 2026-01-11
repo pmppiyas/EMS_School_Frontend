@@ -23,7 +23,9 @@ export const getAllStudents = async (
       : '';
 
     const response = await serverFetch.get(`student${queryString}`, {
-      cache: 'no-store',
+      next: {
+        revalidate: 30,
+      },
     });
     const result = await response.json();
 

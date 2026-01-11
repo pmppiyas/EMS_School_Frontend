@@ -59,13 +59,13 @@ export default function TeacherMagnetCard({ teacher }: { teacher: ITeacher }) {
     >
       {/* Teacher Image */}
       <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border shadow-sm mb-4">
-        <Image
-          src={teacher?.photo || null}
+        {/* <Image
+          src={teacher?.photo || 'teacher_photo'}
           alt="Teacher"
           width={200}
           height={200}
           className="w-full h-full object-cover"
-        />
+        /> */}
       </div>
 
       {/* Name & Title */}
@@ -79,9 +79,7 @@ export default function TeacherMagnetCard({ teacher }: { teacher: ITeacher }) {
 
       {/* Contact */}
       <div className="text-center text-sm text-muted-foreground space-y-1">
-        <p>Email: {teacher.email}</p>
         {teacher.phoneNumber && <p>Phone: {teacher.phoneNumber}</p>}
-        {teacher.gender && <p>Gender: {teacher.gender}</p>}
       </div>
 
       {/* Glow */}

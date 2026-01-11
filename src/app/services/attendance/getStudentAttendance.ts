@@ -5,7 +5,11 @@ export const getStudentAttendance = async (classId?: string) => {
     ? `attendance/student?classId=${classId}`
     : `attendance/student`;
 
-  const res = await serverFetch.get(url);
+  const res = await serverFetch.get(url, {
+    next: {
+      revalidate: 30
+    }
+  });
 
   let data;
   try {

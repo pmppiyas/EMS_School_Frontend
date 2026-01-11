@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -49,22 +49,41 @@ const FeeTypeFormDialog = ({
     control,
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FeeTypeFormValues>({
     resolver: zodResolver(feeTypeSchema),
     defaultValues: {
       amount: feeType?.amount ?? 0,
       category: (feeType?.category as FeeCategory) ?? 'ADMISSION',
-      classId: feeType?.classId,
+      classId: feeType?.class?.id,
     },
   });
 
   const category = watch('category');
 
+  // Clear classId when category is not MONTHLY or TUITION
+  useEffect(() => {
+    if (category !== 'MONTHLY' && category !== 'TUITION') {
+      setValue('classId', undefined);
+    }
+  }, [category, setValue]);
+
   const onSubmit = async (data: FeeTypeFormValues) => {
     setLoading(true);
+
     try {
-      const res = await createFeeType(data);
+      const payload = {
+        ...data,
+        classId:
+          data.category === 'MONTHLY' || data.category === 'TUITION'
+            ? data.classId
+            : undefined,
+      };
+
+      console.log(payload);
+
+      const res = await createFeeType(payload);
 
       if (res.success) {
         toast.success(res.message || 'Fee Type saved');
@@ -127,8 +146,8 @@ const FeeTypeFormDialog = ({
               )}
             </Field>
 
-            {/* Class (ONLY when MONTHLY) */}
-            {category === 'MONTHLY' && (
+            {/* Class (ONLY when MONTHLY or TUITION) */}
+            {(category === 'MONTHLY' || category === 'TUITION') && (
               <Field>
                 <FieldLabel>Class</FieldLabel>
                 <Controller

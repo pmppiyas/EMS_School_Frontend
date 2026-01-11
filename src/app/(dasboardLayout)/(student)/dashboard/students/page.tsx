@@ -1,13 +1,13 @@
+import { getClasses } from '@/app/services/class/getAllClasses';
 import StudentHeader from '../../../../components/module/dashboard/admin/student/StudentHeader';
 import StudentTable from '../../../../components/module/dashboard/admin/student/StudentTable';
-import { getAllClasses } from '../../../../services/class/getAllClasses';
 import { getAllStudents } from '../../../../services/student/getAllStudents';
 
 export const dynamic = 'force-dynamic';
 
 const page = async () => {
   const { students } = await getAllStudents();
-  const { classes } = await getAllClasses();
+  const { classes } = await getClasses();
 
   return (
     <div>

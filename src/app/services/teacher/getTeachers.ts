@@ -1,7 +1,11 @@
 import { serverFetch } from '@/lib/serverFetch';
 
 export const getTeachers = async () => {
-  const res = await serverFetch.get('teacher');
+  const res = await serverFetch.get('teacher', {
+    next: {
+      revalidate: 60,
+    },
+  });
 
   let data;
   try {

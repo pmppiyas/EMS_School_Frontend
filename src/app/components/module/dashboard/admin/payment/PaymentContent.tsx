@@ -2,19 +2,22 @@
 import CreatePayment from '@/app/components/module/dashboard/admin/payment/CreatePayment';
 import PaymentHeader from '@/app/components/module/dashboard/admin/payment/PaymentHeader';
 import PaymentModeSelect from '@/app/components/module/dashboard/admin/payment/PaymentModeSelect';
+import ViewPayment from '@/app/components/module/dashboard/admin/payment/ViewPayment';
 import { IClass } from '@/types/attendance.interface';
-import { IFeeType } from '@/types/fee.interface';
+import { IFee, IFeeType } from '@/types/fee.interface';
 import { IStudent } from '@/types/student.interface';
 import { useState } from 'react';
 
 const PaymentContent = ({
   classes,
   students,
-  feetypes
+  feetypes,
+  fees,
 }: {
   classes: IClass[];
   students: IStudent[];
-    feetypes: IFeeType[];
+  feetypes: IFeeType[];
+  fees: IFee[];
 }) => {
   const [mode, setMode] = useState<'create' | 'view'>('create');
   return (
@@ -24,9 +27,13 @@ const PaymentContent = ({
       />
 
       {mode === 'create' && (
-        <CreatePayment classes={classes} students={students}  feetypes={feetypes}/>
+        <CreatePayment
+          classes={classes}
+          students={students}
+          feetypes={feetypes}
+        />
       )}
-      {mode === 'view' && <p>View</p>}
+      {mode === 'view' && <ViewPayment fees={fees} />}
     </div>
   );
 };

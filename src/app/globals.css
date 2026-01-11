@@ -150,3 +150,38 @@
 .slider-container:hover .slider-container:hover .marqueeSliderRight {
   animation-play-state: paused;
 }
+
+@page {
+  size: A4;
+  margin: 20mm;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-slip,
+  #printable-slip * {
+    visibility: visible;
+  }
+
+  #printable-slip {
+    width: 190mm;
+    margin: 0 auto;
+    padding: 16mm;
+    border: 1px dashed #ccc;
+
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
+.invoice-wrapper {
+  font-family: Arial, sans-serif;
+  color: #000;
+}

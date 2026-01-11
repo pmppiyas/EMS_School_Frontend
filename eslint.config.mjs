@@ -7,25 +7,28 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
 
-  // Custom rules
+  // TypeScript-specific rules
   {
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
+      // ❌ disable base rule (IMPORTANT)
+      'no-unused-vars': 'off',
+
+      // ✅ use TS-safe rule
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
+
       // allow console logs
       'no-console': 'off',
 
-      // warn for unused variables
-      'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' }, // ignore args starting with _
-      ],
-
-      // warn for debugger statements
+      // warn for debugger
       'no-debugger': 'warn',
     },
   },
 
-  // Ignore these files/folders globally
+  // Ignore folders & type-only files
   globalIgnores([
     '.next/**',
     'out/**',
@@ -33,6 +36,11 @@ const eslintConfig = defineConfig([
     'dist/**',
     'node_modules/**',
     'next-env.d.ts',
+
+    // ✅ prevent ESLint 9 crash
+    'src/types/**',
+    '**/*.interface.ts',
+    '**/*.type.ts',
   ]),
 ]);
 

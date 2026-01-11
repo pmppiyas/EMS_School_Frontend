@@ -1,12 +1,10 @@
 import Header from '@/app/components/shared/Header';
-import notice from '@/assets/notice.png';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const NoticeBoard = () => {

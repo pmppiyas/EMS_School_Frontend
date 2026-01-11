@@ -4,7 +4,6 @@ import { getTeachers } from '@/app/services/teacher/getTeachers';
 import { ITeacher } from '@/types/teacher.interface';
 
 export default async function OurTeacher() {
-
   const { teachers }: { teachers: ITeacher[] } = await getTeachers();
 
   return (
