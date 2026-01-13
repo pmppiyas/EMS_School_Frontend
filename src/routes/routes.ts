@@ -24,6 +24,11 @@ export const adminRoutes: NavItem[] = [
     iconName: 'IconStethoscope',
   },
   {
+    title: 'Classes',
+    href: '/admin/dashboard/class',
+    iconName: 'IconSchool',
+  },
+  {
     title: 'Class Times',
     href: '/admin/dashboard/classtimes',
     iconName: 'IconSchool',

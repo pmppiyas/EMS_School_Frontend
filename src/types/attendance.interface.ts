@@ -18,4 +18,7 @@ export interface IUserAttend {
 export interface IClass {
   id: string;
   name: string;
+  _count?: {
+    students: number;
+  };
 }

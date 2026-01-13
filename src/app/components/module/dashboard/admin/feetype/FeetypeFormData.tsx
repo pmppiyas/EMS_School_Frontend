@@ -81,7 +81,7 @@ const FeeTypeFormDialog = ({
             : undefined,
       };
 
-      console.log(payload);
+
 
       const res = await createFeeType(payload);
 
