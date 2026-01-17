@@ -1,7 +1,7 @@
 import { serverFetch } from '@/lib/serverFetch';
 
-export const getSubjects = async () => {
-  const res = await serverFetch.get('subject');
+export const getSubjects = async (classId: string) => {
+  const res = await serverFetch.get(`subject/${classId}`);
 
   let data;
   try {

@@ -9,9 +9,10 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import { IClass } from '@/types/attendance.interface';
+
 import { getCookie, setCookie } from '@/lib/cookies';
 import { useRouter } from 'next/navigation';
+import { IClass } from '@/types/class.interface';
 
 interface ClassSelectProps {
   withTeacher?: boolean;

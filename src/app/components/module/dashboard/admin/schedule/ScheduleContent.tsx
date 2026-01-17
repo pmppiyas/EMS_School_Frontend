@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import ScheduleHeader from '@/app/components/module/dashboard/admin/schedule/ScheduleHeader';
-import ScheduleOptionSelect from '@/app/components/module/dashboard/admin/schedule/SeheduleModeSelect';
 import ScheduleRoom from '@/app/components/module/dashboard/admin/schedule/ScheduleRoom';
 import { ITeacher } from '@/types/teacher.interface';
 import { IClass } from '@/types/attendance.interface';
@@ -12,6 +11,7 @@ import DaySelector from '@/app/components/shared/DaySelector';
 import ClassSelector from '@/app/components/shared/ClassSelector';
 import ScheduleTable from '@/app/components/module/dashboard/admin/schedule/ScheduleTable';
 import { IScheduleRow } from '@/types/schedule.interface';
+import ModeSelect from '@/app/components/shared/ModeSelect';
 
 interface IScheduleContentProps {
   schedules: IScheduleRow[];
@@ -43,7 +43,7 @@ const ScheduleContent = ({
             )}
           </div>
         }
-        selectOption={<ScheduleOptionSelect mode={mode} onChange={setMode} />}
+        selectOption={<ModeSelect mode={mode} onChange={setMode} />}
       />
 
       {mode === 'view' && <ScheduleTable data={schedules} />}
@@ -57,8 +57,6 @@ const ScheduleContent = ({
           subjects={subjects}
           classTimes={classTimes}
         />
-
-
       )}
     </div>
   );

@@ -29,7 +29,7 @@ const page = async ({
 
   return (
     <div>
-      <StudentHeader classes={classes} selectedClassId={classId as string} />
+      <StudentHeader classes={classes} />
 
       <StudentTable students={studentRes.students} classes={classes} />
 

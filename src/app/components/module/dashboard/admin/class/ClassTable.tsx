@@ -1,7 +1,7 @@
 import EmptyComp from '@/app/components/shared/EmptyComp';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
 
 const ClassTable = ({ classes }: { classes: IClass[] }) => {
   return (

@@ -4,9 +4,9 @@ import ManagementPageHeader from '../../ManagementPageHeader';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import StudentFormDialog from './StudentFormDialog';
-import { IClass } from '../../../../../../types/attendance.interface';
 import SearchField from '../../../../shared/SearchField';
 import ClassSelector from '@/app/components/shared/ClassSelector';
+import { IClass } from '@/types/class.interface';
 
 const StudentHeader = ({ classes }: { classes: IClass[] }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

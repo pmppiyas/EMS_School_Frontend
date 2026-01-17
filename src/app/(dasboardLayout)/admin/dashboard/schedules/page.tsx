@@ -8,13 +8,14 @@ import { getSchedulesByDay } from '@/app/services/schedule/get.schedule';
 import { getClasses } from '@/app/services/class/getAllClasses';
 
 const SchedulesPage = async () => {
+  const classId = await getCookie('selectedClassId');
   const { teachers } = await getTeachers();
   const { classes } = await getClasses();
-  const { subjects } = await getSubjects();
+  const { subjects } = await getSubjects(classId as string);
   const { classtimes } = await getAllClassTimes();
   const day = await getCookie('selectedDay');
   const schedules = await getSchedulesByDay(day ? day : 'SUTURDAY');
-  console.log(schedules);
+
   return (
     <ScheduleContent
       schedules={schedules}

@@ -6,4 +6,5 @@ export enum IGender {
 export interface IClass {
   id: string;
   name: string;
+  code?: string;
 }

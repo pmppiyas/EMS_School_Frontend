@@ -29,7 +29,7 @@ export const adminRoutes: NavItem[] = [
   },
   {
     title: 'Subjects',
-    href: '/admin/dashboard/subjects',
+    href: '/admin/dashboard/subject',
     iconName: 'Book',
   },
   {
