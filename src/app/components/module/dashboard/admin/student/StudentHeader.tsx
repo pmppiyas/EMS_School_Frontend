@@ -8,13 +8,7 @@ import { IClass } from '../../../../../../types/attendance.interface';
 import SearchField from '../../../../shared/SearchField';
 import ClassSelector from '@/app/components/shared/ClassSelector';
 
-const StudentHeader = ({
-  classes,
-  selectedClassId,
-}: {
-  classes: IClass[];
-  selectedClassId?: string;
-}) => {
+const StudentHeader = ({ classes }: { classes: IClass[] }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (

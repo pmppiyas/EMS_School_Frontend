@@ -1,89 +1,92 @@
 import { NavItem } from '@/types/types';
 
 export const adminRoutes: NavItem[] = [
-  { title: 'Dashboard', href: '/admin/dashboard', iconName: 'IconBook' },
-  {
-    title: 'Attendance',
-    href: '/admin/dashboard/attendance',
-    iconName: 'IconClock2',
-  },
+  { title: 'Overview', href: '/admin/dashboard', iconName: 'LayoutDashboard' },
   {
     title: 'Teachers',
     href: '/admin/dashboard/teachers',
-    iconName: 'IconClipboardDataFilled',
+    iconName: 'Users',
   },
   {
     title: 'Students',
     href: '/admin/dashboard/students',
-    iconName: 'IconClock2',
+    iconName: 'GraduationCap',
   },
-
   {
-    title: 'Schedules',
-    href: '/admin/dashboard/schedules',
-    iconName: 'IconStethoscope',
+    title: 'Attendance',
+    href: '/admin/dashboard/attendance',
+    iconName: 'UserCheck',
   },
   {
     title: 'Classes',
     href: '/admin/dashboard/class',
-    iconName: 'IconSchool',
+    iconName: 'School',
   },
   {
     title: 'Class Times',
     href: '/admin/dashboard/classtimes',
-    iconName: 'IconSchool',
+    iconName: 'Clock',
+  },
+  {
+    title: 'Subjects',
+    href: '/admin/dashboard/subjects',
+    iconName: 'Book',
+  },
+  {
+    title: 'Schedules',
+    href: '/admin/dashboard/schedules',
+    iconName: 'CalendarDays',
   },
   {
     title: 'Payments',
     href: '/admin/dashboard/payments',
-    iconName: 'IconStethoscope',
+    iconName: 'WalletCards',
   },
   {
     title: 'Fee Type',
     href: '/admin/dashboard/feetype',
-    iconName: 'IconStethoscope',
+    iconName: 'ReceiptText',
   },
 ];
 
 export const teacherRoutes: NavItem[] = [
-  { title: 'Dashboard', href: '/teacher/dashboard', iconName: 'IconBook' },
   {
-    title: 'Attendance',
-    href: '/teacher/dashboard/attendance',
-    iconName: 'IconClock2',
+    title: 'Dashboard',
+    href: '/teacher/dashboard',
+    iconName: 'LayoutDashboard',
   },
   {
     title: 'Diary',
     href: '/teacher/dashboard/diary',
-    iconName: 'IconStethoscope',
+    iconName: 'BookOpenCheck',
+  },
+  {
+    title: 'Attendance',
+    href: '/teacher/dashboard/attendance',
+    iconName: 'UserCheck',
   },
   {
     title: 'Schedules',
     href: '/teacher/dashboard/schedules',
-    iconName: 'IconStethoscope',
-  },
-  {
-    title: 'Students',
-    href: '/teacher/dashboard/students',
-    iconName: 'IconClock2',
+    iconName: 'CalendarDays',
   },
 ];
 
 export const studentRoutes: NavItem[] = [
-  { title: 'Dashboard', href: '/dashboard', iconName: 'IconDashboard' },
+  { title: 'Dashboard', href: '/dashboard', iconName: 'LayoutDashboard' },
   {
-    title: 'diary',
+    title: 'Diary',
     href: '/dashboard/diary',
-    iconName: 'IconVocabulary',
+    iconName: 'BookOpen',
   },
 ];
 
 export const commonRoutes: NavItem[] = [
-  { title: 'Setting', href: '/setting', iconName: 'IconSettings2' },
+  { title: 'Setting', href: '/setting', iconName: 'Settings' },
   {
     title: 'Helpline',
     href: '/dashboard/helpline',
-    iconName: 'IconPhoneCall',
+    iconName: 'PhoneCall',
   },
 ];
 
@@ -93,7 +96,7 @@ export const getRoutesByRole = (role: string): NavItem[] => {
       return adminRoutes;
     case 'TEACHER':
       return teacherRoutes;
-    case 'PATIENT':
+    case 'STUDENT':
       return studentRoutes;
     default:
       return [];
