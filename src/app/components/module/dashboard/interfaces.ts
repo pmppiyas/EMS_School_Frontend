@@ -8,13 +8,13 @@ export interface IAction {
   href?: string;
 }
 
-// Breadcrumb interface
+
 export interface IBreadcrumbItem {
   label: string;
   href?: string;
 }
 
-// Management Page Header Props
+
 export interface IManagementPageHeaderProps {
   title: string;
   description?: string;

@@ -14,7 +14,7 @@ const SchedulesPage = async () => {
   const { classtimes } = await getAllClassTimes();
   const day = await getCookie('selectedDay');
   const schedules = await getSchedulesByDay(day ? day : 'SUTURDAY');
-
+  console.log(schedules);
   return (
     <ScheduleContent
       schedules={schedules}

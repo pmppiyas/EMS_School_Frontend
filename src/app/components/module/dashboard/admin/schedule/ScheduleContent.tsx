@@ -57,6 +57,8 @@ const ScheduleContent = ({
           subjects={subjects}
           classTimes={classTimes}
         />
+
+
       )}
     </div>
   );

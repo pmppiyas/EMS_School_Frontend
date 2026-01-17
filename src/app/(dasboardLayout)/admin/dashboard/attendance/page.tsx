@@ -6,8 +6,6 @@ import { getAllStudents } from '@/app/services/student/getAllStudents';
 import { getTeachers } from '@/app/services/teacher/getTeachers';
 import { getCookie } from '@/lib/cookies';
 
-export const dynamic = 'force-dynamic';
-
 const page = async () => {
   const { classes } = await getClasses();
   const classId = await getCookie('selectedClassId');
