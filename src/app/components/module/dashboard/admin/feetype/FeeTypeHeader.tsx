@@ -5,7 +5,7 @@ import FeeTypeFormDialog from './FeetypeFormData';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
 
 const FeeTypeHeader = ({ classes }: { classes: IClass[] }) => {
   const router = useRouter();

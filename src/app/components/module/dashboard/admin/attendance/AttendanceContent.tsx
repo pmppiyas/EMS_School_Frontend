@@ -7,7 +7,7 @@ import MarkAttendance from '@/app/components/module/dashboard/admin/attendance/M
 import MonthlyAttendanceTable from '@/app/components/module/dashboard/admin/attendance/MonthlyAttendanceTable';
 import TodayAttends from '@/app/components/module/dashboard/teacher/attendance/TodayAttends';
 import ClassSelector from '@/app/components/shared/ClassSelector';
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
 import { useState } from 'react';
 
 const AttendanceContent = ({

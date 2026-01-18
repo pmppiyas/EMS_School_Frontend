@@ -39,8 +39,8 @@ const ClassSelector = ({
         setSelectedClass(activeValue as string);
       } else if (classes.length > 0) {
         const defaultId = classes[0].id;
-        setSelectedClass(defaultId);
-        await setCookie(cookieName, defaultId);
+        setSelectedClass(defaultId as string);
+        await setCookie(cookieName, defaultId as string);
       }
     };
 
@@ -78,7 +78,7 @@ const ClassSelector = ({
           </SelectItem>
         )}
         {classes.map((c) => (
-          <SelectItem key={c.id} value={c.id}>
+          <SelectItem key={c.id} value={c.id as string}>
             {c.name}
           </SelectItem>
         ))}

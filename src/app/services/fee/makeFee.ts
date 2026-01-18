@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { serverFetch } from '@/lib/serverFetch';
 
 export const makeFee = async (payload: any) => {

@@ -1,4 +1,5 @@
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
+
 
 export interface IFeeType {
   id: string;

@@ -1,6 +1,6 @@
 import { getClasses } from '@/app/services/class/getAllClasses';
-import { IClass } from '../../../../../types/attendance.interface';
 import AttendanceTable from '../../../../components/module/dashboard/teacher/attendance/AttendanceTable';
+import { IClass } from '@/types/class.interface';
 
 export const dynamic = 'force-dynamic';
 

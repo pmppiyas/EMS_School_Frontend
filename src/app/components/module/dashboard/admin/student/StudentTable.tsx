@@ -8,11 +8,11 @@ import { toast } from 'sonner';
 import { IStudent } from '@/types/student.interface';
 import ManagementTable from '@/app/components/module/dashboard/ManagementTable';
 import StudentFormDialog from './StudentFormDialog';
-import { IClass } from '../../../../../../types/attendance.interface';
 import StudentColumns from './StudentColumns';
 import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
 import { deleteStudent } from '../../../../../services/student/deleteStudent';
 import { setCookie } from '@/lib/cookies';
+import { IClass } from '@/types/class.interface';
 
 const StudentTable = ({
   students,

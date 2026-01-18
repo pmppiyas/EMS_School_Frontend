@@ -31,8 +31,8 @@ import {
   feeTypeSchema,
   FeeTypeFormDialogProps,
 } from '@/zod/fee.validation';
-import { IClass } from '@/types/attendance.interface';
 import { createFeeType } from '@/app/services/fee/addFeeType';
+import { IClass } from '@/types/class.interface';
 
 const FeeTypeFormDialog = ({
   open,
@@ -62,7 +62,6 @@ const FeeTypeFormDialog = ({
 
   const category = watch('category');
 
-  // Clear classId when category is not MONTHLY or TUITION
   useEffect(() => {
     if (category !== 'MONTHLY' && category !== 'TUITION') {
       setValue('classId', undefined);
@@ -80,8 +79,6 @@ const FeeTypeFormDialog = ({
             ? data.classId
             : undefined,
       };
-
-
 
       const res = await createFeeType(payload);
 
@@ -146,7 +143,6 @@ const FeeTypeFormDialog = ({
               )}
             </Field>
 
-            {/* Class (ONLY when MONTHLY or TUITION) */}
             {(category === 'MONTHLY' || category === 'TUITION') && (
               <Field>
                 <FieldLabel>Class</FieldLabel>
@@ -160,7 +156,7 @@ const FeeTypeFormDialog = ({
                       </SelectTrigger>
                       <SelectContent>
                         {classes.map((cls: IClass) => (
-                          <SelectItem key={cls.id} value={cls.id}>
+                          <SelectItem key={cls.id} value={cls.id as string}>
                             {cls.name}
                           </SelectItem>
                         ))}

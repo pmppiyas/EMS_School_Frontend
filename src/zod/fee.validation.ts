@@ -1,5 +1,5 @@
 import { FeeCategories } from '@/constant';
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
 import { IFeeType } from '@/types/fee.interface';
 import { z } from 'zod';
 

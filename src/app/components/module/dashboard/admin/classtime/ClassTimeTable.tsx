@@ -12,6 +12,7 @@ import ClassTimeFormDialog, {
 } from './ClassTimeFormDiolog';
 
 import { IClassTimeTableComponentProps } from '../../../../../../types/classTime.interface';
+import EditClassTimeDialog from '@/app/components/module/dashboard/admin/classtime/EditClassTimeDialog';
 
 const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
   const router = useRouter();
@@ -86,15 +87,15 @@ const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
       />
 
       {/* EDIT MODAL */}
-      {/* <EditClassTimeDialog
+      <EditClassTimeDialog
         open={!!editingClassTime}
-        classTime={editingClassTime! }
+        classTime={editingClassTime!}
         onClose={() => setEditingClassTime(null)}
         onSuccess={() => {
           setEditingClassTime(null);
           handleRefresh();
         }}
-      /> */}
+      />
 
       {/* DELETE MODAL */}
       <DeleteConfirmationDialog

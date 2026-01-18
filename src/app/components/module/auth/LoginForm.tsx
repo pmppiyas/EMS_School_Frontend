@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { loginSchema } from '@/app/components/module/auth/schema';
 import { loginUser } from '@/app/services/auth/login';
@@ -14,20 +14,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from "next/link";
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginForm = ({ redirect }: { redirect: string }) => {
-
-
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -36,29 +34,28 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
     resolver: zodResolver(loginSchema),
   });
 
-
   const onSubmit = async (data: LoginFormData) => {
     try {
       setLoading(true);
-      const login = await loginUser(data)
+      const login = await loginUser(data);
       if (login.success) {
-        router.push(redirect)
+        router.push(redirect);
         if (redirect) {
-          router.push(redirect)
+          router.push(redirect);
         } else {
-          router.push("/")
+          router.push('/');
         }
-        toast.success(login.message)
+        toast.success(login.message);
       } else {
-        toast.error(login.message)
+        toast.error(login.message);
       }
     } catch (err) {
-      toast.error("Login failed")
-      console.log(err)
+      toast.error('Login failed');
+      console.log(err);
     } finally {
       setTimeout(() => setLoading(false), 1000);
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-sm shadow-md mt-16">
@@ -67,18 +64,20 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
         <CardDescription>
           Enter your email below to login to your account
         </CardDescription>
-
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-6 "
+        >
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="m@example.com"
-              {...register("email")}
+              {...register('email')}
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -95,15 +94,17 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
                 Forgot your password?
               </a>
             </div>
-            <Input id="password" type="password" {...register("password")} />
+            <Input id="password" type="password" {...register('password')} />
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </Button>
+          <div className="flex justify-center">
+            <Button type="submit" className="w-full px-20" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </Button>
+          </div>
         </form>
       </CardContent>
 
@@ -113,9 +114,12 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
         </Button>
 
         <div>
-          <h5>Have no account?    <Button variant="link" className="p-0 self-start">
-            <Link href="/signup">Sign Up</Link>
-          </Button></h5>
+          <h5>
+            Have no account?{' '}
+            <Button variant="link" className="p-0 self-start">
+              <Link href="/signup">Sign Up</Link>
+            </Button>
+          </h5>
         </div>
       </CardFooter>
     </Card>

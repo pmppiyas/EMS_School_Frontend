@@ -24,7 +24,7 @@ export const getAllStudents = async (
 
     const response = await serverFetch.get(`student${queryString}`, {
       next: {
-        revalidate: 30,
+        tags: ['students'],
       },
     });
     const result = await response.json();

@@ -1,5 +1,5 @@
 export interface IClass {
-  id: string;
+  id?: string;
   name: string;
   _count?: {
     students: number;

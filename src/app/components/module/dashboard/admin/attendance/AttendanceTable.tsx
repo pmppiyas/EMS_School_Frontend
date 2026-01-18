@@ -2,12 +2,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MarkAttendance from './MarkAttendance';
 import { getAllStudents } from '../../../../../services/student/getAllStudents';
 import { getTeachers } from '../../../../../services/teacher/getTeachers';
-import { IClass } from '../../../../../../types/attendance.interface';
 import { getTeacherAttendance } from '../../../../../services/attendance/getTeacherAttendance';
 import { getStudentAttendance } from '../../../../../services/attendance/getStudentAttendance';
 import TodayAttends from './TodayAttends';
 import AllAttends from './AllAttends';
 import ClassSelector from '@/app/components/shared/ClassSelector';
+import { IClass } from '@/types/class.interface';
 
 const AttendanceTable = async ({
   selectedClassId,

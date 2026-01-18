@@ -18,16 +18,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-
-import { IClass } from '@/types/attendance.interface';
 import { IStudent } from '@/types/student.interface';
 import { IFeeType } from '@/types/fee.interface';
-
 import ClassSelector from '@/app/components/shared/ClassSelector';
 import { setPaysClassId } from '@/app/services/fee/setPaysClassIs';
 import { makeFee } from '@/app/services/fee/makeFee';
 import { MONTHS } from '@/constant';
 import PaymentSlip from '@/app/components/module/dashboard/admin/payment/PaymentSlip';
+import { IClass } from '@/types/class.interface';
 
 const CURRENT_MONTH = MONTHS[new Date().getMonth()];
 const CURRENT_YEAR = new Date().getFullYear();

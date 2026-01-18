@@ -3,7 +3,7 @@ import CreatePayment from '@/app/components/module/dashboard/admin/payment/Creat
 import PaymentHeader from '@/app/components/module/dashboard/admin/payment/PaymentHeader';
 import PaymentModeSelect from '@/app/components/module/dashboard/admin/payment/PaymentModeSelect';
 import ViewPayment from '@/app/components/module/dashboard/admin/payment/ViewPayment';
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
 import { IFee, IFeeType } from '@/types/fee.interface';
 import { IStudent } from '@/types/student.interface';
 import { useState } from 'react';

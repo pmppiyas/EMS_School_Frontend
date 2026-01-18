@@ -1,7 +1,7 @@
 import ManagementPageHeader from '@/app/components/module/dashboard/ManagementPageHeader';
 import ClassSelector from '@/app/components/shared/ClassSelector';
 import { DateSelector } from '@/app/components/shared/DateSelector';
-import { IClass } from '@/types/attendance.interface';
+import { IClass } from '@/types/class.interface';
 
 const DiaryHeader = ({ classes }: { classes: IClass[] }) => {
   return (
