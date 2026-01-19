@@ -1,11 +1,9 @@
 import { getCookie } from '@/lib/cookies';
 import StudentHeader from '../../../../components/module/dashboard/admin/student/StudentHeader';
-import StudentTable from '../../../../components/module/dashboard/admin/student/StudentTable';
-import Pagination from '../../../../components/shared/Pagination';
 import { getClasses } from '../../../../services/class/getAllClasses';
-import { getAllStudents } from '../../../../services/student/getAllStudents';
-
-export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
+import { TableSkeleton } from '@/app/components/shared/TableSkeleton';
+import StudentTableWrapper from '@/app/components/module/dashboard/admin/student/StudentTableWrapper';
 
 const page = async ({
   searchParams,
@@ -13,27 +11,35 @@ const page = async ({
   searchParams: Promise<{
     searchTerm?: string;
     page?: string;
+    classId?: string;
   }>;
 }) => {
   const params = await searchParams;
-  const searchTerm = params.searchTerm;
-  const currentPage = await getCookie('studentPage');
-  const classId = await getCookie('selectedClassId');
+  const searchTerm = params.searchTerm || '';
 
-  const studentRes = await getAllStudents(
-    classId as string,
-    searchTerm,
-    Number(currentPage)
-  );
+  const cookieClassId = await getCookie('selectedClassId');
+  const classId = params.classId || (cookieClassId as string) || '';
+
+  const cookiePage = await getCookie('studentPage');
+  const currentPage = Number(params.page || cookiePage || 1);
+
   const { classes } = await getClasses();
 
   return (
-    <div>
+    <div className="space-y-6">
       <StudentHeader classes={classes} />
 
-      <StudentTable students={studentRes.students} classes={classes} />
-
-      <Pagination total={studentRes.meta.total} limit={studentRes.meta.limit} />
+      <Suspense
+        key={classId + searchTerm + currentPage}
+        fallback={<TableSkeleton columnCount={7} rowCount={7} />}
+      >
+        <StudentTableWrapper
+          classId={classId}
+          searchTerm={searchTerm}
+          currentPage={currentPage}
+          classes={classes}
+        />
+      </Suspense>
     </div>
   );
 };

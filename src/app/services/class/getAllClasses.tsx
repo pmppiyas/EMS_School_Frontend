@@ -2,7 +2,11 @@ import { serverFetch } from '@/lib/serverFetch';
 
 export const getClasses = async () => {
   try {
-    const res = await serverFetch.get('class');
+    const res = await serverFetch.get('class', {
+      next: {
+        tags: ['class']
+      }
+    });
 
     if (!res.ok) {
       console.error('Failed to fetch classes:', res.status);

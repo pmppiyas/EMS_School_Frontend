@@ -32,7 +32,6 @@ interface IManagementTableProps<T> {
   onDelete?: (row: T) => void;
   getRowKey: (row: T) => string;
   emptyMessage?: string;
-  isRefreshing?: boolean;
   isAdmin?: boolean;
 }
 
@@ -43,22 +42,23 @@ function ManagementTable<T>({
   onEdit,
   onDelete,
   getRowKey,
-  isRefreshing = false,
   isAdmin = false,
 }: IManagementTableProps<T>) {
+  if (data.length === 0) {
+    return (
+      <div className="w-full flex items-center justify-center border rounded-md max-w-7xl mx-auto">
+        <EmptyComp refreshButton={<RefreshButton />} />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full min-h-[300px] overflow-x-scroll border rounded-md max-w-7xl mx-auto px-2">
-      {isRefreshing && (
-        <div>
-          <h2>Loading</h2>
-        </div>
-      )}
-
       <Table>
         <TableHeader>
           <TableRow className="text-center">
             {columns.map((column, colIdx) => (
-              <TableHead key={colIdx} className="text-center">
+              <TableHead key={colIdx} className="text-center whitespace-nowrap">
                 {column.header}
               </TableHead>
             ))}
@@ -69,78 +69,68 @@ function ManagementTable<T>({
         </TableHeader>
 
         <TableBody>
-          {data.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={columns.length + 1}>
-                <div>
-                  <EmptyComp refreshButton={<RefreshButton />} />
-                </div>
-              </TableCell>
-            </TableRow>
-          ) : (
-            data.map((item) => (
-              <TableRow key={getRowKey(item)} className="text-center">
-                {columns.map((col, idx) => (
-                  <TableCell
-                    key={idx}
-                    className={`text-center ${col.className || ''}`}
-                  >
-                    {typeof col.accessor === 'function'
-                      ? col.accessor(item)
-                      : String(item[col.accessor])}
-                  </TableCell>
-                ))}
+          {data.map((item) => (
+            <TableRow key={getRowKey(item)} className="text-center">
+              {columns.map((col, idx) => (
+                <TableCell
+                  key={idx}
+                  className={`text-center ${col.className || ''}`}
+                >
+                  {typeof col.accessor === 'function'
+                    ? col.accessor(item)
+                    : String(item[col.accessor])}
+                </TableCell>
+              ))}
 
-                {(isAdmin || onView) && (
-                  <TableCell className="text-center">
-                    {isAdmin ? (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          {onView && (
-                            <DropdownMenuItem onClick={() => onView(item)}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View
-                            </DropdownMenuItem>
-                          )}
-                          {onEdit && (
-                            <DropdownMenuItem onClick={() => onEdit(item)}>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                          )}
-                          {onDelete && (
-                            <DropdownMenuItem
-                              onClick={() => onDelete(item)}
-                              className="text-destructive"
-                            >
-                              <Trash className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ) : (
-                      onView && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => onView(item)}
-                        >
-                          <Eye className="mr-1 h-4 w-4" />
-                          View
+              {(isAdmin || onView) && (
+                <TableCell className="text-center">
+                  {isAdmin ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreHorizontal className="h-4 w-4" />
                         </Button>
-                      )
-                    )}
-                  </TableCell>
-                )}
-              </TableRow>
-            ))
-          )}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {onView && (
+                          <DropdownMenuItem onClick={() => onView(item)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View
+                          </DropdownMenuItem>
+                        )}
+                        {onEdit && (
+                          <DropdownMenuItem onClick={() => onEdit(item)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                        )}
+                        {onDelete && (
+                          <DropdownMenuItem
+                            onClick={() => onDelete(item)}
+                            className="text-destructive"
+                          >
+                            <Trash className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    onView && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onView(item)}
+                      >
+                        <Eye className="mr-1 h-4 w-4" />
+                        View
+                      </Button>
+                    )
+                  )}
+                </TableCell>
+              )}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
