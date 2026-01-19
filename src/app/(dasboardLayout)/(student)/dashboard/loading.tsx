@@ -1,3 +1,5 @@
+import React from 'react';
+
 const loading = () => {
   return (
     <div className="h-[500px] flex items-center justify-center">

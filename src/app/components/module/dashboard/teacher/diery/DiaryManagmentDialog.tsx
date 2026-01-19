@@ -16,7 +16,8 @@ import { Textarea } from '@/components/ui/textarea';
 import FieldError from '@/app/components/shared/FieldError';
 import { IDiarySlot } from '@/types/diary.interface';
 import { saveDiary } from '@/app/services/diary/saveDiary';
-import { editDiary } from '@/app/services/diary/editDiary'; // editDiary ইমপোর্ট করুন
+import { editDiary } from '@/app/services/diary/editDiary';
+import { handleDiaryRevalidation } from '@/app/services/diary/revalidDiaryTag';
 
 interface IDiaryManagementDialogProps {
   open: boolean;
@@ -46,7 +47,7 @@ const DiaryManagementDialog = ({
     e.preventDefault();
     setLoading(true);
     setApiErrors(null);
-
+    console.log('Selected Slot=>', selectedSlot);
     const formData = new FormData(e.currentTarget);
     const note = formData.get('note') as string;
 
@@ -69,6 +70,7 @@ const DiaryManagementDialog = ({
       }
 
       if (response.success) {
+        await handleDiaryRevalidation();
         toast.success(
           response.message || (isEdit ? 'Diary updated' : 'Diary saved')
         );
@@ -109,17 +111,6 @@ const DiaryManagementDialog = ({
               />
               <FieldError errors={apiErrors} field="note" />
             </Field>
-
-            {/* <Field>
-              <FieldLabel>Additional Comment (Internal)</FieldLabel>
-              <Textarea
-                name="comment"
-                defaultValue={selectedSlot?.comment || ''}
-                placeholder="Any specific observations or issues..."
-                className="min-h[50px]"
-              />
-              <FieldError errors={apiErrors} field="comment" />
-            </Field> */}
           </div>
 
           <div className="flex justify-end gap-3 mt-6">

@@ -1,16 +1,16 @@
-"use server";
+'use server';
 
-import { IRole } from "@/types/types";
+import { IRole } from '@/types/types';
 
 type RouteConfig = {
   exact: string[];
   patterns: RegExp[];
 };
 
-const authRoutes = ["/login", "/signup", "/forget_password", "/reset_password"];
+const authRoutes = ['/login', '/signup', '/forget_password', '/reset_password'];
 
 const commonProtectedRoutes: RouteConfig = {
-  exact: ["/my_profile", "/sitting"],
+  exact: ['/my_profile', '/sitting'],
   patterns: [],
 };
 
@@ -44,11 +44,11 @@ const isRouteMatches = (pathname: string, routes: RouteConfig): boolean => {
 
 export const getRouteOwner = (
   pathname: string
-): "ADMIN" | "TEACHER" | "STUDENT" | "COMMON" | null => {
-  if (isRouteMatches(pathname, adminProtectedRoutes)) return "ADMIN";
-  if (isRouteMatches(pathname, teacherProtectedRoutes)) return "TEACHER";
-  if (isRouteMatches(pathname, studentProtectedRoutes)) return "STUDENT";
-  if (isRouteMatches(pathname, commonProtectedRoutes)) return "COMMON";
+): 'ADMIN' | 'TEACHER' | 'STUDENT' | 'COMMON' | null => {
+  if (isRouteMatches(pathname, adminProtectedRoutes)) return 'ADMIN';
+  if (isRouteMatches(pathname, teacherProtectedRoutes)) return 'TEACHER';
+  if (isRouteMatches(pathname, studentProtectedRoutes)) return 'STUDENT';
+  if (isRouteMatches(pathname, commonProtectedRoutes)) return 'COMMON';
   return null;
 };
 
@@ -56,13 +56,13 @@ export const getRouteOwner = (
 
 export const getDefaultDashboardRoutes = (role: IRole): string => {
   switch (role) {
-    case "ADMIN":
-      return "/admin/dashboard";
-    case "TEACHER":
-      return "/teacher/dashboard";
-    case "STUDENT":
-      return "/student/dashboard";
+    case 'ADMIN':
+      return '/admin/dashboard';
+    case 'TEACHER':
+      return '/teacher/dashboard';
+    case 'STUDENT':
+      return '/dashboard';
     default:
-      return "/";
+      return '/';
   }
 };

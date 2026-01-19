@@ -6,7 +6,9 @@ export const getDiaries = async (classId: string, date?: string) => {
   const query = date ? `?date=${date}` : '';
 
   const res = await serverFetch.get(`diary/${classId}${query}`, {
-    cache: 'no-store',
+    next: {
+      tags: ['diary'],
+    },
   });
 
   if (!res.ok) return { data: [] };
