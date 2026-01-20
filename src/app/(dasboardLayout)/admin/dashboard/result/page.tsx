@@ -1,10 +1,10 @@
 import ResultHeader from '@/app/components/module/dashboard/admin/result/ResultHeader';
-import ResultUploadPreview from '@/app/components/module/dashboard/admin/result/ResultUploadPreview';
 import ResultUploadPage from '@/app/components/module/dashboard/admin/result/UploadExcelResult';
 import ViewResult from '@/app/components/module/dashboard/admin/result/ViewResult';
 import ClassSelector from '@/app/components/shared/ClassSelector';
 import TabSelector from '@/app/components/shared/TabSelector';
 import { getClasses } from '@/app/services/class/getAllClasses';
+import { getResults } from '@/app/services/result/getAllResults';
 import { getAllStudents } from '@/app/services/student/getAllStudents';
 import { getSubjects } from '@/app/services/subject/getSubjects';
 
@@ -23,6 +23,9 @@ const page = async ({
   const { classes } = await getClasses();
   const { subjects } = await getSubjects(classId);
   const { students } = await getAllStudents(classId);
+
+  const results = await getResults(classId);
+
   const resultTabs = [
     { label: 'View Results', value: 'view' },
     { label: 'Upload Excel', value: 'upload' },
@@ -39,7 +42,7 @@ const page = async ({
         {tab === 'upload' && (
           <ResultUploadPage subjects={subjects} students={students} />
         )}
-        {tab === 'view' && <ViewResult />}
+        {tab === 'view' && <ViewResult results={results} />}
       </div>
     </div>
   );

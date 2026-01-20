@@ -47,6 +47,11 @@ export const adminRoutes: NavItem[] = [
     href: '/admin/dashboard/feetype',
     iconName: 'ReceiptText',
   },
+  {
+    title: 'Results',
+    href: '/admin/dashboard/result',
+    iconName: 'ReceiptText',
+  },
 ];
 
 export const teacherRoutes: NavItem[] = [
