@@ -114,10 +114,10 @@ const ResultUploadPage = ({
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-6 bg-background rounded-2xl shadow-sm border text-gray-800">
+    <div className="p-6 max-w-6xl mx-auto space-y-6 bg-background rounded-2xl shadow-sm border text-foreground">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-b pb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl font-bold text-foreground">
             Class-wide Result Upload
           </h1>
           <p className="text-sm text-gray-500 font-medium">
@@ -164,8 +164,8 @@ const ResultUploadPage = ({
         </div>
       ) : (
         <div className="border rounded-xl overflow-hidden shadow-lg">
-          <div className="p-4 bg-indigo-50 border-b flex justify-between items-center">
-            <span className="flex items-center gap-2 font-bold text-indigo-800">
+          <div className="p-4 bg-background border-b flex justify-between items-center">
+            <span className="flex items-center gap-2 font-bold text-primary">
               <FileSpreadsheet size={20} className="text-indigo-600" />{' '}
               {file.name}
             </span>
@@ -203,7 +203,7 @@ const ResultUploadPage = ({
               <tbody className="divide-y">
                 {previewData.map((row, idx) => (
                   <tr key={idx} className="hover:bg-blue-50/30">
-                    <td className="p-4 font-mono text-xs text-gray-400">
+                    <td className="p-4 font-mono text-xs text-muted-foreground">
                       {row['Student ID']}
                     </td>
                     <td className="p-4 font-bold text-gray-700">
@@ -212,7 +212,7 @@ const ResultUploadPage = ({
                     {subjects.map((sub) => (
                       <td
                         key={sub.id}
-                        className="p-4 border-l text-center text-indigo-600 font-extrabold text-base"
+                        className="p-4 border-l text-center text-primary font-extrabold text-base"
                       >
                         {row[sub.name] !== undefined ? row[sub.name] : '-'}
                       </td>
@@ -223,14 +223,14 @@ const ResultUploadPage = ({
             </table>
           </div>
 
-          <div className="p-5 bg-gray-50 border-t flex justify-end items-center gap-4">
-            <span className="text-xs text-gray-500 italic">
+          <div className="p-5 bg-background order-t flex justify-end items-center gap-4">
+            <span className="text-xs text-muted-foreground italic">
               মোট {previewData.length} জন শিক্ষার্থীর ডাটা
             </span>
             <button
               onClick={handleUploadSubmit}
               disabled={loading}
-              className="bg-indigo-600 text-white px-10 py-3 rounded-lg font-bold shadow-lg hover:bg-indigo-700 transition disabled:opacity-50"
+              className="bg-primary text-background px-10 py-3 rounded-lg font-bold shadow-lg hover:bg-primary/90 transition disabled:opacity-50"
             >
               {loading ? 'প্রসেসিং হচ্ছে...' : 'সব নম্বর সেভ করুন'}
             </button>

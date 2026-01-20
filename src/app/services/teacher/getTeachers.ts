@@ -10,6 +10,7 @@ export const getTeachers = async () => {
   let data;
   try {
     data = await res.json();
+    console.log(data);
   } catch (err) {
     console.error('JSON parse error:', err);
     return null;

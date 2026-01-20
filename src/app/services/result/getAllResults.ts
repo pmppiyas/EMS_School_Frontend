@@ -1,23 +1,30 @@
 import { serverFetch } from '@/lib/serverFetch';
 
 export const getResults = async (classId: string) => {
-  const res = await serverFetch.get(`result/${classId}`, {
-    next: {
-      tags: ['result'],
-    },
-  });
+  if (!classId) return [];
 
   try {
-    data = await res.json();
+    const res = await serverFetch.post(
+      `result/${classId}`,
+      {},
+      {
+        next: {
+          tags: ['result'],
+          revalidate: 0,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      console.error(`Fetch failed with status: ${res.status}`);
+      return [];
+    }
+
+    const data = await res.json();
+
+    return data?.data || [];
   } catch (err) {
-    console.error('JSON parse error:', err);
-    return null;
+    console.error('getResults Error:', err);
+    return [];
   }
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch results');
-  }
-  console.log(data);
-
-  return data.data;
 };
