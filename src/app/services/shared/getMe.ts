@@ -2,7 +2,9 @@ import { serverFetch } from '@/lib/serverFetch';
 
 export const getMe = async () => {
   const res = await serverFetch.get('user/me', {
-    cache: 'no-store',
+    next: {
+      tags: ['user'],
+    },
   });
 
   if (!res.ok) {
