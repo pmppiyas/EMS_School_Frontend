@@ -5,18 +5,18 @@ import dayjs from 'dayjs';
 
 const STATUS_COLOR: Record<string, string> = {
   PRESENT: 'bg-green-500',
-  LATE: 'bg-yellow-400',
-  LEAVE: 'bg-red-500',
+  LATE: 'bg-yellow-500',
+  LEAVE: 'bg-blue-500',
   ABSENT: 'bg-gray-200',
 };
 
 const MonthlyAttendanceTable = ({
-  data,
+  attendance,
   isTeacherMode,
   month = dayjs().month(),
   year = dayjs().year(),
 }: {
-  data: any[];
+  attendance: any;
   isTeacherMode: boolean;
   month?: number;
   year?: number;
@@ -24,10 +24,33 @@ const MonthlyAttendanceTable = ({
   const startOfMonth = dayjs(new Date(year, month, 1));
   const daysInMonth = startOfMonth.daysInMonth();
 
+  const reports = [
+    ...(attendance?.present?.list ?? []),
+    ...(attendance?.late?.list ?? []),
+    ...(attendance?.absent?.list ?? []),
+    ...(attendance?.leave?.list ?? []),
+  ];
+
+  const studentMap = new Map<string, any>();
+
+  reports.forEach((item) => {
+    if (!studentMap.has(item.userId)) {
+      studentMap.set(item.userId, {
+        userId: item.userId,
+        name: item.name,
+        roll: item.roll,
+        attendances: [],
+      });
+    }
+
+    studentMap.get(item.userId).attendances.push(item);
+  });
+
+  const students = Array.from(studentMap.values());
+
   return (
     <div className="overflow-x-auto border rounded-xl">
       <table className="w-full border-collapse">
-        {/* ===== HEADER ===== */}
         <thead className="bg-muted sticky top-0 z-10">
           <tr>
             {!isTeacherMode && (
@@ -46,27 +69,27 @@ const MonthlyAttendanceTable = ({
         </thead>
 
         <tbody>
-          {data.map((person) => {
-            const attendanceMap: Record<string, string> = {};
+          {students.map((student) => {
+            const attendanceMap: Record<number, string> = {};
 
-            person?.user?.attendances?.forEach((att: any) => {
-              const dayKey = dayjs(att.createdAt).date();
-              attendanceMap[dayKey] = att.status;
+            student.attendances.forEach((att: any) => {
+              const day = dayjs(att.createdAt).date();
+              attendanceMap[day] = att.status;
             });
 
             return (
-              <tr key={person.id} className="border-t">
+              <tr key={student.userId} className="border-t">
                 {!isTeacherMode && (
-                  <td className="px-3 py-2 text-sm">{person.roll ?? '-'}</td>
+                  <td className="px-3 py-2 text-sm">{student.roll ?? '-'}</td>
                 )}
 
-                <td className=" py-2 text-sm font-medium whitespace-nowrap">
-                  {person.firstName} {person.lastName}
+                <td className="px-3 py-2 text-sm font-medium whitespace-nowrap">
+                  {student.name}
                 </td>
 
                 {Array.from({ length: daysInMonth }).map((_, i) => {
                   const day = i + 1;
-                  const status = attendanceMap[day] || 'ABSENT';
+                  const status = attendanceMap[day] ?? 'ABSENT';
 
                   return (
                     <td key={day} className="px-1 py-2">
@@ -86,7 +109,7 @@ const MonthlyAttendanceTable = ({
       <div className="flex flex-wrap gap-4 p-3 text-xs">
         <Legend label="Present" color="bg-green-500" />
         <Legend label="Late" color="bg-yellow-400" />
-        <Legend label="Leave" color="bg-red-500" />
+        <Legend label="Leave" color="bg-blue-500" />
         <Legend label="Absent" color="bg-gray-200" />
       </div>
     </div>

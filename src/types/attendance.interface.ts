@@ -15,7 +15,3 @@ export interface IUserAttend {
   roll?: number;
 }
 
-export interface IClass {
-  id: string;
-  name: string;
-}

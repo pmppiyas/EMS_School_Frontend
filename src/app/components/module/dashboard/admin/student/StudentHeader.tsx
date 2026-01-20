@@ -4,17 +4,11 @@ import ManagementPageHeader from '../../ManagementPageHeader';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import StudentFormDialog from './StudentFormDialog';
-import { IClass } from '../../../../../../types/attendance.interface';
-import ClassSelector from '../../teacher/attendance/ClassSelector';
 import SearchField from '../../../../shared/SearchField';
+import ClassSelector from '@/app/components/shared/ClassSelector';
+import { IClass } from '@/types/class.interface';
 
-const StudentHeader = ({
-  classes,
-  selectedClassId,
-}: {
-  classes: IClass[];
-  selectedClassId?: string;
-}) => {
+const StudentHeader = ({ classes }: { classes: IClass[] }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -24,13 +18,7 @@ const StudentHeader = ({
         description="Manage students information and details"
         searchField={<SearchField />}
         showSearch={true}
-        classSelector={
-          <ClassSelector
-            key="class-selector"
-            classes={classes}
-            selectedClassId={selectedClassId as string}
-          />
-        }
+        classSelector={<ClassSelector classes={classes} />}
         actions={[
           {
             label: 'Add Student',

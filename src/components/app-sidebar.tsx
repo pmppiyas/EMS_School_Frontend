@@ -6,6 +6,9 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
@@ -29,29 +32,45 @@ export default async function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <div className="flex flex-col  h-full space-y-8">
-          <nav className="mt-3 space-y-1">
-            {routes.map((item) => (
-              <NavLinkClient
-                key={item.href}
-                href={item.href}
-                title={item.title}
-                iconName={item.iconName || ''}
-              />
-            ))}
-          </nav>
+        <SidebarGroup>
+          <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
+            Main Menu
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="px-2 space-y-1">
+              {routes.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <NavLinkClient
+                    href={item.href}
+                    title={item.title}
+                    iconName={item.iconName || ''}
+                  />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
 
-          <nav className="mt-3 space-y-1">
-            {commonRoutes.map((item) => (
-              <NavLinkClient
-                key={item.href}
-                href={item.href}
-                title={item.title}
-                iconName={item.iconName || ''}
-              />
-            ))}
-          </nav>
-        </div>
+        <div className="my-2 border-t border-border/40 mx-4" />
+
+        <SidebarGroup>
+          <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
+            Preferences
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="px-2 space-y-1">
+              {commonRoutes.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <NavLinkClient
+                    href={item.href}
+                    title={item.title}
+                    iconName={item.iconName || ''}
+                  />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

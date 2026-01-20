@@ -1,7 +1,27 @@
-import React from 'react';
+import PaymentContent from '@/app/components/module/dashboard/admin/payment/PaymentContent';
+import { getClasses } from '@/app/services/class/getAllClasses';
+import { getAllFees } from '@/app/services/fee/getAllfees';
+import { getAllFeeTypes } from '@/app/services/fee/getFeetypes';
+import { getAllStudents } from '@/app/services/student/getAllStudents';
+import { getCookie } from '@/lib/cookies';
 
-const PaymentPage = () => {
-  return <div>Payment Page</div>;
+const PaymentPage = async () => {
+  const { classes } = await getClasses();
+  const classId = await getCookie('selectedClassId');
+  const { students } = await getAllStudents(classId as string);
+  const { fees } = await getAllFees();
+
+  const feetypes = await getAllFeeTypes();
+  return (
+    <div>
+      <PaymentContent
+        classes={classes}
+        students={students}
+        feetypes={feetypes}
+        fees={fees}
+      />
+    </div>
+  );
 };
 
 export default PaymentPage;

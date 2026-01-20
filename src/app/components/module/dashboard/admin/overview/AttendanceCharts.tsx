@@ -43,8 +43,6 @@ interface Props {
 }
 
 const AttendanceCharts = ({ student }: Props) => {
-  console.log(student);
-
   const presentTotal = student.present.total + student.late.total;
 
   const pieData = [

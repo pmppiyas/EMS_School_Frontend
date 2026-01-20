@@ -1,24 +1,20 @@
 import { serverFetch } from '@/lib/serverFetch';
 
 export const getAllClassTimes = async () => {
-  const res = await serverFetch.get('class/time', {
-    next: {
-      revalidate: 3600 * 6,
-      tags: ['classtime'],
-    },
-  });
-
-  let data;
   try {
-    data = await res.json();
-  } catch (err) {
-    console.error('JSON parse error:', err);
-    return null;
-  }
+    const res = await serverFetch.get('class/time', {
+      cache: 'no-store',
+    });
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch classTimes');
-  }
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to fetch classTimes');
+    }
 
-  return data.data;
+    const result = await res.json();
+    return result.data;
+  } catch (error) {
+    console.error('Fetch error details:', error);
+    throw error;
+  }
 };

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Select,
   SelectTrigger,
@@ -10,56 +9,85 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import { IClass } from '@/types/attendance.interface';
-import { setCookie } from '@/lib/cookies';
+
+import { getCookie, setCookie } from '@/lib/cookies';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { IClass } from '@/types/class.interface';
 
 interface ClassSelectProps {
+  withTeacher?: boolean;
   classes: IClass[];
   cookieName?: string;
   onChange?: (classId: string) => void;
 }
 
 const ClassSelector = ({
+  withTeacher = false,
   classes,
   cookieName = 'selectedClassId',
   onChange,
 }: ClassSelectProps) => {
-  const [selectedClass, setSelectedClass] = useState('');
-  const [, startTransition] = useTransition();
+  const [selectedClass, setSelectedClass] = useState<string>('');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (classes.length > 0 && !selectedClass) {
-      setSelectedClass(classes[0].id);
-      onChange?.(classes[0].id);
-    }
-  }, [classes, selectedClass, onChange]);
+    const initValue = async () => {
+      const urlClassId = searchParams.get('classId');
+      const cookieValue = await getCookie(cookieName);
 
-  const handleChange = async (value: string) => {
-    setSelectedClass(value);
-    onChange?.(value);
+      if (urlClassId) {
+        setSelectedClass(urlClassId);
+      } else if (cookieValue) {
+        setSelectedClass(cookieValue as string);
 
-    startTransition(async () => {
-      try {
-        await setCookie(cookieName, value);
-      } catch (err: any) {
-        console.error(err);
+        router.replace(`${pathname}?classId=${cookieValue}&page=1`, {
+          scroll: false,
+        });
+      } else if (classes && classes.length > 0) {
+        const defaultId = classes[0].id as string;
+        setSelectedClass(defaultId);
+        await setCookie(cookieName, defaultId);
+        router.replace(`${pathname}?classId=${defaultId}&page=1`, {
+          scroll: false,
+        });
       }
-    });
+    };
+
+    initValue();
+  });
+
+  const handleChange = (value: string) => {
+    setSelectedClass(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('classId', value);
+    params.set('page', '1');
+
+    setCookie(cookieName, value);
+
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+
+    if (onChange) onChange(value);
   };
 
   return (
-    <Select value={selectedClass} onValueChange={handleChange}>
-      <SelectTrigger className="bg-primary text-background">
-        <SelectValue placeholder="Choose Class" />
-      </SelectTrigger>
-      <SelectContent>
-        {classes.map((c) => (
-          <SelectItem key={c.id} value={c.id}>
-            {c.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="relative min-w-[150px]">
+      <Select value={selectedClass} onValueChange={handleChange}>
+        <SelectTrigger className="bg-primary text-primary-foreground font-medium border-primary/20 shadow-sm">
+          <SelectValue placeholder="Choose Class" />
+        </SelectTrigger>
+        <SelectContent>
+          {withTeacher && <SelectItem value="teacher">Teacher</SelectItem>}
+          {classes?.map((c) => (
+            <SelectItem key={c.id} value={c.id as string}>
+              {c.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 };
 

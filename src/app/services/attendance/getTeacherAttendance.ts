@@ -1,7 +1,23 @@
-import { serverFetch } from '../../../lib/serverFetch';
+import { serverFetch } from '@/lib/serverFetch';
 
 export const getTeacherAttendance = async () => {
-  const res = await serverFetch.get('attendance/teacher');
-  const data = res.json();
-  return data;
+  const res = await serverFetch.get('attendance/teacher', {
+    next: {
+      revalidate: 30,
+    },
+  });
+
+  let data;
+  try {
+    data = await res.json();
+  } catch (err) {
+    console.error('JSON parse error:', err);
+    return null;
+  }
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch teachers attendances');
+  }
+
+  return data.data;
 };

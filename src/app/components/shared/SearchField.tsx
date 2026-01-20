@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Button } from '../../../components/ui/button';
+import { Search } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,24 +52,29 @@ const SearchField: React.FC<ISearchFieldProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2">
+    <form onSubmit={handleSubmit} className="relative w-full md:w-80 group">
+      {/* Search Icon - absolute positioning */}
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none z-10">
+        <Search className="w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+      </div>
+
       <Input
         type="text"
-        enterKeyHint="search"
         placeholder={placeholder}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="lg:min-w-sm"
+        className="pl-10 pr-16 bg-background border-muted-foreground/20 focus-visible:ring-primary shadow-sm h-10 w-full transition-all"
       />
+
+      {/* Reset Button - Input এর ভেতরে ডানদিকে ছোট করে রাখা */}
       {searchTerm && (
-        <Button
+        <button
           type="button"
           onClick={handleReset}
-          className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition-colors text-red-500"
-          aria-label="Clear search"
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase px-2 py-1 bg-muted hover:bg-destructive/10 hover:text-destructive text-muted-foreground rounded transition-colors"
         >
-          Reset
-        </Button>
+          Clear
+        </button>
       )}
     </form>
   );

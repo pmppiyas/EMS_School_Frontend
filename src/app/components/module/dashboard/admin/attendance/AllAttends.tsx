@@ -48,7 +48,7 @@ const AllAttends = ({
       </div>
 
       <MonthlyAttendanceTable
-        data={attendByMonth}
+        attendance={attendByMonth}
         isTeacherMode={isTeacherMode}
         month={month}
         year={year}

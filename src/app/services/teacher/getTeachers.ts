@@ -1,11 +1,16 @@
 import { serverFetch } from '@/lib/serverFetch';
 
 export const getTeachers = async () => {
-  const res = await serverFetch.get('teacher');
+  const res = await serverFetch.get('teacher', {
+    next: {
+      revalidate: 60,
+    },
+  });
 
   let data;
   try {
     data = await res.json();
+    console.log(data);
   } catch (err) {
     console.error('JSON parse error:', err);
     return null;

@@ -23,4 +23,30 @@ export const DAYS = [
   'SATURDAY',
 ];
 
+export const MONTHS = [
+  'JANUARY',
+  'FEBRUARY',
+  'MARCH',
+  'APRIL',
+  'MAY',
+  'JUNE',
+  'JULY',
+  'AUGUST',
+  'SEPTEMBER',
+  'OCTOBER',
+  'NOVEMBER',
+  'DECEMBER',
+];
+
 export const PERIODS = ['1', '2', '3', '4', '5', '6'];
+
+export const FeeCategories = [
+  'ADMISSION',
+  'SESSION',
+  'MONTHLY',
+  'TUITION',
+  'EXAM',
+  'TRANSPORT',
+  'LAB',
+  'OTHER',
+] as const;

@@ -22,10 +22,10 @@ import {
 } from '@/components/ui/select';
 import { IGender } from '@/types/shared.interface';
 import { IStudent } from '@/types/student.interface';
-import { IClass } from '@/types/attendance.interface';
 import { updateStudent } from '@/app/services/student/updateStudent';
 import { createStudent } from '@/app/services/student/createStudent';
 import { useRouter } from 'next/navigation';
+import { IClass } from '@/types/class.interface';
 
 interface IStudentFormDialogProps {
   open: boolean;
@@ -166,7 +166,7 @@ const StudentFormDialog = ({
                   </SelectTrigger>
                   <SelectContent>
                     {classes.map((cls) => (
-                      <SelectItem key={cls.id} value={cls.id}>
+                      <SelectItem key={cls.id} value={cls.id as string}>
                         {cls.name}
                       </SelectItem>
                     ))}
@@ -284,8 +284,8 @@ const StudentFormDialog = ({
               {loading
                 ? 'Processing...'
                 : isEdit
-                ? 'Update Student'
-                : 'Register Student'}
+                  ? 'Update Student'
+                  : 'Register Student'}
             </Button>
           </div>
         </form>

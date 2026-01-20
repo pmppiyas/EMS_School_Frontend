@@ -1,12 +1,29 @@
-import { serverFetch } from '../../../lib/serverFetch';
+import { serverFetch } from '@/lib/serverFetch';
 
-export async function getAllClasses() {
+export const getClasses = async () => {
   try {
-    const res = await serverFetch.get('class');
-    const result = await res.json();
-    return result.data;
+    const res = await serverFetch.get('class', {
+      next: {
+        tags: ['class']
+      }
+    });
+
+    if (!res.ok) {
+      console.error('Failed to fetch classes:', res.status);
+      return {
+        success: false,
+        classes: [],
+      };
+    }
+
+    const data = await res.json();
+    return data.data ?? [];
   } catch (error) {
-    console.error('Error fetching classes:', error);
-    return { classes: [] };
+    console.error('getAllClasses error:', error);
+
+    return {
+      success: false,
+      classes: [],
+    };
   }
-}
+};

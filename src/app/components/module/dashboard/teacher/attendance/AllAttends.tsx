@@ -42,7 +42,7 @@ const AllAttends = ({ attendance }: { attendance: any[] }) => {
       </div>
 
       <MonthlyAttendanceTable
-        data={attendByMonth}
+        attendance={attendByMonth}
         isTeacherMode={false}
         month={month}
         year={year}

@@ -19,10 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { updateClassTime } from '../../../../../services/classTime/updateClassTime';
+import { updateClassTime } from '@/app/services/classTime/updateClassTime';
 
 export interface IClassTimeTableProps {
-  id: string;
+  id?: string;
   period: string;
   startTime: string;
   endTime: string;
@@ -119,7 +119,6 @@ const EditClassTimeDialog = ({
               value={period}
               onChange={(e) => setPeriod(e.target.value)}
               disabled
-
             />
           </Field>
 

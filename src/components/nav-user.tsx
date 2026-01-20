@@ -27,6 +27,7 @@ import {
 import { logout } from '../app/services/auth/logout';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
+
 export function NavUser({
   user,
 }: {

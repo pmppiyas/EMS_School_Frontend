@@ -1,40 +1,45 @@
+import { getCookie } from '@/lib/cookies';
 import StudentHeader from '../../../../components/module/dashboard/admin/student/StudentHeader';
-import StudentTable from '../../../../components/module/dashboard/admin/student/StudentTable';
-import Pagination from '../../../../components/shared/Pagination';
-import { getAllClasses } from '../../../../services/class/getAllClasses';
-import { getAllStudents } from '../../../../services/student/getAllStudents';
-
-export const dynamic = 'force-dynamic';
+import { getClasses } from '../../../../services/class/getAllClasses';
+import { Suspense } from 'react';
+import { TableSkeleton } from '@/app/components/shared/TableSkeleton';
+import StudentTableWrapper from '@/app/components/module/dashboard/admin/student/StudentTableWrapper';
 
 const page = async ({
   searchParams,
 }: {
   searchParams: Promise<{
-    classId?: string;
     searchTerm?: string;
     page?: string;
+    classId?: string;
   }>;
 }) => {
   const params = await searchParams;
-  const classId = params.classId;
-  const searchTerm = params.searchTerm;
-  const currentPage = params.page ? Number(params.page) : 1;
+  const searchTerm = params.searchTerm || '';
 
-  const studentRes = await getAllStudents(classId, searchTerm, currentPage);
+  const cookieClassId = await getCookie('selectedClassId');
+  const classId = params.classId || (cookieClassId as string) || '';
 
-  const { classes } = await getAllClasses();
+  const cookiePage = await getCookie('studentPage');
+  const currentPage = Number(params.page || cookiePage || 1);
+
+  const { classes } = await getClasses();
 
   return (
-    <div>
-      <StudentHeader classes={classes} selectedClassId={classId as string} />
+    <div className="space-y-6">
+      <StudentHeader classes={classes} />
 
-      <StudentTable students={studentRes.students} classes={classes} />
-
-      <Pagination
-        page={studentRes.meta.page}
-        total={studentRes.meta.total}
-        limit={studentRes.meta.limit}
-      />
+      <Suspense
+        key={classId + searchTerm + currentPage}
+        fallback={<TableSkeleton columnCount={7} rowCount={7} />}
+      >
+        <StudentTableWrapper
+          classId={classId}
+          searchTerm={searchTerm}
+          currentPage={currentPage}
+          classes={classes}
+        />
+      </Suspense>
     </div>
   );
 };

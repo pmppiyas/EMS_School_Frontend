@@ -1,6 +1,4 @@
-// types/student.interface.ts
-
-import { IClass } from './shared.interface';
+import { IClass } from '@/types/class.interface';
 import { Gender, IUser } from './types';
 
 export interface IStudent {

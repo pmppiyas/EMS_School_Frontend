@@ -1,75 +1,58 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  getDefaultDashboardRoutes,
-  getRouteOwner,
-  isAuthRoutes,
-} from './lib/auth';
-import { IRole } from './types/types';
+import { getDefaultDashboardRoutes, getRouteOwner } from './lib/auth';
 import { env } from './config/env';
+import { IRole } from '@/types/types';
 
-export function proxy(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
-
-  // Ignore static & api
-  if (pathname.startsWith('/_next') || pathname.startsWith('/api')) {
-    return NextResponse.next();
-  }
-
+export async function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
   const accessToken = req.cookies.get('accessToken')?.value;
-  const isAuth = isAuthRoutes(pathname);
-  const routeOwner = getRouteOwner(pathname);
 
-  // Public routes
-  if (routeOwner === null || routeOwner === 'COMMON') {
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname === '/'
+  ) {
     return NextResponse.next();
   }
 
-  // No token → login
-  if (!accessToken) {
+  if ((pathname === '/login' || pathname === '/signup') && accessToken) {
+    try {
+      const secret = new TextEncoder().encode(env.JWT_SECRET);
+      const { payload } = await jwtVerify(accessToken, secret);
+      const role = payload.role as IRole;
+      return NextResponse.redirect(
+        new URL(getDefaultDashboardRoutes(role), req.url)
+      );
+    } catch (e) {
+      return NextResponse.next();
+    }
+  }
+
+  const routeOwner = getRouteOwner(pathname);
+  if (!accessToken && routeOwner && routeOwner !== 'COMMON') {
     const loginUrl = new URL('/login', req.url);
     loginUrl.searchParams.set('redirectTo', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  let userRole: IRole;
+  if (accessToken) {
+    try {
+      const secret = new TextEncoder().encode(env.JWT_SECRET);
+      const { payload } = await jwtVerify(accessToken, secret);
+      const userRole = payload.role as IRole;
 
-  try {
-    const decoded = jwt.verify(accessToken, env.JWT_SECRET) as jwt.JwtPayload;
-
-    userRole = decoded.role as IRole;
-  } catch (error: any) {
-    console.error('JWT Error:', error);
-
-    const loginUrl = new URL('/login', req.url);
-    loginUrl.searchParams.set(
-      'error',
-      error.name === 'TokenExpiredError' ? 'session_expired' : 'invalid_token'
-    );
-
-    const response = NextResponse.redirect(loginUrl);
-
-    response.cookies.delete('accessToken');
-    response.cookies.delete('refreshToken');
-
-    return response;
-  }
-
-  const defaultRoute = getDefaultDashboardRoutes(userRole);
-
-  // Logged-in user hitting auth pages
-  if (isAuth && pathname !== defaultRoute) {
-    return NextResponse.redirect(new URL(defaultRoute, req.url));
-  }
-
-  // Role protection
-  if (
-    (routeOwner === 'ADMIN' && userRole !== 'ADMIN') ||
-    (routeOwner === 'TEACHER' && userRole !== 'TEACHER') ||
-    (routeOwner === 'STUDENT' && userRole !== 'STUDENT')
-  ) {
-    return NextResponse.redirect(new URL(defaultRoute, req.url));
+      if (routeOwner && routeOwner !== 'COMMON' && routeOwner !== userRole) {
+        return NextResponse.redirect(
+          new URL(getDefaultDashboardRoutes(userRole), req.url)
+        );
+      }
+    } catch (err) {
+      const loginUrl = new URL('/login', req.url);
+      const response = NextResponse.redirect(loginUrl);
+      response.cookies.delete('accessToken');
+      return response;
+    }
   }
 
   return NextResponse.next();
@@ -77,6 +60,10 @@ export function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    '/admin/:path*',
+    '/dashboard/:path*',
+    '/teacher/:path*',
+    '/login',
+    '/signup',
   ],
 };

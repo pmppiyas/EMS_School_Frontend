@@ -38,7 +38,7 @@ export async function createTeacher(formData: FormData) {
 
     const response = await serverFetch.post(
       'user/create_teacher',
-      backendFormData
+      backendFormData,
     );
 
     const result = await response.json();

@@ -1,39 +1,37 @@
+import { getStudentAttendance } from '@/app/services/attendance/getStudentAttendance';
 import AttendanceCharts from '../../../components/module/dashboard/admin/overview/AttendanceCharts';
-import { getStudentAttendance } from '../../../services/attendance/getStudentAttendance';
+
 import { getTeacherAttendance } from '../../../services/attendance/getTeacherAttendance';
 
 const page = async () => {
-  const studentRes = await getStudentAttendance();
+  const { student } = await getStudentAttendance();
 
-  const studentAttendData = studentRes.data.student;
-
-  const teacherRes = await getTeacherAttendance();
-  const teacherAttendData = teacherRes.data.teacher;
+  const { teacher } = await getTeacherAttendance();
 
   const stats = [
     {
       title: 'Present Teacher',
-      value: teacherAttendData.present.total + teacherAttendData.late.total,
+      value: teacher.present.total + teacher.late.total,
       color: 'bg-blue-500',
     },
     {
       title: 'Total Students',
-      value: studentAttendData.total,
+      value: student.total,
       color: 'bg-emerald-500',
     },
     {
       title: 'Present Student',
-      value: studentAttendData.present.total + studentAttendData.late.total,
+      value: student.present.total + student.late.total,
       color: 'bg-green-500',
     },
     {
       title: 'Absent Student',
-      value: studentAttendData.absent.total,
+      value: student.absent.total,
       color: 'bg-red-500',
     },
     {
       title: 'Leave Studnet',
-      value: studentAttendData.leave.total,
+      value: student.leave.total,
       color: 'bg-yellow-500',
     },
   ];
@@ -52,7 +50,7 @@ const page = async () => {
         ))}
       </div>
 
-      <AttendanceCharts student={studentAttendData} />
+      <AttendanceCharts student={student} />
     </div>
   );
 };
