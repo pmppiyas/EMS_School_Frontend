@@ -9,13 +9,7 @@ import { IStudent } from '@/types/student.interface';
 import { generateResultTemplate } from '@/lib/generateResultTemplate';
 import { uploadExcelResult } from '@/app/services/result/uploadExcelResult';
 import { Button } from '@/components/ui/button';
-
-interface ISubject {
-  id: string;
-  name: string;
-  code: string;
-  classId: string;
-}
+import { ISubject } from '@/types/class.interface';
 
 const ResultUploadPage = ({
   subjects,
@@ -32,6 +26,9 @@ const ResultUploadPage = ({
   const [previewData, setPreviewData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+
+  const firstRecord = students[0];
+  const className = firstRecord.class?.name || '';
 
   const onDownloadClick = () => {
     try {
@@ -129,14 +126,17 @@ const ResultUploadPage = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end gap-3 print:hidden">
-        <Button
-          onClick={onDownloadClick}
-          variant="outline"
-          className="flex items-center gap-2 bg-primary text-background hover:bg-primary/90"
-        >
-          <Download size={18} /> Excel Template
-        </Button>
+      <div className="flex items-center justify-between print:hidden">
+        <h2 className="text-xl font-medium uppercase">{className}</h2>
+        <div className="flex justify-end gap-3 print:hidden">
+          <Button
+            onClick={onDownloadClick}
+            variant="outline"
+            className="flex items-center gap-2 bg-primary text-background hover:bg-primary/90 hover:text-background transition-colors"
+          >
+            <Download size={18} /> Excel Template
+          </Button>
+        </div>
       </div>
 
       {!file ? (

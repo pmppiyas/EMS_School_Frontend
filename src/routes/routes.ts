@@ -17,6 +17,18 @@ export const adminRoutes: NavItem[] = [
     href: '/admin/dashboard/attendance',
     iconName: 'UserCheck',
   },
+
+  {
+    title: 'Schedules',
+    href: '/admin/dashboard/schedules',
+    iconName: 'CalendarDays',
+  },
+
+  {
+    title: 'Results',
+    href: '/admin/dashboard/result',
+    iconName: 'BookOpenCheck',
+  },
   {
     title: 'Classes',
     href: '/admin/dashboard/class',
@@ -32,11 +44,7 @@ export const adminRoutes: NavItem[] = [
     href: '/admin/dashboard/subject',
     iconName: 'Book',
   },
-  {
-    title: 'Schedules',
-    href: '/admin/dashboard/schedules',
-    iconName: 'CalendarDays',
-  },
+
   {
     title: 'Payments',
     href: '/admin/dashboard/payments',
@@ -45,11 +53,6 @@ export const adminRoutes: NavItem[] = [
   {
     title: 'Fee Type',
     href: '/admin/dashboard/feetype',
-    iconName: 'ReceiptText',
-  },
-  {
-    title: 'Results',
-    href: '/admin/dashboard/result',
     iconName: 'ReceiptText',
   },
 ];

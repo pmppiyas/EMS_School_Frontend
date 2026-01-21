@@ -11,7 +11,6 @@ export default async function ResultTableWrapper({
   term: string;
   year: string;
 }) {
-
   const results = await getResults(classId, term, year);
 
   if (!results || results.length === 0) {

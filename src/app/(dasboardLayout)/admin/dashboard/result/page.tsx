@@ -32,6 +32,7 @@ const ResultPage = async ({
   const tab = params.tabs ?? 'view';
 
   const { classes } = await getClasses();
+
   const { subjects } =
     tab === 'upload' ? await getSubjects(classId) : { subjects: [] };
   const { students } =
