@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { IStudent } from '@/types/student.interface';
 import { generateResultTemplate } from '@/lib/generateResultTemplate';
 import { uploadExcelResult } from '@/app/services/result/uploadExcelResult';
+import { Button } from '@/components/ui/button';
 
 interface ISubject {
   id: string;
@@ -19,9 +20,13 @@ interface ISubject {
 const ResultUploadPage = ({
   subjects,
   students,
+  term,
+  year,
 }: {
   subjects: ISubject[];
   students: IStudent[];
+  term: string;
+  year: string;
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewData, setPreviewData] = useState<any[]>([]);
@@ -65,6 +70,9 @@ const ResultUploadPage = ({
   };
 
   const handleUploadSubmit = async () => {
+    if (!term) return toast.error('অনুগ্রহ করে টার্ম সিলেক্ট করুন।');
+    if (!year) return toast.error('অনুগ্রহ করে বছর সিলেক্ট করুন।');
+
     setLoading(true);
     try {
       const formattedPayload: any[] = [];
@@ -78,6 +86,8 @@ const ResultUploadPage = ({
               subjectId: subject.id,
               classId: subject.classId,
               marks: Number(marks),
+              term,
+              year,
             });
           }
         });
@@ -85,10 +95,14 @@ const ResultUploadPage = ({
 
       if (formattedPayload.length === 0) {
         setLoading(false);
-        return toast.error('কোনো নম্বর খুঁজে পাওয়া যায়নি।');
+        return toast.error('কোনো নম্বর খুঁজে পাওয়া যায়নি।');
       }
 
-      await uploadExcelResult(formattedPayload);
+      await uploadExcelResult({
+        results: formattedPayload,
+        term,
+        year: Number(year),
+      });
 
       toast.success('সব বিষয়ের নম্বর সফলভাবে সেভ করা হয়েছে!');
       setFile(null);
@@ -114,22 +128,15 @@ const ResultUploadPage = ({
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-6 bg-background rounded-2xl shadow-sm border text-foreground">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-b pb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">
-            Class-wide Result Upload
-          </h1>
-          <p className="text-sm text-gray-500 font-medium">
-            সব বিষয়ের নম্বর এক সাথে আপলোড করুন।
-          </p>
-        </div>
-        <button
+    <div className="space-y-6">
+      <div className="flex justify-end gap-3 print:hidden">
+        <Button
           onClick={onDownloadClick}
-          className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition font-semibold shadow-md active:scale-95"
+          variant="outline"
+          className="flex items-center gap-2 bg-primary text-background hover:bg-primary/90"
         >
-          <Download size={18} /> মাস্টার টেমপ্লেট ডাউনলোড
-        </button>
+          <Download size={18} /> Excel Template
+        </Button>
       </div>
 
       {!file ? (
@@ -139,18 +146,21 @@ const ResultUploadPage = ({
           onDragOver={handleDrag}
           onDrop={handleDrop}
           onClick={() => document.getElementById('fileInput')?.click()}
-          className={`border-2 border-dashed rounded-2xl p-16 text-center transition-all cursor-pointer ${
+          className={`border-2 border-muted-foreground border-dashed rounded-2xl p-16 text-center transition-all cursor-pointer ${
             dragActive
-              ? 'border-indigo-600 bg-indigo-50 scale-[1.01]'
-              : 'border-gray-300 bg-gray-50 hover:border-indigo-400'
+              ? 'border-primary bg-muted-foreground scale-[1.01]'
+              : 'border-muted hover:border-primary/70 hover:bg-muted/30'
           }`}
         >
           <Upload
-            className={`mx-auto mb-4 ${dragActive ? 'text-indigo-600' : 'text-gray-400'}`}
+            className={`mx-auto mb-4 ${dragActive ? 'text-primary' : 'text-muted-foreground'}`}
             size={48}
           />
-          <p className="text-lg font-semibold text-gray-700">
-            ফাইলটি এখানে ড্রপ করুন অথবা ক্লিক করুন
+          <p className="text-lg font-semibold">
+            ফাইলটি ড্রপ করুন অথবা এখানে ক্লিক করুন
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            .xlsx অথবা .xls ফাইল সাপোর্ট করে
           </p>
           <input
             type="file"
@@ -163,37 +173,40 @@ const ResultUploadPage = ({
           />
         </div>
       ) : (
-        <div className="border rounded-xl overflow-hidden shadow-lg">
-          <div className="p-4 bg-background border-b flex justify-between items-center">
-            <span className="flex items-center gap-2 font-bold text-primary">
-              <FileSpreadsheet size={20} className="text-indigo-600" />{' '}
-              {file.name}
-            </span>
+        <div className="border rounded-xl overflow-hidden shadow-sm bg-card">
+          <div className="p-4 bg-muted/30 border-b flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="bg-background p-2 rounded-lg">
+                <FileSpreadsheet size={20} className="text-primary" />
+              </div>
+              <div>
+                <span className="block font-bold text-sm">{file.name}</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
+                  {term} • {year}
+                </span>
+              </div>
+            </div>
             <button
               onClick={() => {
                 setFile(null);
                 setPreviewData([]);
               }}
-              className="text-gray-400 hover:text-red-500"
+              className="p-2 hover:bg-muted-background text-muted-foreground hover:text-destructive rounded-full transition-colors"
             >
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
 
           <div className="max-h-[500px] overflow-auto">
             <table className="w-full text-sm border-collapse">
-              <thead className="bg-gray-100 sticky top-0 z-10">
+              <thead className="bg-muted/50 sticky top-0 z-10 border-b">
                 <tr>
-                  <th className="p-4 border-b text-left bg-gray-100">
-                    Student ID
-                  </th>
-                  <th className="p-4 border-b text-left bg-gray-100 shadow-sm">
-                    Name
-                  </th>
+                  <th className="p-4 text-left font-bold">Student ID</th>
+                  <th className="p-4 text-left font-bold">Student Name</th>
                   {subjects.map((sub) => (
                     <th
                       key={sub.id}
-                      className="p-4 border-b border-l text-center min-w-[100px] bg-indigo-50/50"
+                      className="p-4 text-center border-l font-bold min-w-[100px]"
                     >
                       {sub.name}
                     </th>
@@ -202,19 +215,19 @@ const ResultUploadPage = ({
               </thead>
               <tbody className="divide-y">
                 {previewData.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-blue-50/30">
+                  <tr key={idx} className="hover:bg-muted/20 transition-colors">
                     <td className="p-4 font-mono text-xs text-muted-foreground">
                       {row['Student ID']}
                     </td>
-                    <td className="p-4 font-bold text-gray-700">
+                    <td className="p-4 font-semibold text-foreground">
                       {row['Student Name']}
                     </td>
                     {subjects.map((sub) => (
                       <td
                         key={sub.id}
-                        className="p-4 border-l text-center text-primary font-extrabold text-base"
+                        className="p-4 border-l text-center font-bold text-primary"
                       >
-                        {row[sub.name] !== undefined ? row[sub.name] : '-'}
+                        {row[sub.name] ?? '-'}
                       </td>
                     ))}
                   </tr>
@@ -223,16 +236,27 @@ const ResultUploadPage = ({
             </table>
           </div>
 
-          <div className="p-5 bg-background order-t flex justify-end items-center gap-4">
-            <span className="text-xs text-muted-foreground italic">
-              মোট {previewData.length} জন শিক্ষার্থীর ডাটা
+          <div className="p-5 bg-muted/30 border-t flex flex-col sm:flex-row justify-between items-center gap-4">
+            <span className="text-sm text-muted-foreground">
+              মোট{' '}
+              <span className="font-bold text-foreground">
+                {previewData.length}
+              </span>{' '}
+              জন শিক্ষার্থীর ডাটা পাওয়া গেছে।
             </span>
             <button
               onClick={handleUploadSubmit}
-              disabled={loading}
-              className="bg-primary text-background px-10 py-3 rounded-lg font-bold shadow-lg hover:bg-primary/90 transition disabled:opacity-50"
+              disabled={loading || !term || !year}
+              className="w-full sm:w-auto bg-primary text-primary-foreground px-10 py-3 rounded-xl font-bold shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
             >
-              {loading ? 'প্রসেসিং হচ্ছে...' : 'সব নম্বর সেভ করুন'}
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
+                  সেভ হচ্ছে...
+                </span>
+              ) : (
+                'সব নম্বর সেভ করুন'
+              )}
             </button>
           </div>
         </div>

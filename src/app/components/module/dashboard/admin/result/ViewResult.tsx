@@ -48,7 +48,7 @@ const ViewResult = ({ results }: ViewResultProps) => {
 
   const handlePrint = (mode: 'all' | 'individual') => {
     setPrintMode(mode);
-    // State আপডেট হওয়ার জন্য সামান্য সময় দেওয়া
+
     setTimeout(() => {
       window.print();
     }, 100);

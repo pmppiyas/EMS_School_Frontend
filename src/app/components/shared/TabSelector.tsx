@@ -24,7 +24,7 @@ const TabSelector = ({ tabs }: TabSelectorProps) => {
   };
 
   return (
-    <div className="flex items-center p-1 bg-gray-100 rounded-lg w-fit">
+    <div className="flex items-center p-1 bg-primary-foreground rounded-lg w-fit">
       {tabs.map((tab) => (
         <button
           key={tab.value}
@@ -32,8 +32,8 @@ const TabSelector = ({ tabs }: TabSelectorProps) => {
           className={cn(
             'px-6 py-2 text-sm font-medium transition-all rounded-md',
             activeTab === tab.value
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              ? 'bg-background text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
           )}
         >
           {tab.label}

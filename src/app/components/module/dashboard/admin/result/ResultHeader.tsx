@@ -4,16 +4,26 @@ import React from 'react';
 const ResultHeader = ({
   tabSelector,
   classSelector,
+  termSelector,
+  yearSelector,
+  tab,
 }: {
   tabSelector: React.ReactNode;
   classSelector: React.ReactNode;
+  termSelector: React.ReactNode;
+  yearSelector: React.ReactNode;
+  tab: string;
 }) => {
   return (
     <div>
       <ManagementPageHeader
-        title="Result Management"
-        description="Manage results information and details"
-        actions={[tabSelector, classSelector]}
+        title={tab === 'view' ? 'View Results' : 'Upload Excel Results'}
+        description={
+          tab === 'view'
+            ? 'View student results.'
+            : 'Upload results via Excel file.'
+        }
+        actions={[tabSelector, termSelector, yearSelector, classSelector]}
       />
     </div>
   );

@@ -73,7 +73,7 @@ const ClassSelector = ({
   };
 
   return (
-    <div className="relative min-w-[150px]">
+    <div className="relative ">
       <Select value={selectedClass} onValueChange={handleChange}>
         <SelectTrigger className="bg-primary text-primary-foreground font-medium border-primary/20 shadow-sm">
           <SelectValue placeholder="Choose Class" />

@@ -1,7 +1,12 @@
 import { serverFetch } from '@/lib/serverFetch';
 
 export const getSubjects = async (classId: string) => {
-  const res = await serverFetch.get(`subject/${classId}`);
+  const res = await serverFetch.get(`subject/${classId}`, {
+    next: {
+      tags: ['subject'],
+      revalidate: 60,
+    },
+  });
 
   let data;
   try {
@@ -12,7 +17,7 @@ export const getSubjects = async (classId: string) => {
   }
 
   if (!res.ok) {
-    throw new Error('Failed to fetch teachers');
+    throw new Error('Failed to fetch subjects');
   }
 
   return data.data;

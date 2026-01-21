@@ -1,16 +1,22 @@
 import { serverFetch } from '@/lib/serverFetch';
 
-export const getResults = async (classId: string) => {
+export const getResults = async (
+  classId: string,
+  term?: string,
+  year?: string
+) => {
   if (!classId) return [];
-
   try {
-    const res = await serverFetch.post(
-      `result/${classId}`,
-      {},
+    const queryParams = new URLSearchParams();
+    if (term) queryParams.append('term', term);
+    if (year) queryParams.append('year', year);
+
+    const res = await serverFetch.get(
+      `result/${classId}?${queryParams.toString()}`,
       {
         next: {
           tags: ['result'],
-          revalidate: 0,
+          revalidate: 60,
         },
       }
     );
@@ -21,7 +27,6 @@ export const getResults = async (classId: string) => {
     }
 
     const data = await res.json();
-
     return data?.data || [];
   } catch (err) {
     console.error('getResults Error:', err);

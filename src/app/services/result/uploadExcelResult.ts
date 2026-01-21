@@ -4,12 +4,16 @@
 import { serverFetch } from '@/lib/serverFetch';
 import { revalidateTag } from 'next/cache';
 
-export const uploadExcelResult = async (payload: any[]) => {
+export const uploadExcelResult = async (payload: {
+  results: any[];
+  term: string;
+  year: number;
+}) => {
   try {
     const res = await serverFetch.post('result/excel_upload', {
       results: payload,
     });
-
+    console.log('Upload Response:', res);
     if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.message || 'ডাটা আপলোড করতে ব্যর্থ হয়েছে।');
