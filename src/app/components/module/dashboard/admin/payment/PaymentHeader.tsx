@@ -1,12 +1,24 @@
 import ManagementPageHeader from '@/app/components/module/dashboard/ManagementPageHeader';
 
-const PaymentHeader = ({ selectMode }: { selectMode: React.ReactNode }) => {
+const PaymentHeader = ({
+  selectTab,
+  classSelector,
+  tab,
+}: {
+  selectTab: React.ReactNode;
+  classSelector?: React.ReactNode;
+  tab: string;
+}) => {
   return (
     <div>
       <ManagementPageHeader
-        title="Payment Management"
-        description="Manage payments information and details"
-        actions={[selectMode]}
+        title={tab === 'create' ? 'Make New Payment' : 'Payment Records'}
+        description={
+          tab === 'create'
+            ? 'Process student fees and generate receipts'
+            : 'View and manage all past transactions'
+        }
+        actions={[selectTab, classSelector]}
       />
     </div>
   );

@@ -3,7 +3,10 @@ import { serverFetch } from '@/lib/serverFetch';
 export const getAllFees = async () => {
   try {
     const res = await serverFetch.get('fee', {
-      next: { tags: ['fees'] },
+      next: {
+        tags: ['fees'],
+        revalidate: 60,
+      },
     });
 
     if (!res.ok) {
@@ -20,7 +23,6 @@ export const getAllFees = async () => {
     return { fees: [] };
   } catch (error) {
     console.error('Error in getAllFees:', error);
-
     return { fees: [] };
   }
 };

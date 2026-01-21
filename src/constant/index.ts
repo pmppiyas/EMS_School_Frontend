@@ -50,3 +50,10 @@ export const FeeCategories = [
   'LAB',
   'OTHER',
 ] as const;
+
+export const TERMS = [
+  'FIRST_TERM',
+  'SECOND_TERM',
+  'THIRD_TIRM',
+  'FINAL',
+] as const;

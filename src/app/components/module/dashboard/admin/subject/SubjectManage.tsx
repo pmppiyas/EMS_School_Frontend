@@ -72,7 +72,6 @@ const SubjectsManage = ({
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="p-6 bg-card text-card-foreground rounded-xl border shadow-sm space-y-6">
-        {/* Input Area - Using Muted background for grouping */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-muted/50 p-4 rounded-lg border border-dashed border-muted-foreground/20">
           <div className="md:col-span-7 space-y-2">
             <label className="text-xs font-bold text-muted-foreground uppercase ml-1">

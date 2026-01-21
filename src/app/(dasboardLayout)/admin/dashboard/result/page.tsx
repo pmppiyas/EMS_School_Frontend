@@ -23,15 +23,13 @@ const ResultPage = async ({
   }>;
 }) => {
   const params = await searchParams;
-
+  const { classes } = await getClasses();
   const cookieClassId = await getCookie('selectedClassId');
   const classId = params.classId || (cookieClassId as string) || '';
   const term = params.term || 'FIRST_TERM';
   const currentYear = new Date().getFullYear().toString();
   const year = params.year || currentYear;
   const tab = params.tabs ?? 'view';
-
-  const { classes } = await getClasses();
 
   const { subjects } =
     tab === 'upload' ? await getSubjects(classId) : { subjects: [] };

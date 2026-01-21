@@ -22,10 +22,6 @@ const PaymentContent = ({
   const [mode, setMode] = useState<'create' | 'view'>('create');
   return (
     <div>
-      <PaymentHeader
-        selectMode={<PaymentModeSelect mode={mode} onChange={setMode} />}
-      />
-
       {mode === 'create' && (
         <CreatePayment
           classes={classes}

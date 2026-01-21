@@ -1,6 +1,6 @@
 'use client';
 
-import SubjectsManage from '@/app/components/module/dashboard/admin/subject/SubjaentManage';
+import SubjectsManage from '@/app/components/module/dashboard/admin/subject/SubjectManage';
 import SubjectHeader from '@/app/components/module/dashboard/admin/subject/SubjectHeader';
 import SubjectTable from '@/app/components/module/dashboard/admin/subject/SubjectTable';
 import ClassSelector from '@/app/components/shared/ClassSelector';
