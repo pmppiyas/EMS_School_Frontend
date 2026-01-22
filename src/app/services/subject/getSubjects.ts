@@ -4,7 +4,7 @@ export const getSubjects = async (classId: string) => {
   const res = await serverFetch.get(`subject/${classId}`, {
     next: {
       tags: ['subject'],
-      revalidate: 60,
+      revalidate: 0,
     },
   });
 

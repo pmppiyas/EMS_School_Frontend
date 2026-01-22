@@ -47,13 +47,11 @@ export const FeeCategories = [
   'TUITION',
   'EXAM',
   'TRANSPORT',
+  'PICNIC',
+  'SPORTS',
+  'CULTURAL',
   'LAB',
   'OTHER',
 ] as const;
 
-export const TERMS = [
-  'FIRST_TERM',
-  'SECOND_TERM',
-  'THIRD_TIRM',
-  'FINAL',
-] as const;
+export const TERMS = ['FIRST', 'SECOND', 'THIRD', 'FINAL'] as const;

@@ -20,3 +20,8 @@ export interface IDiaryResponse {
   day: string;
   diary: IDiarySlot[];
 }
+
+
+
+
+

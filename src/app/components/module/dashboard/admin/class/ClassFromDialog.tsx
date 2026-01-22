@@ -13,6 +13,7 @@ import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { createClass } from '@/app/services/class/createClass';
+import { useRouter } from 'next/navigation';
 
 interface IClassFormDialogProps {
   open: boolean;
@@ -29,6 +30,8 @@ const ClassFormDialog: React.FC<IClassFormDialogProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -42,6 +45,7 @@ const ClassFormDialog: React.FC<IClassFormDialogProps> = ({
         onSuccess();
         onClose();
         setClassName('');
+        router.refresh();
       } else {
         setError(response.message);
         toast.error(response.message);

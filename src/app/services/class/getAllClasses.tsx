@@ -4,8 +4,9 @@ export const getClasses = async () => {
   try {
     const res = await serverFetch.get('class', {
       next: {
-        tags: ['class']
-      }
+        tags: ['class'],
+        revalidate: 0,
+      },
     });
 
     if (!res.ok) {

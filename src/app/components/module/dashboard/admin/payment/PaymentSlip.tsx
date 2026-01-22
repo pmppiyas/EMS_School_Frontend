@@ -31,12 +31,7 @@ const PaymentSlip = ({
   return (
     <div id="printable-slip" className="invoice-wrapper">
       <div className="flex gap-4 items-center">
-        <Image
-          src="/school-logo.png"
-          alt="School Logo"
-          width={60}
-          height={60}
-        />
+        <Image src="/school-logo.png" alt="DMSC" width={60} height={60} />
         <div>
           <h1 className="text-2xl ">Dharmopur Model School and College</h1>
           <p className="text-sm text-muted-foreground">

@@ -5,6 +5,9 @@ import { serverFetch } from '../../../lib/serverFetch';
 import { revalidateTag } from 'next/cache';
 
 export async function AddClassTime(payload: any) {
-  await serverFetch.post('class/time', payload);
+  const res = await serverFetch.post('class/time', payload);
+  const result = await res.json();
+
   revalidateTag('classtime', 'default');
+  return result;
 }

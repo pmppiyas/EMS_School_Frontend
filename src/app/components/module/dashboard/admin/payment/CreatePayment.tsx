@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import {
-  CheckCircle2,
   Loader2,
   Printer,
   Check,
   CheckCircle,
+  CheckCircle2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -34,12 +36,13 @@ import {
 import { IStudent } from '@/types/student.interface';
 import { IFeeType, PaidFee, Term } from '@/types/fee.interface';
 import ClassSelector from '@/app/components/shared/ClassSelector';
-import { setPaysClassId } from '@/app/services/fee/setPaysClassIs';
 import { makeFee } from '@/app/services/fee/makeFee';
 import { MONTHS, TERMS } from '@/constant';
 import PaymentSlip from '@/app/components/module/dashboard/admin/payment/PaymentSlip';
 import { IClass } from '@/types/class.interface';
 import { myPaidFees } from '@/app/services/fee/paidFees';
+import { useRouter } from 'next/navigation';
+import SuccessModal from '@/app/components/module/dashboard/admin/payment/SuccessModal';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 10 }, (_, i) => CURRENT_YEAR - i);
@@ -66,92 +69,82 @@ const CreatePayment = ({
   const [paidFees, setPaidFees] = useState<PaidFee[]>([]);
   const [loadingPaidFees, setLoadingPaidFees] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successData, setSuccessData] = useState<any>(null);
 
   const hasTuition = selectedFeeTypes.some((fee) => fee.category === 'TUITION');
   const hasMonthly = selectedFeeTypes.some((fee) => fee.category === 'MONTHLY');
-  const hasExam = selectedFeeTypes.some((fee) => fee.category === 'EXAM');
+  const router = useRouter();
 
-  useEffect(() => {
-    const fetchPaidFees = async () => {
-      if (!selectedStudent?.id || !selectedYear) {
-        setPaidFees([]);
-        return;
-      }
-
-      setLoadingPaidFees(true);
-      try {
-        const data = await myPaidFees(
-          selectedStudent.id,
-          selectedYear.toString()
-        );
-        setPaidFees(data || []);
-      } catch (error) {
-        setPaidFees([]);
-      } finally {
-        setLoadingPaidFees(false);
-      }
-    };
-
-    fetchPaidFees();
+  const fetchPaidFees = useCallback(async () => {
+    if (!selectedStudent?.id || !selectedYear) {
+      setPaidFees([]);
+      return;
+    }
+    setLoadingPaidFees(true);
+    try {
+      const data = await myPaidFees(
+        selectedStudent.id,
+        selectedYear.toString()
+      );
+      setPaidFees(data || []);
+    } catch (error) {
+      setPaidFees([]);
+    } finally {
+      setLoadingPaidFees(false);
+    }
   }, [selectedStudent?.id, selectedYear]);
 
-  const filteredFeeTypes = useMemo(() => {
-    if (!selectedClassId) return [];
-
-    return feetypes.filter((fee) => {
-      if (fee.classId) {
-        return fee.classId === selectedClassId;
-      }
-      if (fee.class?.id) {
-        return fee.class.id === selectedClassId;
-      }
-
-      return true;
-    });
-  }, [feetypes, selectedClassId]);
+  useEffect(() => {
+    fetchPaidFees();
+  }, [fetchPaidFees]);
 
   const getPaidMonthsByCategory = (category: string): Set<string> => {
     if (!selectedYear) return new Set();
-
     const paidMonthsSet = new Set<string>();
-
     paidFees.forEach((pf) => {
       if (pf.feeType?.category === category && pf.month) {
-        paidMonthsSet.add(pf.month);
+        if (Array.isArray(pf.month)) {
+          pf.month.forEach((m) => paidMonthsSet.add(m.toUpperCase()));
+        } else if (typeof pf.month === 'string') {
+          paidMonthsSet.add(pf.month.toUpperCase());
+        }
       }
     });
-
     return paidMonthsSet;
   };
 
   const getPaidTermsByCategory = (category: string): Set<Term> => {
     if (!selectedYear) return new Set();
-
     const paidTermsSet = new Set<Term>();
-
     paidFees.forEach((pf) => {
       if (pf.feeType?.category === category && pf.term) {
         paidTermsSet.add(pf.term);
       }
     });
-
     return paidTermsSet;
   };
 
+  useEffect(() => {
+    const paidTuition = getPaidMonthsByCategory('TUITION');
+    const paidMonthly = getPaidMonthsByCategory('MONTHLY');
+    setTuitionMonths((prev) =>
+      prev.filter((m) => !paidTuition.has(m.toUpperCase()))
+    );
+    setMonthlyMonths((prev) =>
+      prev.filter((m) => !paidMonthly.has(m.toUpperCase()))
+    );
+  }, [paidFees]);
+
   const isFeeTypePaid = (feeType: IFeeType): boolean => {
     if (!selectedYear) return false;
-
-    const paidForCategory = paidFees.filter((pf) => {
-      return pf.feeType?.category === feeType.category;
-    });
-
+    const paidForCategory = paidFees.filter(
+      (pf) => pf.feeType?.category === feeType.category
+    );
     if (paidForCategory.length === 0) return false;
-
     if (feeType.category === 'TUITION' || feeType.category === 'MONTHLY') {
       const paidMonths = getPaidMonthsByCategory(feeType.category);
       return paidMonths.size === 12;
     }
-
     if (feeType.category === 'EXAM') {
       const paidTerms = getPaidTermsByCategory(feeType.category);
       return paidTerms.size === TERMS.length;
@@ -160,235 +153,110 @@ const CreatePayment = ({
   };
 
   const calculatedBreakdown = useMemo(() => {
-    const breakdown: {
-      name: string;
-      amount: number;
-      months?: string;
-      term?: string;
-    }[] = [];
+    const breakdown: any[] = [];
     let total = 0;
-
     selectedFeeTypes.forEach((fee) => {
-      if (fee.category === 'TUITION') {
-        const monthCount = tuitionMonths.length || 1;
-        const feeTotal = fee.amount * monthCount;
+      if (fee.category === 'TUITION' && tuitionMonths.length > 0) {
+        const feeTotal = fee.amount * tuitionMonths.length;
         breakdown.push({
           name: `Tuition Fee`,
           amount: feeTotal,
-          months:
-            tuitionMonths.length > 0 ? tuitionMonths.join(', ') : undefined,
+          months: tuitionMonths.join(', '),
         });
         total += feeTotal;
-      } else if (fee.category === 'MONTHLY') {
-        const monthCount = monthlyMonths.length || 1;
-        const feeTotal = fee.amount * monthCount;
+      } else if (fee.category === 'MONTHLY' && monthlyMonths.length > 0) {
+        const feeTotal = fee.amount * monthlyMonths.length;
         breakdown.push({
           name: `Monthly Fee`,
           amount: feeTotal,
-          months:
-            monthlyMonths.length > 0 ? monthlyMonths.join(', ') : undefined,
+          months: monthlyMonths.join(', '),
         });
         total += feeTotal;
-      } else if (fee.category === 'EXAM') {
+      } else if (fee.category === 'EXAM' && examTerm) {
         breakdown.push({
           name: `Exam Fee`,
           amount: fee.amount,
-          term: examTerm || undefined,
+          term: examTerm,
         });
         total += fee.amount;
-      } else {
-        breakdown.push({
-          name: fee.category,
-          amount: fee.amount,
-        });
+      } else if (!['TUITION', 'MONTHLY', 'EXAM'].includes(fee.category)) {
+        breakdown.push({ name: fee.category, amount: fee.amount });
         total += fee.amount;
       }
     });
-
     return { breakdown, total };
   }, [selectedFeeTypes, tuitionMonths, monthlyMonths, examTerm]);
 
-  React.useEffect(() => {
-    if (selectedFeeTypes.length > 0) {
-      setPaymentAmount(String(calculatedBreakdown.total));
-    }
-  }, [calculatedBreakdown.total, selectedFeeTypes]);
+  useEffect(() => {
+    setPaymentAmount(String(calculatedBreakdown.total));
+  }, [calculatedBreakdown.total]);
 
-  const isFormValid =
-    !!selectedStudent &&
-    selectedFeeTypes.length > 0 &&
-    Number(paymentAmount) > 0 &&
-    (!hasTuition || tuitionMonths.length > 0) &&
-    (!hasMonthly || monthlyMonths.length > 0) &&
-    (!hasExam || examTerm) &&
-    selectedYear;
-
-  const handleClassChange = async (classId: string) => {
-    setSelectedClassId(classId);
+  const handleFullReset = () => {
+    setSelectedClassId('');
     setSelectedStudent(null);
     setSelectedFeeTypes([]);
     setTuitionMonths([]);
     setMonthlyMonths([]);
     setExamTerm(null);
-    setPaymentAmount('');
+    setPaymentAmount('0');
+    setSuccessData(null);
     setPaidFees([]);
-    await setPaysClassId(classId);
-  };
-
-  const toggleTuitionMonth = (month: string) => {
-    setTuitionMonths((prev) =>
-      prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]
-    );
-  };
-
-  const toggleMonthlyMonth = (month: string) => {
-    setMonthlyMonths((prev) =>
-      prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]
-    );
-  };
-
-  const toggleFeeType = (fee: IFeeType) => {
-    if (isFeeTypePaid(fee)) {
-      toast.info('This fee has already been fully paid for the selected year');
-      return;
-    }
-
-    setSelectedFeeTypes((prev) => {
-      const isSelected = prev.some((f) => f.id === fee.id);
-
-      if (isSelected) {
-        const newSelection = prev.filter((f) => f.id !== fee.id);
-
-        if (
-          fee.category === 'TUITION' &&
-          !newSelection.some((f) => f.category === 'TUITION')
-        ) {
-          setTuitionMonths([]);
-        }
-        if (
-          fee.category === 'MONTHLY' &&
-          !newSelection.some((f) => f.category === 'MONTHLY')
-        ) {
-          setMonthlyMonths([]);
-        }
-        if (
-          fee.category === 'EXAM' &&
-          !newSelection.some((f) => f.category === 'EXAM')
-        ) {
-          setExamTerm(null);
-        }
-
-        return newSelection;
-      } else {
-        const newSelection = [...prev, fee];
-
-        if (
-          fee.category === 'TUITION' &&
-          !prev.some((f) => f.category === 'TUITION')
-        ) {
-          const paidMonths = getPaidMonthsByCategory('TUITION');
-          const availableMonths = MONTHS.filter((m) => !paidMonths.has(m));
-          setTuitionMonths(
-            availableMonths.length > 0 ? [availableMonths[0]] : []
-          );
-        }
-        if (
-          fee.category === 'MONTHLY' &&
-          !prev.some((f) => f.category === 'MONTHLY')
-        ) {
-          const paidMonths = getPaidMonthsByCategory('MONTHLY');
-          const availableMonths = MONTHS.filter((m) => !paidMonths.has(m));
-          setMonthlyMonths(
-            availableMonths.length > 0 ? [availableMonths[0]] : []
-          );
-        }
-        if (
-          fee.category === 'EXAM' &&
-          !prev.some((f) => f.category === 'EXAM')
-        ) {
-          const paidTerms = getPaidTermsByCategory('EXAM');
-          const availableTerm = TERMS.find((t) => !paidTerms.has(t));
-          setExamTerm(availableTerm || null);
-        }
-
-        return newSelection;
-      }
-    });
-  };
-
-  const handlePrint = () => {
-    window.print();
+    setShowSuccessModal(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
+    if (
+      !selectedStudent ||
+      selectedFeeTypes.length === 0 ||
+      Number(paymentAmount) <= 0
+    )
+      return;
+
+    const currentSlipData = {
+      student: {
+        ...selectedStudent,
+        class: classes.find((c) => c.id === selectedClassId),
+      },
+      year: selectedYear,
+      breakdown: calculatedBreakdown.breakdown,
+      total: paymentAmount,
+    };
+
     setIsProcessing(true);
-
     const promises = selectedFeeTypes.map((feeType) => {
-      let months: string[] | undefined = undefined;
-      let term: Term | undefined = undefined;
-
-      if (feeType.category === 'TUITION') {
-        months = tuitionMonths;
-      } else if (feeType.category === 'MONTHLY') {
-        months = monthlyMonths;
-      } else if (feeType.category === 'EXAM') {
-        term = examTerm || undefined;
-      }
-
       const payload = {
         studentId: selectedStudent!.id,
         feeTypeId: feeType.id,
         amount: feeType.amount,
         year: selectedYear!,
-        month: months,
-        term: term,
+        month:
+          feeType.category === 'TUITION'
+            ? tuitionMonths
+            : feeType.category === 'MONTHLY'
+              ? monthlyMonths
+              : undefined,
+        term: feeType.category === 'EXAM' ? examTerm : undefined,
       };
       return makeFee(payload);
     });
 
     try {
       const results = await Promise.all(promises);
-
-      const allSuccess = results.every((res) => res.success);
-
-      if (allSuccess) {
-        if (selectedStudent?.id && selectedYear) {
-          const data = await myPaidFees(
-            selectedStudent.id,
-            selectedYear.toString()
-          );
-          setPaidFees(data || []);
-        }
-
+      if (results.every((res) => res.success)) {
+        setSuccessData(currentSlipData);
+        toast.success('Payment recorded successfully');
         setShowSuccessModal(true);
+        router.refresh();
       } else {
-        const failedCount = results.filter((res) => !res.success).length;
-        toast.error(`${failedCount} payment(s) failed`);
+        toast.error(results.find((r) => !r.success)?.message || 'Failed');
       }
-    } catch {
+    } catch (error) {
       toast.error('Payment processing failed');
     } finally {
       setIsProcessing(false);
     }
   };
-
-  const resetForm = () => {
-    setSelectedStudent(null);
-    setSelectedFeeTypes([]);
-    setPaymentAmount('');
-    setTuitionMonths([]);
-    setMonthlyMonths([]);
-    setExamTerm(null);
-  };
-
-  const handleCloseSuccessModal = () => {
-    setShowSuccessModal(false);
-    resetForm();
-  };
-
-  const selectedClass = classes.find((c) => c.id === selectedClassId);
 
   return (
     <>
@@ -397,27 +265,22 @@ const CreatePayment = ({
           body * {
             visibility: hidden;
           }
-
           .print-slip,
           .print-slip * {
             visibility: visible;
           }
-
           .print-slip {
             position: absolute;
             left: 0;
             top: 0;
-            width: 100%;
-            page-break-inside: avoid;
-            page-break-after: avoid;
-            page-break-before: avoid;
+            width: 210mm;
+            padding: 15mm;
+            background: white;
           }
-
           @page {
             size: A4;
-            margin: 10mm;
+            margin: 0;
           }
-
           .no-print {
             display: none !important;
           }
@@ -425,130 +288,67 @@ const CreatePayment = ({
       `}</style>
 
       <div className="max-w-7xl mx-auto p-4 space-y-6">
-        {/* Success Modal */}
-        <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-50 dark:bg-green-950">
-                <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
-              </div>
-              <DialogTitle className="text-center text-2xl font-bold text-green-600 dark:text-green-400">
-                Payment Successful!
-              </DialogTitle>
-              <DialogDescription className="text-center space-y-3 pt-4">
-                <p className="text-base font-semibold text-foreground">
-                  Payment of{' '}
-                  <span className="text-green-600 dark:text-green-400 font-bold">
-                    ৳{paymentAmount}
-                  </span>{' '}
-                  has been recorded
-                </p>
-                <div className="bg-muted rounded-lg p-4 space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Student:</span>
-                    <span className="font-semibold text-foreground">
-                      {selectedStudent?.firstName}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Class:</span>
-                    <span className="font-semibold text-foreground">
-                      {selectedClass?.name}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Year:</span>
-                    <span className="font-semibold text-foreground">
-                      {selectedYear}
-                    </span>
-                  </div>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex gap-3 mt-4">
-              <Button
-                onClick={handleCloseSuccessModal}
-                className="flex-1"
-                size="lg"
-              >
-                New Payment
-              </Button>
-              <Button
-                onClick={() => {
-                  handlePrint();
-                  handleCloseSuccessModal();
-                }}
-                variant="outline"
-                className="flex-1"
-                size="lg"
-              >
-                <Printer className="w-4 h-4 mr-2" />
-                Print Receipt
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <SuccessModal
+          isOpen={showSuccessModal}
+          onClose={handleFullReset}
+          onPrint={() => window.print()}
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="shadow-sm border-t-4 border-t-primary no-print">
+        {/* TOP CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 no-print">
+          <Card className="border-border bg-card">
             <CardHeader>
-              <CardTitle className="text-sm font-bold">Selection</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Selection
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Class</Label>
-                <ClassSelector classes={classes} onChange={handleClassChange} />
-              </div>
-              <div className="space-y-2">
-                <Label>Student</Label>
-
-                <Select
-                  value={selectedStudent?.id || ''}
-                  onValueChange={(id) =>
-                    setSelectedStudent(
-                      students.find((s) => s.id === id) || null
-                    )
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select student" />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    {students.length === 0 ? (
-                      <div className="p-2 text-sm text-center text-muted-foreground">
-                        No students in this class!
-                      </div>
-                    ) : (
-                      students.map((s) => (
-                        <SelectItem key={s.id} value={s.id}>
-                          {s.firstName} (Roll: {s.roll})
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
-              </div>
+              <ClassSelector
+                classes={classes}
+                onChange={(id) => {
+                  setSelectedClassId(id);
+                  setSelectedStudent(null);
+                  setSelectedFeeTypes([]);
+                }}
+              />
+              <Select
+                value={selectedStudent?.id || ''}
+                onValueChange={(id) => {
+                  setSelectedStudent(students.find((s) => s.id === id) || null);
+                  setSelectedFeeTypes([]);
+                }}
+              >
+                <SelectTrigger className="bg-background border-input">
+                  <SelectValue placeholder="Select student" />
+                </SelectTrigger>
+                <SelectContent>
+                  {students.map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.firstName} (Roll: {s.roll})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm flex flex-col items-center justify-center p-6 text-center bg-muted no-print">
+          <Card className="flex flex-col items-center justify-center p-6 bg-muted/30 border-border border-dashed">
             {selectedStudent ? (
-              <div className="space-y-3">
-                <Image
-                  src={selectedStudent.photo || '/avatar.png'}
-                  alt="st"
-                  width={150}
-                  height={200}
-                  className="rounded-full mx-auto border-4 border-background shadow"
-                />
-                <h3 className="text-lg font-bold">
+              <div className="text-center space-y-2">
+                <div className="relative h-20 w-20 mx-auto">
+                  <Image
+                    src={selectedStudent.photo || '/avatar.png'}
+                    alt="student"
+                    fill
+                    className="rounded-full object-cover border-2 border-primary/20"
+                  />
+                </div>
+                <h3 className="font-bold text-foreground">
                   {selectedStudent.firstName}
                 </h3>
-                <p className="text-primary text-sm font-medium">
-                  {selectedClass?.name}
-                </p>
-                <Badge variant="outline">Roll: {selectedStudent.roll}</Badge>
+                <Badge variant="secondary" className="font-mono">
+                  Roll: {selectedStudent.roll}
+                </Badge>
               </div>
             ) : (
               <p className="text-muted-foreground text-sm italic">
@@ -557,81 +357,70 @@ const CreatePayment = ({
             )}
           </Card>
 
-          {/* 3. Slip */}
-          <Card className="shadow-sm border-dashed bg-background print-slip">
-            <CardContent className="pt-4">
-              {selectedStudent && selectedFeeTypes.length > 0 ? (
-                <PaymentSlip
-                  student={{ ...selectedStudent, class: selectedClass }}
-                  year={selectedYear}
-                  breakdown={calculatedBreakdown.breakdown}
-                  total={paymentAmount}
-                  receiptNo={''}
-                />
-              ) : (
-                <p className="text-center text-muted-foreground py-10">
-                  No Slip Generated
-                </p>
-              )}
-            </CardContent>
+          <Card className="flex items-center justify-center border-primary/20 bg-primary/5 shadow-inner">
+            <div className="text-center">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
+                Total Payable
+              </p>
+              <p className="text-3xl font-black text-primary">
+                ৳{paymentAmount}
+              </p>
+            </div>
           </Card>
         </div>
 
-        {/* Fee Types Section */}
+        {/* FORM */}
         <form onSubmit={handleSubmit} className="no-print">
-          <Card>
+          <Card className="border-border">
             <CardContent className="pt-6 space-y-6">
-              <div className="space-y-3">
-                <Label className="font-bold">
-                  Select Fee Type(s)
-                  {selectedFeeTypes.length > 0 && (
-                    <span className="text-primary ml-2">
-                      ({selectedFeeTypes.length} selected)
-                    </span>
-                  )}
+              {loadingPaidFees && (
+                <div className="flex items-center gap-2 text-primary animate-pulse font-medium">
+                  <Loader2 className="animate-spin w-4 h-4" /> Fetching payment
+                  history...
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <Label className="font-bold text-lg text-foreground">
+                  Select Fee Types
                 </Label>
-                {loadingPaidFees && (
-                  <p className="text-xs text-muted-foreground">
-                    Loading paid fees...
-                  </p>
-                )}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  {filteredFeeTypes.map((fee) => {
+                  {feetypes.map((fee) => {
                     const isSelected = selectedFeeTypes.some(
                       (f) => f.id === fee.id
                     );
                     const isPaid = isFeeTypePaid(fee);
-
                     return (
                       <div
                         key={fee.id}
-                        onClick={() => !isPaid && toggleFeeType(fee)}
-                        className={`p-3 rounded-lg border-2 cursor-pointer transition-all relative ${
-                          isPaid
-                            ? 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/30 cursor-not-allowed opacity-75'
-                            : isSelected
-                              ? 'border-primary bg-primary/5'
-                              : 'border-border hover:border-primary/50'
-                        }`}
+                        onClick={() =>
+                          !isPaid &&
+                          (isSelected
+                            ? setSelectedFeeTypes((prev) =>
+                                prev.filter((f) => f.id !== fee.id)
+                              )
+                            : setSelectedFeeTypes((prev) => [...prev, fee]))
+                        }
+                        className={`p-4 rounded-xl border-2 cursor-pointer relative transition-all duration-200
+                          ${
+                            isPaid
+                              ? 'bg-secondary/50 border-secondary opacity-70'
+                              : isSelected
+                                ? 'border-primary bg-primary/10'
+                                : 'border-border bg-card hover:border-primary/50'
+                          }`}
                       >
-                        <p className="text-xs font-bold uppercase text-foreground">
+                        <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">
                           {fee.category}
                         </p>
-                        <p className="text-lg font-black mt-1 text-foreground">
+                        <p className="text-lg font-bold text-foreground">
                           ৳{fee.amount}
                         </p>
                         {isPaid && (
-                          <div className="absolute top-2 right-2 bg-green-500 dark:bg-green-600 rounded-full p-0.5">
-                            <Check className="w-3 h-3 text-white" />
-                          </div>
+                          <CheckCircle2 className="absolute top-2 right-2 w-4 h-4 text-primary" />
                         )}
                         {isSelected && !isPaid && (
-                          <CheckCircle2 className="w-4 h-4 text-primary absolute top-2 right-2" />
-                        )}
-                        {isPaid && (
-                          <p className="text-[9px] text-green-600 dark:text-green-400 font-semibold mt-1">
-                            FULLY PAID
-                          </p>
+                          <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary animate-ping" />
                         )}
                       </div>
                     );
@@ -639,220 +428,185 @@ const CreatePayment = ({
                 </div>
               </div>
 
-              {/* Monthly Months Selection */}
-              {hasMonthly && (
-                <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-xl border-2 border-green-200 dark:border-green-900">
-                  <div className="space-y-3">
-                    <Label className="font-bold text-green-900 dark:text-green-100">
-                      Monthly Fee Months
-                    </Label>
-                    <div className="flex flex-wrap gap-1">
-                      {MONTHS.map((m) => {
-                        const paidMonths = getPaidMonthsByCategory('MONTHLY');
-                        const isMonthPaid = paidMonths.has(m);
-
-                        return (
-                          <Button
-                            key={m}
-                            type="button"
-                            size="sm"
-                            variant={
-                              isMonthPaid
-                                ? 'secondary'
-                                : monthlyMonths.includes(m)
-                                  ? 'default'
-                                  : 'outline'
-                            }
-                            onClick={() =>
-                              !isMonthPaid && toggleMonthlyMonth(m)
-                            }
-                            className={`h-7 text-[9px] relative ${
-                              isMonthPaid
-                                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900 cursor-not-allowed'
-                                : ''
-                            }`}
-                            disabled={isMonthPaid}
-                          >
-                            {m}
-                            {isMonthPaid && (
-                              <Check className="w-3 h-3 ml-1 text-green-600 dark:text-green-400" />
-                            )}
-                          </Button>
-                        );
-                      })}
-                    </div>
-                    {monthlyMonths.length > 0 && (
-                      <p className="text-xs text-green-700 dark:text-green-300">
-                        Selected: {monthlyMonths.length} month(s) × ৳
-                        {
-                          selectedFeeTypes.find((f) => f.category === 'MONTHLY')
-                            ?.amount
-                        }{' '}
-                        = ৳
-                        {monthlyMonths.length *
-                          (selectedFeeTypes.find(
-                            (f) => f.category === 'MONTHLY'
-                          )?.amount || 0)}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Tuition Months Selection */}
+              {/* TUITION MONTHS */}
               {hasTuition && (
-                <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-900">
-                  <div className="space-y-3">
-                    <Label className="font-bold text-blue-900 dark:text-blue-100">
-                      Tuition Fee Months
-                    </Label>
-                    <div className="flex flex-wrap gap-1">
-                      {MONTHS.map((m) => {
-                        const paidMonths = getPaidMonthsByCategory('TUITION');
-                        const isMonthPaid = paidMonths.has(m);
-
-                        return (
-                          <Button
-                            key={m}
-                            type="button"
-                            size="sm"
-                            variant={
-                              isMonthPaid
-                                ? 'secondary'
-                                : tuitionMonths.includes(m)
-                                  ? 'default'
-                                  : 'outline'
-                            }
-                            onClick={() =>
-                              !isMonthPaid && toggleTuitionMonth(m)
-                            }
-                            className={`h-7 text-[9px] relative ${
-                              isMonthPaid
-                                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900 cursor-not-allowed'
-                                : ''
-                            }`}
-                            disabled={isMonthPaid}
-                          >
-                            {m}
-                            {isMonthPaid && (
-                              <Check className="w-3 h-3 ml-1 text-green-600 dark:text-green-400" />
-                            )}
-                          </Button>
-                        );
-                      })}
-                    </div>
-                    {tuitionMonths.length > 0 && (
-                      <p className="text-xs text-blue-700 dark:text-blue-300">
-                        Selected: {tuitionMonths.length} month(s) × ৳
-                        {
-                          selectedFeeTypes.find((f) => f.category === 'TUITION')
-                            ?.amount
-                        }{' '}
-                        = ৳
-                        {tuitionMonths.length *
-                          (selectedFeeTypes.find(
-                            (f) => f.category === 'TUITION'
-                          )?.amount || 0)}
-                      </p>
-                    )}
+                <div className="p-4 bg-accent/30 rounded-xl border border-border">
+                  <Label className="font-bold text-foreground">
+                    Select Tuition Months
+                  </Label>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {MONTHS.map((m) => {
+                      const isPaid = getPaidMonthsByCategory('TUITION').has(
+                        m.toUpperCase()
+                      );
+                      const isSelected = tuitionMonths.includes(m);
+                      return (
+                        <Button
+                          key={m}
+                          type="button"
+                          size="sm"
+                          variant={
+                            isPaid
+                              ? 'secondary'
+                              : isSelected
+                                ? 'default'
+                                : 'outline'
+                          }
+                          disabled={isPaid}
+                          onClick={() =>
+                            setTuitionMonths((prev) =>
+                              isSelected
+                                ? prev.filter((x) => x !== m)
+                                : [...prev, m]
+                            )
+                          }
+                          className="min-w-20"
+                        >
+                          {m} {isPaid && <Check className="ml-1 w-3 h-3" />}
+                        </Button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
-              {/* Exam Term Selection */}
-              {hasExam && (
-                <div className="p-4 bg-orange-50 dark:bg-orange-950/20 rounded-xl border-2 border-orange-200 dark:border-orange-900">
-                  <div className="space-y-3">
-                    <Label className="font-bold text-orange-900 dark:text-orange-100">
-                      Exam Fee Term
+              {/* MONTHLY MONTHS */}
+              {hasMonthly && (
+                <div className="p-4 bg-accent/30 rounded-xl border border-border">
+                  <Label className="font-bold text-foreground">
+                    Select Monthly Fee Months
+                  </Label>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {MONTHS.map((m) => {
+                      const isPaid = getPaidMonthsByCategory('MONTHLY').has(
+                        m.toUpperCase()
+                      );
+                      const isSelected = monthlyMonths.includes(m);
+                      return (
+                        <Button
+                          key={m}
+                          type="button"
+                          size="sm"
+                          variant={
+                            isPaid
+                              ? 'secondary'
+                              : isSelected
+                                ? 'default'
+                                : 'outline'
+                          }
+                          disabled={isPaid}
+                          onClick={() =>
+                            setMonthlyMonths((prev) =>
+                              isSelected
+                                ? prev.filter((x) => x !== m)
+                                : [...prev, m]
+                            )
+                          }
+                          className="min-w-20"
+                        >
+                          {m} {isPaid && <Check className="ml-1 w-3 h-3" />}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-end gap-4 border-t border-border pt-6">
+                {/* Academic Year Selection */}
+                <div className="flex-1 min-w-[120px]">
+                  <Label className="text-muted-foreground mb-2 block">
+                    Academic Year
+                  </Label>
+                  <Select
+                    value={selectedYear?.toString()}
+                    onValueChange={(v) => setSelectedYear(Number(v))}
+                  >
+                    <SelectTrigger className="bg-background">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {YEARS.map((y) => (
+                        <SelectItem key={y} value={y.toString()}>
+                          {y}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {selectedFeeTypes.some((f) => f.category === 'EXAM') && (
+                  <div className="flex-1 min-w-[150px] animate-in fade-in slide-in-from-left-2">
+                    <Label className="text-muted-foreground mb-2 block font-medium">
+                      Select Exam Term
                     </Label>
                     <Select
                       value={examTerm || ''}
                       onValueChange={(v) => setExamTerm(v as Term)}
                     >
-                      <SelectTrigger className="w-40">
-                        <SelectValue placeholder="Select term" />
+                      <SelectTrigger className="bg-background border-primary/50 ring-offset-background">
+                        <SelectValue placeholder="Choose Term" />
                       </SelectTrigger>
                       <SelectContent>
-                        {TERMS.map((term) => {
-                          const paidTerms = getPaidTermsByCategory('EXAM');
-                          const isTermPaid = paidTerms.has(term);
-
+                        {TERMS.map((t) => {
+                          const isPaid = getPaidTermsByCategory('EXAM').has(
+                            t as Term
+                          );
                           return (
-                            <SelectItem
-                              key={term}
-                              value={term}
-                              disabled={isTermPaid}
-                              className={
-                                isTermPaid
-                                  ? 'text-green-600 dark:text-green-400'
-                                  : ''
-                              }
-                            >
-                              {term} {isTermPaid && '✓ (Paid)'}
+                            <SelectItem key={t} value={t} disabled={isPaid}>
+                              {t} {isPaid ? '(Paid)' : ''}
                             </SelectItem>
                           );
                         })}
                       </SelectContent>
                     </Select>
-                    {examTerm && (
-                      <p className="text-xs text-orange-700 dark:text-orange-300">
-                        Selected: {examTerm} Term - ৳
-                        {selectedFeeTypes.find((f) => f.category === 'EXAM')
-                          ?.amount || 0}
-                      </p>
-                    )}
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Year Selection - Always show */}
-              <div className="space-y-2">
-                <Label>Year</Label>
-                <Select
-                  value={selectedYear?.toString()}
-                  onValueChange={(v) => setSelectedYear(Number(v))}
-                >
-                  <SelectTrigger className="w-40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {YEARS.map((y) => (
-                      <SelectItem key={y} value={y.toString()}>
-                        {y}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="flex-1 space-y-2">
-                  <Label>Total Amount</Label>
+                {/* Calculated Total */}
+                <div className="flex-2 min-w-[200px]">
+                  <Label className="text-muted-foreground mb-2 block">
+                    Calculated Total
+                  </Label>
                   <Input
-                    type="number"
-                    value={paymentAmount}
-                    onChange={(e) => setPaymentAmount(e.target.value)}
-                    className="font-bold text-lg"
-                    disabled={selectedFeeTypes.length === 0}
+                    value={`৳ ${paymentAmount}`}
+                    readOnly
+                    className="font-bold text-lg bg-muted text-foreground"
                   />
                 </div>
+
+                {/* Submit Button */}
                 <Button
                   size="lg"
-                  className="mt-6"
-                  disabled={!isFormValid || isProcessing}
+                  disabled={
+                    !selectedStudent ||
+                    selectedFeeTypes.length === 0 ||
+                    isProcessing ||
+                    (selectedFeeTypes.some((f) => f.category === 'EXAM') &&
+                      !examTerm)
+                  }
                   type="submit"
+                  className="px-10 font-bold shadow-lg"
                 >
-                  {isProcessing ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    'Confirm Payment'
-                  )}
+                  {isProcessing && <Loader2 className="animate-spin mr-2" />}
+                  Confirm & Pay
                 </Button>
               </div>
             </CardContent>
           </Card>
         </form>
+
+        {successData && (
+          <div className="print-slip shadow-xl rounded-lg border border-border bg-white">
+            <PaymentSlip
+              student={successData.student}
+              year={successData.year}
+              breakdown={successData.breakdown}
+              total={successData.total}
+              receiptNo={new Date().getTime().toString().slice(-6)}
+            />
+          </div>
+        )}
       </div>
     </>
   );

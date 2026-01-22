@@ -31,7 +31,7 @@ import { useTransition } from 'react';
 export function NavUser({
   user,
 }: {
-  user: {
+  user?: {
     email: string;
   };
 }) {
@@ -63,7 +63,7 @@ export function NavUser({
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {/* <span className="truncate font-medium">{user.name}</span> */}
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {user?.email}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -84,7 +84,7 @@ export function NavUser({
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   {/* <span className="truncate font-medium">{user.name}</span> */}
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {user?.email}
                   </span>
                 </div>
               </div>

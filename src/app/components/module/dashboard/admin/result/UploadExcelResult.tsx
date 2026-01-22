@@ -28,7 +28,7 @@ const ResultUploadPage = ({
   const [dragActive, setDragActive] = useState(false);
 
   const firstRecord = students[0];
-  const className = firstRecord.class?.name || '';
+  const className = firstRecord?.class?.name || '';
 
   const onDownloadClick = () => {
     try {

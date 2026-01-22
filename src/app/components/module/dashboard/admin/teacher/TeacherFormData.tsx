@@ -23,6 +23,7 @@ import { ITeacher } from '@/types/teacher.interface';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { updateTeacher } from '@/app/services/teacher/updateTeacher';
+import { useRouter } from "next/navigation";
 
 interface ITeacherFormDialogProps {
   open: boolean;
@@ -46,6 +47,7 @@ const TeacherFormDialog = ({
   const [apiErrors, setApiErrors] = useState<
     { field: string; message: string }[] | null
   >(null);
+  const router = useRouter();
 
   const handleSubmit = async (formData: FormData) => {
     setLoading(true);
@@ -73,6 +75,7 @@ const TeacherFormDialog = ({
       if (response.success) {
         toast.success(response.message || 'Teacher saved');
         onSuccess();
+        router.refresh();
         onClose();
         setApiErrors(null);
       } else {

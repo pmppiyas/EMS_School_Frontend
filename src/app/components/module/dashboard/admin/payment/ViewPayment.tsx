@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { CalendarDays, ReceiptText } from 'lucide-react';
 import { IFee } from '@/types/fee.interface';
 
-const ViewFee = ({ fees }: { fees: IFee[] }) => {
+const ViewPayment = ({ fees }: { fees: IFee[] }) => {
   return (
     <div className="flex flex-col gap-2 max-w-full mx-auto">
       {fees.map((fee, index) => (
@@ -52,4 +52,4 @@ const ViewFee = ({ fees }: { fees: IFee[] }) => {
   );
 };
 
-export default ViewFee;
+export default ViewPayment;

@@ -1,9 +1,17 @@
 import { serverFetch } from '@/lib/serverFetch';
-import {} from 'next/cache';
-export const getAllFeeTypes = async () => {
-  const res = await serverFetch.get('fee/type', {
+
+export const getAllFeeTypes = async (classId?: string) => {
+  let url = '';
+
+  if (classId) {
+    url = `fee/type?classId=${classId}`;
+  } else {
+    url = 'fee/type';
+  }
+  const res = await serverFetch.get(url, {
     next: {
       tags: ['feetype'],
+      revalidate: 0,
     },
   });
 

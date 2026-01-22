@@ -73,7 +73,7 @@ export default async function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user ?? null} />
       </SidebarFooter>
     </Sidebar>
   );

@@ -3,16 +3,13 @@
 import { useTransition, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import ManagementTable from '../../ManagementTable';
-import DeleteConfirmationDialog from '../../../../shared/DeleteConformationDiolog';
-import { deleteClassTime } from '../../../../../services/classTime/deleteClassTime';
-import ClassTimeColumns from './ClassTimeColumns';
-import ClassTimeFormDialog, {
-  IClassTimeTableProps,
-} from './ClassTimeFormDiolog';
-
-import { IClassTimeTableComponentProps } from '../../../../../../types/classTime.interface';
-import EditClassTimeDialog from '@/app/components/module/dashboard/admin/classtime/EditClassTimeDialog';
+import EditClassTimeDialog, { IClassTimeTableProps } from '@/app/components/module/dashboard/admin/classtime/EditClassTimeDialog';
+import ManagementTable from '@/app/components/module/dashboard/ManagementTable';
+import ClassTimeColumns from '@/app/components/module/dashboard/admin/classtime/ClassTimeColumns';
+import ClassTimeFormDialog from '@/app/components/module/dashboard/admin/classtime/ClassTimeFormDiolog';
+import { IClassTimeTableComponentProps } from '@/types/classTime.interface';
+import { deleteClassTime } from '@/app/services/classTime/deleteClassTime';
+import DeleteConfirmationDialog from '@/app/components/shared/DeleteConformationDiolog';
 
 const ClassTimeTable = ({ ClassTimes }: IClassTimeTableComponentProps) => {
   const router = useRouter();

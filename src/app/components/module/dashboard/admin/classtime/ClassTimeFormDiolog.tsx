@@ -22,28 +22,11 @@ import {
 } from '@/components/ui/select';
 import { Plus, Trash2 } from 'lucide-react';
 import { AddClassTime } from '../../../../../services/classTime/addClassTime';
-
-export interface IClassTimeTableProps {
-  id?: string;
-  period: string;
-  startTime: string;
-  endTime: string;
-  classId?: string;
-}
-
-interface IClassTimeFormDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-  classTime?: IClassTimeTableProps;
-  classes?: { id: string; name: string }[];
-}
-
-interface TimeSlot {
-  period: string;
-  startTime: string;
-  endTime: string;
-}
+import { useRouter } from 'next/navigation';
+import {
+  IClassTimeFormDialogProps,
+  TimeSlot,
+} from '@/types/classTime.interface';
 
 const ClassTimeFormDialog = ({
   open,
@@ -94,6 +77,8 @@ const ClassTimeFormDialog = ({
     setTimeSlots(updated);
   };
 
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -126,7 +111,7 @@ const ClassTimeFormDialog = ({
             payload.length > 1 ? 's' : ''
           }`
         );
-
+        router.refresh();
         onSuccess();
         onClose();
       }
@@ -266,10 +251,10 @@ const ClassTimeFormDialog = ({
               {loading
                 ? 'Saving...'
                 : isEdit
-                ? 'Update Period'
-                : `Save ${timeSlots.length} Period${
-                    timeSlots.length > 1 ? 's' : ''
-                  }`}
+                  ? 'Update Period'
+                  : `Save ${timeSlots.length} Period${
+                      timeSlots.length > 1 ? 's' : ''
+                    }`}
             </Button>
           </div>
         </form>

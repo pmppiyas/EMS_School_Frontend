@@ -5,7 +5,7 @@ export const getAllFees = async () => {
     const res = await serverFetch.get('fee', {
       next: {
         tags: ['fees'],
-        revalidate: 60,
+        revalidate: 0,
       },
     });
 

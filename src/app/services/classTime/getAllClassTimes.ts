@@ -3,7 +3,10 @@ import { serverFetch } from '@/lib/serverFetch';
 export const getAllClassTimes = async () => {
   try {
     const res = await serverFetch.get('class/time', {
-      cache: 'no-store',
+      next: {
+        tags: ['classtime'],
+        revalidate: 0,
+      },
     });
 
     if (!res.ok) {
@@ -12,6 +15,7 @@ export const getAllClassTimes = async () => {
     }
 
     const result = await res.json();
+
     return result.data;
   } catch (error) {
     console.error('Fetch error details:', error);
