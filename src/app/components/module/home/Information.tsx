@@ -15,7 +15,7 @@ const Information = () => {
     {
       title: 'Results',
       icon: <ClipboardList className="w-6 h-6 text-primary" />,
-      link: '/results',
+      link: '/dashboard/results',
     },
     {
       title: 'Exam ClassTime',
@@ -25,7 +25,7 @@ const Information = () => {
     {
       title: 'Routine',
       icon: <BookOpen className="w-6 h-6 text-primary" />,
-      link: '/routine',
+      link: '/dashboard/routine',
     },
   ];
 

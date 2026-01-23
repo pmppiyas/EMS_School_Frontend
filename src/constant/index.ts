@@ -55,3 +55,10 @@ export const FeeCategories = [
 ] as const;
 
 export const TERMS = ['FIRST', 'SECOND', 'THIRD', 'FINAL'] as const;
+
+export const terms = [
+  { label: 'First Term', value: 'FIRST' },
+  { label: 'Second Term', value: 'SECOND' },
+  { label: 'Third Term', value: 'THIRD' },
+  { label: 'Final Term', value: 'FINAL' },
+];

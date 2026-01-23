@@ -9,13 +9,9 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { terms } from '@/constant';
 
-const terms = [
-  { label: 'First Term', value: 'FIRST_TERM' },
-  { label: 'Second Term', value: 'SECOND_TERM' },
-  { label: 'Third Term', value: 'THIRD_TERM' },
-  { label: 'Final Term', value: 'FINAL' },
-];
+
 
 const TermSelector = () => {
   const [selectedTerm, setSelectedTerm] = useState<string>('');

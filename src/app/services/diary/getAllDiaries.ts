@@ -8,6 +8,7 @@ export const getDiaries = async (classId: string, date?: string) => {
   const res = await serverFetch.get(`diary/${classId}${query}`, {
     next: {
       tags: ['diary'],
+      revalidate: 10,
     },
   });
 
