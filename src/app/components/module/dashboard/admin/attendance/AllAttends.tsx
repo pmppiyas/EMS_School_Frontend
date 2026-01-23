@@ -35,17 +35,6 @@ const AllAttends = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <MonthSelector
-          month={month}
-          year={year}
-          onChange={(m, y) => {
-            setMonth(m);
-            setYear(y);
-          }}
-        />
-      </div>
-
       <MonthlyAttendanceTable
         attendance={attendByMonth}
         isTeacherMode={isTeacherMode}

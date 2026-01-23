@@ -68,10 +68,10 @@ const TodayAttends = ({ attendance }: { attendance: any }) => {
                     t.status === 'PRESENT'
                       ? 'bg-green-500'
                       : t.status === 'LATE'
-                      ? 'bg-yellow-500'
-                      : t.status === 'LEAVE'
-                      ? 'bg-blue-500'
-                      : 'bg-red-500'
+                        ? 'bg-yellow-500'
+                        : t.status === 'LEAVE'
+                          ? 'bg-blue-500'
+                          : 'bg-red-500'
                   }`}
                 >
                   {t.status}

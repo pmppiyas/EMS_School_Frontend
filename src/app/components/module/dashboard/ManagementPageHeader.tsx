@@ -66,7 +66,7 @@ const ManagementPageHeader = ({
 
           {/* Actions */}
           {actions?.length > 0 && (
-            <div className="flex gap-2 flex-wrap items-center">
+            <div className="flex gap-2 flex-wrap items-center justify-end ml-auto">
               {actions.map((action, idx) => {
                 if (React.isValidElement(action)) {
                   return <React.Fragment key={idx}>{action}</React.Fragment>;

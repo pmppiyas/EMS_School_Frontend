@@ -3,7 +3,6 @@
 
 import { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
-import MonthSelector from '../../../../shared/MonthSelector';
 import MonthlyAttendanceTable from '../../admin/attendance/MonthlyAttendanceTable';
 
 const AllAttends = ({ attendance }: { attendance: any[] }) => {
@@ -30,17 +29,6 @@ const AllAttends = ({ attendance }: { attendance: any[] }) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <MonthSelector
-          month={month}
-          year={year}
-          onChange={(m, y) => {
-            setMonth(m);
-            setYear(y);
-          }}
-        />
-      </div>
-
       <MonthlyAttendanceTable
         attendance={attendByMonth}
         isTeacherMode={false}
