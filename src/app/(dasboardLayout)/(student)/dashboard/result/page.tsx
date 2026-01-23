@@ -3,6 +3,7 @@ import ManagementPageHeader from '@/app/components/module/dashboard/ManagementPa
 import ResultSkeleton from '@/app/components/module/dashboard/student/result/ResultSkeleton';
 import ResultDataWrapper from '@/app/components/module/dashboard/student/result/ResultDataWrapper';
 import TermSelector from '@/app/components/shared/TermSelector';
+import { GraduationCap } from 'lucide-react';
 
 const page = async ({
   searchParams,
@@ -31,9 +32,9 @@ const page = async ({
       <ManagementPageHeader
         title={title}
         description="View your semester-wise performance, grades, and GPA."
+        icon={<GraduationCap size={24} className="text-primary" />}
         actions={[<TermSelector key={selectedTerm} />]}
       />
-
       <Suspense
         key={`${selectedYear}-${selectedTerm}`}
         fallback={<ResultSkeleton />}

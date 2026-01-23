@@ -3,6 +3,7 @@ import ManagementPageHeader from '@/app/components/module/dashboard/ManagementPa
 import { DateSelector } from '@/app/components/shared/DateSelector';
 import DiaryDataWrapper from '@/app/components/module/dashboard/student/diary/DiaryDataWrapper';
 import DiaryTableSkeleton from '@/app/components/module/dashboard/student/diary/DiaryTableSkeleton';
+import { BookOpenCheck } from 'lucide-react';
 
 const page = async ({
   searchParams,
@@ -17,6 +18,7 @@ const page = async ({
       <ManagementPageHeader
         title="Daily Diary"
         description="Manage daily every period's diary and class activities."
+        icon={<BookOpenCheck size={24} className="text-primary" />}
         actions={[<DateSelector key="date-picker" withNavigation={true} />]}
       />
 

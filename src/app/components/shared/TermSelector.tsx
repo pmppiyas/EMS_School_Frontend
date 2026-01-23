@@ -11,8 +11,6 @@ import {
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { terms } from '@/constant';
 
-
-
 const TermSelector = () => {
   const [selectedTerm, setSelectedTerm] = useState<string>('');
   const router = useRouter();

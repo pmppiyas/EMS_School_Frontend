@@ -11,7 +11,6 @@ const ManagementPageHeader = ({
   icon,
   title,
   description,
-  breadcrumbs = [],
   actions = [],
   showSearch = false,
   searchField,

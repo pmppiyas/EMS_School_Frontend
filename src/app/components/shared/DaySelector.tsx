@@ -57,14 +57,11 @@ const DaySelector = ({
   const handleChange = async (value: string) => {
     setSelectedDay(value);
 
-    // Update URL Params
     const params = new URLSearchParams(searchParams.toString());
     params.set('day', value);
 
-    // Update Cookie
     await setCookie(cookieName, value);
 
-    // Navigate
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
 
     if (onChange) onChange(value);
@@ -73,7 +70,7 @@ const DaySelector = ({
   return (
     <div className="relative">
       <Select value={selectedDay} onValueChange={handleChange}>
-        <SelectTrigger className="bg-primary text-primary-foreground font-medium border-primary/20 shadow-sm">
+        <SelectTrigger className="bg-background text-primary font-medium border-input shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors">
           <SelectValue placeholder="Select Day" />
         </SelectTrigger>
 

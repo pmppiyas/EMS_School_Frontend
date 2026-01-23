@@ -4,7 +4,6 @@
 import { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 import MonthlyAttendanceTable from './MonthlyAttendanceTable';
-import MonthSelector from '../../../../shared/MonthSelector';
 
 const AllAttends = ({
   attendance,

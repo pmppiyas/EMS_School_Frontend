@@ -1,14 +1,15 @@
 import { serverFetch } from '@/lib/serverFetch';
 
-export const getTeachers = async () => {
-  const res = await serverFetch.get('teacher', {
+export const getMyAttendance = async (month: string, year: string) => {
+  const res = await serverFetch.get(`attendance/my/${month}/${year}`, {
     next: {
-      tags: ['teacher'],
+      tags: ['attendance'],
       revalidate: 60,
     },
   });
 
   let data;
+
   try {
     data = await res.json();
   } catch (err) {
@@ -17,7 +18,7 @@ export const getTeachers = async () => {
   }
 
   if (!res.ok) {
-    throw new Error('Failed to fetch teachers');
+    throw new Error('Failed to fetch own attendances');
   }
 
   return data.data;

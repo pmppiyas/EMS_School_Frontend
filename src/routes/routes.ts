@@ -97,6 +97,11 @@ export const studentRoutes: NavItem[] = [
     href: '/dashboard/result',
     iconName: 'BookOpen',
   },
+  {
+    title: 'Attendance',
+    href: '/dashboard/attendance',
+    iconName: 'BookOpen',
+  },
 ];
 
 export const commonRoutes: NavItem[] = [

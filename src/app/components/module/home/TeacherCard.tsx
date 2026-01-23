@@ -3,99 +3,75 @@
 
 import { ITeacher } from '@/types/teacher.interface';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { Mail, Phone, User } from 'lucide-react';
+import Image from 'next/image';
 
-export default function TeacherMagnetCard({ teacher }: { teacher: ITeacher }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+export default function TeacherHoverCard({ teacher }: { teacher: ITeacher }) {
   const navigate = useRouter();
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const magnetStrength = 15;
-  const rotationFactor = 0.8;
-  const scaleFactor = 1.02;
-
-  const handleMouseMove = (e: any) => {
-    if (!cardRef.current) return;
-
-    const { left, top, width, height } =
-      cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - (left + width / 2)) / (width / 2);
-    const y = (e.clientY - (top + height / 2)) / (height / 2);
-
-    setPosition({
-      x: x * magnetStrength,
-      y: y * magnetStrength,
-    });
-  };
 
   return (
     <motion.div
-      ref={cardRef}
-      className="relative w-full p-5 rounded-xl border border-gray-200 dark:border-white/20
-                 bg-card text-card-foreground backdrop-blur-sm shadow-md
-                 hover:shadow-xl cursor-pointer transition-all"
-      animate={{
-        x: position.x,
-        y: position.y,
-        rotateX: position.y * rotationFactor,
-        rotateY: position.x * -rotationFactor,
-        scale: isHovered ? scaleFactor : 1,
-      }}
-      transition={{
-        type: 'spring',
-        stiffness: 350,
-        damping: 22,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setPosition({ x: 0, y: 0 });
-      }}
       onClick={() => navigate.push(`/teacher/${teacher.id}`)}
+      whileHover={{
+        y: -8,
+        scale: 1.02,
+        transition: { duration: 0.2, ease: 'easeOut' },
+      }}
+      className="group relative w-full p-6 rounded-2xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-xl hover:border-primary/20 cursor-pointer transition-all duration-300 overflow-hidden"
     >
-      {/* Teacher Image */}
-      <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border shadow-sm mb-4">
-        {/* <Image
-          src={teacher?.photo || 'teacher_photo'}
-          alt="Teacher"
-          width={200}
-          height={200}
-          className="w-full h-full object-cover"
-        /> */}
+      {/* Background Subtle Accent */}
+      <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-10 -mt-10 transition-all group-hover:bg-primary/10" />
+
+      {/* Teacher Image placeholder */}
+      <div className="relative w-24 h-24 mx-auto mb-5">
+        <div className="w-full h-full rounded-full bg-muted flex items-center justify-center border-2 border-background shadow-inner overflow-hidden group-hover:border-primary/30 transition-colors">
+          <div className="relative w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden border-2 border-background shadow-md">
+            <Image
+              src={teacher.photo || '/placeholder-avatar.png'}
+              alt={teacher.firstName}
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+
+        <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-4 border-card rounded-full" />
       </div>
 
       {/* Name & Title */}
-      <h3 className="text-lg font-semibold text-center">
-        {teacher.firstName} {teacher.lastName}
-      </h3>
-
-      <p className="text-sm text-muted-foreground text-center mb-3">
-        {teacher.designation ?? 'Teacher'}
-      </p>
-
-      {/* Contact */}
-      <div className="text-center text-sm text-muted-foreground space-y-1">
-        {teacher.phoneNumber && <p>Phone: {teacher.phoneNumber}</p>}
+      <div className="text-center space-y-1 mb-5">
+        <h3 className="text-lg font-bold tracking-tight text-foreground uppercase">
+          {teacher.firstName} {teacher.lastName}
+        </h3>
+        <p className="text-xs font-black text-primary/80 uppercase tracking-widest">
+          {teacher.designation ?? 'Faculty Member'}
+        </p>
       </div>
 
-      {/* Glow */}
-      <motion.div
-        className="absolute inset-0 rounded-xl"
-        animate={{
-          opacity: isHovered ? 0.08 : 0,
-          background: isHovered
-            ? `radial-gradient(circle at
-                ${50 + position.x / 2}%
-                ${50 + position.y / 2}%,
-                rgba(255,255,255,0.3), transparent 40%)`
-            : 'none',
-        }}
-        transition={{ duration: 0.25 }}
-      />
+      <div className="h-px w-full bg-border mb-5" />
+
+      {/* Contact Info */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <div className="p-2 rounded-lg bg-secondary group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+            <Phone size={14} />
+          </div>
+          <span className="font-medium">{teacher.phoneNumber ?? 'N/A'}</span>
+        </div>
+
+        {teacher.email && (
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <div className="p-2 rounded-lg bg-secondary group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+              <Mail size={14} />
+            </div>
+            <span className="truncate font-medium">{teacher.email}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Hover Line Detail */}
+      <div className="absolute bottom-0 left-0 w-0 h-1 bg-primary group-hover:w-full transition-all duration-500" />
     </motion.div>
   );
 }

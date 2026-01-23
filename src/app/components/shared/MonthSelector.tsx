@@ -1,45 +1,72 @@
 'use client';
 
-import dayjs from 'dayjs';
+import { useState, useEffect } from 'react';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { MONTHS } from '@/constant';
+import { getCookie, setCookie } from '@/lib/cookies';
 
-const months = Array.from({ length: 12 }).map((_, i) =>
-  dayjs().month(i).format('MMMM')
-);
+const MonthSelector = () => {
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-const MonthSelector = ({
-  month,
-  year,
-  onChange,
-}: {
-  month: number;
-  year: number;
-  onChange: (month: number, year: number) => void;
-}) => {
+  useEffect(() => {
+    const initValue = async () => {
+      const urlMonth = searchParams.get('month');
+      const cookieMonth = await getCookie('month');
+
+      if (urlMonth) {
+        setSelectedMonth(urlMonth.toUpperCase());
+      } else if (cookieMonth) {
+        const val = (cookieMonth as string).toUpperCase();
+        setSelectedMonth(val);
+        router.replace(`${pathname}?month=${val}&page=1`, { scroll: false });
+      } else {
+        const currentMonthName = MONTHS[new Date().getMonth()];
+        setSelectedMonth(currentMonthName);
+        await setCookie('month', currentMonthName);
+        router.replace(`${pathname}?month=${currentMonthName}&page=1`, {
+          scroll: false,
+        });
+      }
+    };
+
+    initValue();
+  }, [searchParams, pathname, router]);
+
+  const handleChange = (value: string) => {
+    setSelectedMonth(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('month', value);
+    params.set('page', '1');
+    setCookie('month', value);
+
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
   return (
-    <div className="flex gap-2 items-center">
-      <select
-        value={month}
-        onChange={(e) => onChange(Number(e.target.value), year)}
-        className="border rounded-md px-3 py-1 text-sm"
-      >
-        {months.map((m, i) => (
-          <option key={i} value={i}>
-            {m}
-          </option>
-        ))}
-      </select>
-
-      <select
-        value={year}
-        onChange={(e) => onChange(month, Number(e.target.value))}
-        className="border rounded-md px-3 py-1 text-sm"
-      >
-        {[year - 1, year, year + 1].map((y) => (
-          <option key={y} value={y}>
-            {y}
-          </option>
-        ))}
-      </select>
+    <div className="relative min-w[160px]">
+      <Select value={selectedMonth} onValueChange={handleChange}>
+        <SelectTrigger className="bg-background text-primary font-medium border-input shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors">
+          <SelectValue placeholder="SELECT MONTH" />
+        </SelectTrigger>
+        <SelectContent>
+          {MONTHS.map((month) => (
+            <SelectItem key={month} value={month}>
+              {month}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };

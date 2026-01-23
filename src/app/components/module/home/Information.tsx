@@ -10,17 +10,17 @@ const Information = () => {
     {
       title: 'Our Teachers',
       icon: <Users className="w-6 h-6 text-primary" />,
-      link: '/teacher',
+      link: '/dashboard',
     },
     {
       title: 'Results',
       icon: <ClipboardList className="w-6 h-6 text-primary" />,
-      link: '/dashboard/results',
+      link: '/dashboard/result',
     },
     {
       title: 'Exam ClassTime',
       icon: <Calendar className="w-6 h-6 text-primary" />,
-      link: '/exam-ClassTime',
+      link: '/dashboard',
     },
     {
       title: 'Routine',

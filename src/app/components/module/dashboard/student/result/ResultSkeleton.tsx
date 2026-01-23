@@ -15,7 +15,7 @@ const ResultSkeleton = () => {
           <Skeleton className="h-6 w-20" />
         </div>
 
-        {/* Rows Placeholder */}
+
         {[...Array(6)].map((_, i) => (
           <div key={i} className="flex gap-4 py-2 items-center">
             <Skeleton className="h-10 flex-1" />
