@@ -8,16 +8,10 @@ export interface IAction {
   href?: string;
 }
 
-export interface IBreadcrumbItem {
-  label: string;
-  href?: string;
-}
-
 export interface IManagementPageHeaderProps {
   icon?: React.ReactNode;
   title: string;
   description?: string;
-  breadcrumbs?: IBreadcrumbItem[];
   actions?: (IAction | React.ReactNode)[];
   showSearch?: boolean;
   searchField?: React.ReactNode;

@@ -1,11 +1,8 @@
+import { Suspense } from 'react';
 import ManagementPageHeader from '@/app/components/module/dashboard/ManagementPageHeader';
-import DiaryTable from '@/app/components/module/dashboard/teacher/diery/DiaryTable';
 import { DateSelector } from '@/app/components/shared/DateSelector';
-import { getDiaries } from '@/app/services/diary/getAllDiaries';
-import { getMe } from '@/app/services/shared/getMe';
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import DiaryDataWrapper from '@/app/components/module/dashboard/student/diary/DiaryDataWrapper';
+import DiaryTableSkeleton from '@/app/components/module/dashboard/student/diary/DiaryTableSkeleton';
 
 const page = async ({
   searchParams,
@@ -13,22 +10,19 @@ const page = async ({
   searchParams: Promise<{ date?: string }>;
 }) => {
   const params = await searchParams;
-  const selectedDate = params.date;
-
-  const today = selectedDate || new Date().toISOString().split('T')[0];
-
-  const { student: me } = await getMe();
-
-  const data = await getDiaries(me.classId, today);
+  const today = params.date || new Date().toISOString().split('T')[0];
 
   return (
-    <div>
+    <div className="space-y-6">
       <ManagementPageHeader
         title="Daily Diary"
         description="Manage daily every period's diary and class activities."
         actions={[<DateSelector key="date-picker" withNavigation={true} />]}
       />
-      <DiaryTable data={data} />
+
+      <Suspense key={today} fallback={<DiaryTableSkeleton />}>
+        <DiaryDataWrapper date={today} />
+      </Suspense>
     </div>
   );
 };

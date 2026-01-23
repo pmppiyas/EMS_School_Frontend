@@ -87,6 +87,11 @@ export const studentRoutes: NavItem[] = [
     href: '/dashboard/diary',
     iconName: 'BookOpen',
   },
+  {
+    title: 'Routine',
+    href: '/dashboard/routine',
+    iconName: 'BookOpen',
+  },
 ];
 
 export const commonRoutes: NavItem[] = [

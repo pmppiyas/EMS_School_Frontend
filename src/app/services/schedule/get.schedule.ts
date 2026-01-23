@@ -12,7 +12,7 @@ export const getSchedulesByDay = async (day: string) => {
   }
 
   if (!res.ok) {
-    throw new Error('Failed to fetch teachers');
+    throw new Error('Failed to fetch routine');
   }
 
   return data.data;

@@ -23,43 +23,21 @@ const ManagementPageHeader = ({
   modeSelector?: React.ReactNode;
 }) => {
   return (
-    <header className="relative overflow-hidden container max-w-7xl mx-auto px-6 py-6 rounded-xl mb-6 border shadow-sm bg-linear-to-br from-background via-muted/20 to-background">
+    <header className="relative overflow-hidden container max-w-7xl mx-auto px-6 py-6 rounded-xl mb-6 border shadow-sm bg-linear-to-r from-primary/10 via-primary/5 to-background">
       <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative space-y-4">
-        {breadcrumbs.length > 0 && (
-          <nav className="flex items-center gap-2 text-xs font-medium tracking-wide uppercase text-muted-foreground/80">
-            {breadcrumbs.map((item, i) => (
-              <React.Fragment key={i}>
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    className="hover:text-primary transition-colors"
-                  >
-                    {item.label}
-                  </a>
-                ) : (
-                  <span className="text-muted-foreground">{item.label}</span>
-                )}
-                {i < breadcrumbs.length - 1 && (
-                  <span className="opacity-40">/</span>
-                )}
-              </React.Fragment>
-            ))}
-          </nav>
-        )}
-
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex items-start gap-4">
             {!isLoading && icon && (
-              <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20 shadow-inner">
+              <div className="p-4 bg-primary text-primary-foreground rounded-2xl shadow-blue-500/20 shadow-xl">
                 {React.isValidElement(icon)
                   ? React.cloneElement(
                       icon as React.ReactElement<
                         React.HTMLAttributes<HTMLElement>
                       >,
                       {
-                        className: 'w-8 h-8 text-primary',
+                        className: 'w-8 h-8 ',
                       }
                     )
                   : icon}

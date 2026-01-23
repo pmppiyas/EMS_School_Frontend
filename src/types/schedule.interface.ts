@@ -43,3 +43,11 @@ export interface ScheduleSlot {
   subjectId: string;
   teacherId: string;
 }
+
+export interface RoutineSlot {
+  period: number;
+  subjectName: string;
+  teacherName: string;
+  startTime: string;
+  endTime: string;
+}
