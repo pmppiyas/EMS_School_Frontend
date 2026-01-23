@@ -171,9 +171,9 @@
   }
 
   #printable-slip {
-    width: 190mm;
+    width: 210mm;
     margin: 0 auto;
-    padding: 16mm;
+    padding: 2mm 6mm;
     border: 1px dashed #ccc;
 
     page-break-inside: avoid;
@@ -184,4 +184,33 @@
 .invoice-wrapper {
   font-family: Arial, sans-serif;
   color: #000;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
 }

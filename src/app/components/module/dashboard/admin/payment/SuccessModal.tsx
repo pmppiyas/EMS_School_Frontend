@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, Printer } from 'lucide-react';
+import { CheckCircle, Printer, FileText } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -12,10 +12,18 @@ import { Button } from '@/components/ui/button';
 interface SuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onPrint: () => void;
+  onPrintSlip: () => void;
+  onPrintAdmit?: () => void;
+  hasExamFee: boolean;
 }
 
-const SuccessModal = ({ isOpen, onClose, onPrint }: SuccessModalProps) => {
+const SuccessModal = ({
+  isOpen,
+  onClose,
+  onPrintSlip,
+  onPrintAdmit,
+  hasExamFee,
+}: SuccessModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md border-border bg-background">
@@ -31,22 +39,34 @@ const SuccessModal = ({ isOpen, onClose, onPrint }: SuccessModalProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex items-center justify-between gap-3 mt-6">
+        <div className="flex   justify-between mt-6">
           <Button
             onClick={onClose}
             variant="default"
-            className="flex-1 font-semibold"
+            className="w-full font-semibold"
           >
             New Payment
           </Button>
+
           <Button
-            onClick={onPrint}
+            onClick={onPrintSlip}
             variant="outline"
-            className="flex-1 border-input bg-background hover:bg-accent"
+            className="flex-1 border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary"
           >
             <Printer className="w-4 h-4 mr-2" />
-            Print Slip
+            Pay Slip
           </Button>
+
+          {hasExamFee && onPrintAdmit && (
+            <Button
+              onClick={onPrintAdmit}
+              variant="outline"
+              className="flex-1 border-orange-200 bg-orange-50 hover:bg-orange-100 text-orange-600"
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Admit Card
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>

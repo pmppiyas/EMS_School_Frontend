@@ -14,6 +14,7 @@ const PaymentPage = async ({
 }) => {
   const params = await searchParams;
   const tab = params.tabs ?? 'create';
+
   const classesData = await getClasses();
   const classes = classesData?.classes || [];
 

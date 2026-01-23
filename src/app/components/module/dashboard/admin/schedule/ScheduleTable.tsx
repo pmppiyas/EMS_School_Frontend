@@ -12,8 +12,8 @@ const ScheduleTable = ({ data }: { data: IScheduleRow[] }) => {
           <p>Please set first from manage tab;</p>
         </div>
       ) : (
-        <table className="w-full border border-slate-300 text-sm">
-          <thead className="bg-slate-100">
+        <table className="w-full border border-primary-foreground text-sm">
+          <thead className="bg-background">
             <tr>
               <th className="border px-4 py-2 text-left">Class</th>
               {PERIODS.map((p) => (

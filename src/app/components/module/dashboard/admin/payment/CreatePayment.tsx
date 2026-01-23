@@ -38,14 +38,17 @@ import { IFeeType, PaidFee, Term } from '@/types/fee.interface';
 import ClassSelector from '@/app/components/shared/ClassSelector';
 import { makeFee } from '@/app/services/fee/makeFee';
 import { MONTHS, TERMS } from '@/constant';
-import PaymentSlip from '@/app/components/module/dashboard/admin/payment/PaymentSlip';
 import { IClass } from '@/types/class.interface';
 import { myPaidFees } from '@/app/services/fee/paidFees';
 import { useRouter } from 'next/navigation';
 import SuccessModal from '@/app/components/module/dashboard/admin/payment/SuccessModal';
+import PaymentSlip from '@/app/components/shared/template/PaymentSlip';
+import AdmitCard from '@/app/components/shared/template/AdmitCard';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 10 }, (_, i) => CURRENT_YEAR - i);
+
+type PrintType = 'SLIP' | 'ADMIT' | null;
 
 const CreatePayment = ({
   classes,
@@ -70,6 +73,7 @@ const CreatePayment = ({
   const [loadingPaidFees, setLoadingPaidFees] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successData, setSuccessData] = useState<any>(null);
+  const [printType, setPrintType] = useState<PrintType>(null);
 
   const hasTuition = selectedFeeTypes.some((fee) => fee.category === 'TUITION');
   const hasMonthly = selectedFeeTypes.some((fee) => fee.category === 'MONTHLY');
@@ -202,6 +206,15 @@ const CreatePayment = ({
     setSuccessData(null);
     setPaidFees([]);
     setShowSuccessModal(false);
+    setPrintType(null);
+  };
+
+  const handlePrint = (type: PrintType) => {
+    setPrintType(type);
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => setPrintType(null), 100);
+    }, 100);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -214,10 +227,7 @@ const CreatePayment = ({
       return;
 
     const currentSlipData = {
-      student: {
-        ...selectedStudent,
-        class: classes.find((c) => c.id === selectedClassId),
-      },
+      student: selectedStudent,
       year: selectedYear,
       breakdown: calculatedBreakdown.breakdown,
       total: paymentAmount,
@@ -260,38 +270,13 @@ const CreatePayment = ({
 
   return (
     <>
-      <style jsx global>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          .print-slip,
-          .print-slip * {
-            visibility: visible;
-          }
-          .print-slip {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 210mm;
-            padding: 15mm;
-            background: white;
-          }
-          @page {
-            size: A4;
-            margin: 0;
-          }
-          .no-print {
-            display: none !important;
-          }
-        }
-      `}</style>
-
-      <div className="max-w-7xl mx-auto p-4 space-y-6">
+      <div className="max-w-7xl mx-auto  space-y-6">
         <SuccessModal
           isOpen={showSuccessModal}
           onClose={handleFullReset}
-          onPrint={() => window.print()}
+          onPrintSlip={() => handlePrint('SLIP')}
+          onPrintAdmit={() => handlePrint('ADMIT')}
+          hasExamFee={successData?.breakdown.some((item: any) => item.term)}
         />
 
         {/* TOP CARDS */}
@@ -404,7 +389,7 @@ const CreatePayment = ({
                         className={`p-4 rounded-xl border-2 cursor-pointer relative transition-all duration-200
                           ${
                             isPaid
-                              ? 'bg-secondary/50 border-secondary opacity-70'
+                              ? 'bg-secondary/50 border-secondary opacity-70 cursor-not-allowed'
                               : isSelected
                                 ? 'border-primary bg-primary/10'
                                 : 'border-border bg-card hover:border-primary/50'
@@ -596,17 +581,37 @@ const CreatePayment = ({
           </Card>
         </form>
 
-        {successData && (
-          <div className="print-slip shadow-xl rounded-lg border border-border bg-white">
-            <PaymentSlip
-              student={successData.student}
-              year={successData.year}
-              breakdown={successData.breakdown}
-              total={successData.total}
-              receiptNo={new Date().getTime().toString().slice(-6)}
-            />
-          </div>
-        )}
+        <div className="print-area">
+          {successData && printType && (
+            <>
+              {printType === 'SLIP' && (
+                <div className="mt-2 bg-white">
+                  <PaymentSlip
+                    student={successData.student}
+                    year={successData.year}
+                    breakdown={successData.breakdown}
+                    total={successData.total}
+                    receiptNo={new Date().getTime().toString().slice(-6)}
+                  />
+                </div>
+              )}
+
+              {printType === 'ADMIT' &&
+                successData.breakdown.some((item: any) => item.term) && (
+                  <div className="mt-2 bg-white">
+                    <AdmitCard
+                      student={successData.student}
+                      term={
+                        successData.breakdown.find((item: any) => item.term)
+                          ?.term
+                      }
+                      year={successData.year}
+                    />
+                  </div>
+                )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

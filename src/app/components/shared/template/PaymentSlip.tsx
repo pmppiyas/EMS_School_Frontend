@@ -1,4 +1,3 @@
-// components/PaymentSlip.tsx
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { IStudent } from '@/types/student.interface';
@@ -29,20 +28,20 @@ const PaymentSlip = ({
   const today = new Date().toLocaleDateString();
 
   return (
-    <div id="printable-slip" className="invoice-wrapper">
-      <div className="flex gap-4 items-center">
-        <Image src="/school-logo.png" alt="DMSC" width={60} height={60} />
-        <div>
-          <h1 className="text-2xl ">Dharmopur Model School and College</h1>
-          <p className="text-sm text-muted-foreground">
-            Established 2010 · Gobindoganj, Gaibandha
-          </p>
-        </div>
+    <div
+      id="printable-slip"
+      className="invoice-wrapper border-2 border-black p-4 bg-white w-full max-w-[210mm] ml-3 mx-auto text-black"
+    >
+      <div className="flex  items-center justify-center flex-col mb-2">
+        <h1 className="text-2xl">Dharmopur Model School and College</h1>
+        <p className="text-sm text-muted-foreground text-center">
+          Established 2010 · Gobindoganj, Gaibandha
+        </p>
       </div>
 
       <Separator />
 
-      <div className="flex justify-between text-[13px] mt[10px]">
+      <div className="flex justify-between text-[13px] mt[6px]">
         <div>
           <p>
             <strong>Receipt No:</strong> {receiptNo}
@@ -67,7 +66,7 @@ const PaymentSlip = ({
 
       <Separator />
 
-      <div className="mt[12px]">
+      <div className="mt[6px]">
         {breakdown.map((item, idx) => (
           <div key={idx} className="flex justify-between mb[10px]">
             <div>
@@ -93,7 +92,7 @@ const PaymentSlip = ({
         <span>৳{total}</span>
       </div>
 
-      <div className="flex  flex-col items-center justify-center mt-4 text-sm">
+      <div className="flex  flex-col items-center justify-center text-sm">
         <p>Thank you for your payment</p>
         <p className="muted-text">This is a system generated receipt</p>
       </div>
