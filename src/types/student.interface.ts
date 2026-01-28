@@ -10,6 +10,8 @@ export interface IStudent {
   gender: Gender;
   userId: string;
   photo?: string;
+  fatherName?: string;
+  motherName?: string;
   createdAt: string | Date;
   updatedAt: string | Date;
   phoneNumber?: string | null;

@@ -35,7 +35,7 @@ const Information = () => {
   ];
 
   return (
-    <section className="py-16 bg-linear-to-b  to-primary-foreground relative overflow-hidden">
+    <section className="py-16 w-full bg-linear-to-b  to-primary-foreground relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-20 -left-20 w-96 h-96 bg-primary rounded-full filter blur-3xl" />

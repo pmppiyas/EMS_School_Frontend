@@ -5,7 +5,7 @@ export const getClasses = async () => {
     const res = await serverFetch.get('class', {
       next: {
         tags: ['class'],
-        revalidate: 0,
+        revalidate: 60,
       },
     });
 

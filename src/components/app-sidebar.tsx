@@ -17,62 +17,75 @@ import { commonRoutes, getRoutesByRole } from '@/routes/routes';
 
 export default async function AppSidebar() {
   const user = await getUserInfo();
+
   if (!user) {
     return null;
   }
-  const routes = getRoutesByRole(user.role);
+
+  const roleSections = getRoutesByRole(user.role);
 
   return (
-    <Sidebar collapsible="offcanvas">
-      <SidebarHeader>
+    <Sidebar collapsible="offcanvas" className="border-r border-border/40">
+      <SidebarHeader className="border-b border-border/40 py-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <Logo />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
-            Main Menu
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="px-2 space-y-1">
-              {routes.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <NavLinkClient
-                    href={item.href}
-                    title={item.title}
-                    iconName={item.iconName || ''}
-                  />
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
 
-        <div className="my-2 border-t border-border/40 mx-4" />
+      <SidebarContent className="py-4">
+        {roleSections.map((section, idx) => (
+          <SidebarGroup key={idx} className="mb-4 last:mb-0">
+            {section.title && (
+              <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
+                {section.title}
+              </SidebarGroupLabel>
+            )}
+            <SidebarGroupContent>
+              <SidebarMenu className="px-2 space-y-1">
+                {section.nav.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <NavLinkClient
+                      href={item.href}
+                      title={item.title}
+                      iconName={item.iconName || ''}
+                    />
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
-            Preferences
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="px-2 space-y-1">
-              {commonRoutes.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <NavLinkClient
-                    href={item.href}
-                    title={item.title}
-                    iconName={item.iconName || ''}
-                  />
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {/* Separator if needed */}
+        <div className="my-4 border-t border-border/40 mx-4" />
+
+        {commonRoutes.map((section, idx) => (
+          <SidebarGroup key={`common-${idx}`}>
+            {section.title && (
+              <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
+                {section.title}
+              </SidebarGroupLabel>
+            )}
+            <SidebarGroupContent>
+              <SidebarMenu className="px-2 space-y-1">
+                {section.nav.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <NavLinkClient
+                      href={item.href}
+                      title={item.title}
+                      iconName={item.iconName || ''}
+                    />
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
-      <SidebarFooter>
+
+      <SidebarFooter className="border-t border-border/40 p-4">
         <NavUser user={user ?? null} />
       </SidebarFooter>
     </Sidebar>

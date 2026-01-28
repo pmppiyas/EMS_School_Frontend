@@ -11,7 +11,7 @@ const AdmitCard = ({
   year: number;
 }) => {
   return (
-    <div className="px-6 py-3 border-[3px] border-double border-black rounded-sm bg-white w-full max-w-[210mm] ml-2 mx-auto text-black font-serif">
+    <div className="px-6 py-3 border-[3px] border-double border-black rounded-sm bg-white w-full max-w-[208mm] mx-auto text-black font-serif mt-1">
       {/* Header Section */}
       <div className="flex items-center justify-between border-b-2 border-black  pb-2">
         <div className="w-16 h-16 border flex items-center justify-center text-[10px] text-center">

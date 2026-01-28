@@ -39,43 +39,44 @@ const ClassSelector = ({
 
       if (urlClassId) {
         setSelectedClass(urlClassId);
-      } else if (cookieValue) {
-        setSelectedClass(cookieValue as string);
 
-        router.replace(`${pathname}?classId=${cookieValue}&page=1`, {
-          scroll: false,
-        });
-      } else if (classes && classes.length > 0) {
+        if (urlClassId !== cookieValue) {
+          await setCookie(cookieName, urlClassId);
+        }
+      } else if (cookieValue && classes.some((c) => c.id === cookieValue)) {
+        setSelectedClass(cookieValue as string);
+        updateUrl(cookieValue as string);
+      } else if (classes.length > 0) {
         const defaultId = classes[0].id as string;
         setSelectedClass(defaultId);
         await setCookie(cookieName, defaultId);
-        router.replace(`${pathname}?classId=${defaultId}&page=1`, {
-          scroll: false,
-        });
+        updateUrl(defaultId);
       }
     };
 
     initValue();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleChange = (value: string) => {
-    setSelectedClass(value);
-
+  const updateUrl = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('classId', value);
     params.set('page', '1');
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
+  const handleChange = (value: string) => {
+    setSelectedClass(value);
     setCookie(cookieName, value);
-
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    updateUrl(value);
 
     if (onChange) onChange(value);
   };
 
   return (
-    <div className="relative ">
+    <div className="relative">
       <Select value={selectedClass} onValueChange={handleChange}>
-        <SelectTrigger className="bg-primary text-primary-foreground font-medium border-primary/20 shadow-sm">
+        <SelectTrigger className="bg-primary text-primary-foreground font-medium border-primary/20 shadow-sm min-w-[140px]">
           <SelectValue placeholder="Choose Class" />
         </SelectTrigger>
         <SelectContent>

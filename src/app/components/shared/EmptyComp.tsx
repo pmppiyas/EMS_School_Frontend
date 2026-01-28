@@ -15,13 +15,13 @@ const EmptyComp = ({
   icon: Icon = CalendarDays,
 }: EmptyCompProps) => {
   return (
-    <div className="col-span-full py-24 flex flex-col items-center justify-center border-2 border-dashed rounded-3xl bg-muted/10 animate-in fade-in duration-500">
+    <div className="col-span-full py-20 flex flex-col items-center justify-center border-2 border-dashed rounded-3xl bg-muted/10 animate-in fade-in duration-500 w-full">
       <div className="p-5 bg-muted/20 rounded-full mb-4">
         <Icon size={48} className="text-muted-foreground/30" />
       </div>
 
       <h3 className="text-lg font-bold text-muted-foreground">
-        No {subject ?? 'records'} found!
+        No {subject ?? 'records'} available!
       </h3>
 
       <p className="text-sm text-muted-foreground/60 max-w-xs text-center mt-1">
