@@ -4,15 +4,30 @@
 import { ITeacher } from '@/types/teacher.interface';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Mail, Phone, User } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import Image from 'next/image';
 
-export default function TeacherHoverCard({ teacher }: { teacher: ITeacher }) {
+export default function TeacherHoverCard({
+  teacher,
+  index,
+}: {
+  teacher: ITeacher;
+  index: number;
+}) {
   const navigate = useRouter();
 
   return (
     <motion.div
       onClick={() => navigate.push(`/teacher/${teacher.id}`)}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{
+        duration: 0.6,
+        delay: (index % 4) * 0.1,
+        ease: 'easeOut',
+      }}
+
       whileHover={{
         y: -8,
         scale: 1.02,
@@ -23,19 +38,16 @@ export default function TeacherHoverCard({ teacher }: { teacher: ITeacher }) {
       {/* Background Subtle Accent */}
       <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-10 -mt-10 transition-all group-hover:bg-primary/10" />
 
-      {/* Teacher Image placeholder */}
+      {/* Teacher Image */}
       <div className="relative w-24 h-24 mx-auto mb-5">
         <div className="w-full h-full rounded-full bg-muted flex items-center justify-center border-2 border-background shadow-inner overflow-hidden group-hover:border-primary/30 transition-colors">
-          <div className="relative w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden border-2 border-background shadow-md">
-            <Image
-              src={teacher.photo || '/placeholder-avatar.png'}
-              alt={teacher.firstName}
-              fill
-              className="object-cover"
-            />
-          </div>
+          <Image
+            src={teacher.photo || '/placeholder-avatar.png'}
+            alt={teacher.firstName}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+          />
         </div>
-
         <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-4 border-card rounded-full" />
       </div>
 

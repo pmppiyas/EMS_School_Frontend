@@ -1,8 +1,9 @@
+'use client';
 import ScrollIndicator from '@/app/components/module/home/ScrollIndicator';
-import image from "@/assets/hero.jpg";
+import image from '@/assets/hero.jpg';
 import { Award, ChevronRight, Heart, Users } from 'lucide-react';
 import Image from 'next/image';
-
+import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   return (
@@ -35,30 +36,47 @@ export default function HeroSection() {
       <div className="relative z-10 flex items-center ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-
             {/* Main Heading */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-slide-up">
+            <motion.h1
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
+            >
               Dhormopur Model School & College
-            </h1>
+            </motion.h1>
 
-            <p
-              className="text-xl md:text-2xl text-gray-300 mb-6 animate-slide-up"
-              style={{ animationDelay: '0.1s' }}
+            <motion.p
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+              className="text-xl md:text-2xl text-gray-300 mb-6"
             >
               Nurturing Young Minds with Care and Creativity
-            </p>
+            </motion.p>
 
-            <p
-              className="text-lg text-gray-300 mb-10 max-w-2xl animate-slide-up"
-              style={{ animationDelay: '0.2s' }}
+            <motion.p
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+              className="text-lg text-gray-300 mb-10 max-w-2xl"
             >
-              At Little Stars Kindergarten, we provide a fun and safe learning environment where children explore, play, and grow. Our programs are designed to develop curiosity, social skills, and early learning foundations for a bright future.
-            </p>
+              At Little Stars Kindergarten, we provide a fun and safe learning
+              environment where children explore, play, and grow. Our programs
+              are designed to develop curiosity, social skills, and early
+              learning foundations for a bright future.
+            </motion.p>
 
             {/* CTA Buttons */}
-            <div
-              className="flex flex-col sm:flex-row gap-4 mb-12 animate-slide-up"
-              style={{ animationDelay: '0.3s' }}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 mb-12"
             >
               <button className="group bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105">
                 Enroll Now
@@ -67,35 +85,47 @@ export default function HeroSection() {
               <button className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-lg font-semibold text-lg backdrop-blur-sm border border-white/20 transition-all hover:scale-105">
                 View Courses
               </button>
-            </div>
+            </motion.div>
 
             {/* Stats */}
-            <div
-              className="grid grid-cols-3 gap-6 max-w-xl animate-slide-up"
-              style={{ animationDelay: '0.4s' }}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
+              className="grid grid-cols-3 gap-6 max-w-xl"
             >
               <Stat
                 icon={<Users className="w-6 h-6 text-primary" />}
                 value="5000+"
                 label="Graduates"
+                delay={0.5}
               />
               <Stat
                 icon={<Award className="w-6 h-6 text-primary" />}
                 value="98%"
                 label="Pass Rate"
+                delay={0.6}
               />
               <Stat
                 icon={<Heart className="w-6 h-6 text-primary" />}
                 value="25+"
                 label="Years Experience"
+                delay={0.7}
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
 
       {/* Floating Elements */}
-      <div className="absolute top-1/4 right-10 hidden lg:block animate-float">
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.5 }}
+        className="absolute top-1/4 right-10 hidden lg:block animate-float"
+      >
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl">
           <div className="flex items-center space-x-3">
             <div className="bg-green-500 w-3 h-3 rounded-full animate-pulse" />
@@ -105,29 +135,37 @@ export default function HeroSection() {
           </div>
           <p className="text-gray-300 text-sm mt-2">Limited spots available</p>
         </div>
-      </div>
+      </motion.div>
 
       <ScrollIndicator />
     </section>
-  )
+  );
 }
 
 function Stat({
   icon,
   value,
   label,
+  delay = 0,
 }: {
-  icon: React.ReactNode
-  value: string
-  label: string
+  icon: React.ReactNode;
+  value: string;
+  label: string;
+  delay?: number;
 }) {
   return (
-    <div className="text-center group cursor-default">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: 'easeOut', delay }}
+      className="text-center group cursor-default"
+    >
       <div className="flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform">
         {icon}
       </div>
       <div className="text-3xl font-bold text-white mb-1">{value}</div>
       <div className="text-sm text-gray-400">{label}</div>
-    </div>
-  )
+    </motion.div>
+  );
 }
