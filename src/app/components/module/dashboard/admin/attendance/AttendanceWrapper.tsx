@@ -25,7 +25,6 @@ const AttendanceWrapper = async ({
   let users = [];
   let attendanceData = [];
 
-  // Parallel data fetching for performance
   if (isTeacher) {
     const [{ teachers }, { teacher }] = await Promise.all([
       getTeachers(),
@@ -51,7 +50,7 @@ const AttendanceWrapper = async ({
       {mode === 'today' && (
         <TodayAttends attendance={attendanceData} />
       )}
-      
+
       {mode === 'month' && (
         <MonthlyAttendanceTable
           attendance={attendanceData}
