@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -23,9 +24,10 @@ import { z } from 'zod';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-const LoginForm = ({ redirect }: { redirect: string }) => {
+const LoginForm = ({ redirect }: { redirect?: string }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -38,27 +40,24 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
     try {
       setLoading(true);
       const login = await loginUser(data);
+
       if (login.success) {
-        router.push(redirect);
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push('/');
-        }
         toast.success(login.message);
+        const destination = redirect ? decodeURIComponent(redirect) : '/';
+        router.push(destination);
       } else {
         toast.error(login.message);
+        setLoading(false);
       }
     } catch (err) {
       toast.error('Login failed');
-      console.log(err);
-    } finally {
-      setTimeout(() => setLoading(false), 1000);
+      console.error(err);
+      setLoading(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-sm shadow-md mt-16">
+    <Card className="w-full max-w-sm shadow-md mt-16 mx-auto">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
         <CardDescription>
@@ -67,10 +66,7 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
       </CardHeader>
 
       <CardContent>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-6 "
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -87,12 +83,12 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
           <div className="grid gap-2">
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
-              <a
-                href="#"
+              <Link
+                href="/forgot-password"
                 className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
               >
                 Forgot your password?
-              </a>
+              </Link>
             </div>
             <Input id="password" type="password" {...register('password')} />
             {errors.password && (
@@ -101,25 +97,37 @@ const LoginForm = ({ redirect }: { redirect: string }) => {
           </div>
 
           <div className="flex justify-center">
-            <Button type="submit" className="w-full px-20" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+            <Button
+              type="submit"
+              className="w-full min-w-40 flex items-center justify-center gap-2"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {redirect ? 'Redirecting...' : 'Logging in...'}
+                </>
+              ) : (
+                'Login'
+              )}
             </Button>
           </div>
         </form>
       </CardContent>
 
       <CardFooter className="flex flex-col gap-2">
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" disabled={loading}>
           Login with Google
         </Button>
 
-        <div>
-          <h5>
-            Have no account?{' '}
-            <Button variant="link" className="p-0 self-start">
-              <Link href="/signup">Sign Up</Link>
-            </Button>
-          </h5>
+        <div className="mt-4 text-center text-sm">
+          Have no account?{' '}
+          <Link
+            href="/signup"
+            className="text-primary font-medium hover:underline"
+          >
+            Sign Up
+          </Link>
         </div>
       </CardFooter>
     </Card>

@@ -33,7 +33,7 @@ const ContactPage = () => {
           >
             Get In Touch
           </motion.h1>
-          <p className="text-primary-foreground/80 max-w-2xl mx-auto text-lg">
+          <p className="text-white/80 max-w-2xl mx-auto text-lg">
             Have questions about admissions or school activities? We are here to
             help you. Reach out to us anytime.
           </p>
@@ -56,7 +56,7 @@ const ContactPage = () => {
                 <ContactInfoItem
                   icon={<MapPin className="text-primary" />}
                   title="Location"
-                  detail="Dhormopur, Sundarganj, Gaibandha, Rangpur, Bangladesh"
+                  detail="Dharmopur, Gobindaganj, Gaibandha, Rangpur, Bangladesh"
                 />
                 <ContactInfoItem
                   icon={<Phone className="text-primary" />}
@@ -96,7 +96,10 @@ const ContactPage = () => {
               <h3 className="text-2xl font-bold mb-8 text-gray-800">
                 Send us a Message
               </h3>
-              <form className="grid md:grid-cols-2 gap-6">
+              <form
+                className="grid md:grid-cols-2 gap-6"
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">
                     Student/Parent Name
@@ -138,7 +141,10 @@ const ContactPage = () => {
                   ></textarea>
                 </div>
                 <div className="md:col-span-2">
-                  <button className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                  <button
+                    type="submit"
+                    className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] shadow-lg active:scale-95"
+                  >
                     <Send size={18} />
                     Submit Message
                   </button>
@@ -149,22 +155,23 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Google Map Placeholder */}
-      <section className="h-[450px] w-full bg-gray-200 relative">
+      {/* Google Map Section - Focused on Plus Code: 5CFW+2QR */}
+      <section className="h-[450px] w-full bg-gray-200 relative mt-10">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57475.25368361093!2d89.47953259999999!3d25.8052148!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f280f90e1c6629%3A0x6a0a09e02c918c!2sSundarganj!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.123!2d89.431!3d25.123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDA3JzE4LjAiTiA4OcKwMjUnNTIuOCJF!5e0!3m2!1sen!2sbd!4v1700000000000"
           width="100%"
           height="100%"
           style={{ border: 0 }}
           allowFullScreen
           loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="School Location"
         ></iframe>
       </section>
     </div>
   );
 };
 
-// Helper Components
 const ContactInfoItem = ({
   icon,
   title,
@@ -174,8 +181,8 @@ const ContactInfoItem = ({
   title: string;
   detail: string;
 }) => (
-  <div className="flex gap-4">
-    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+  <div className="flex gap-4 group">
+    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
       {icon}
     </div>
     <div>
@@ -194,7 +201,7 @@ const SocialIcon = ({
 }) => (
   <a
     href={href}
-    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-all"
+    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-all shadow-sm"
   >
     {icon}
   </a>
