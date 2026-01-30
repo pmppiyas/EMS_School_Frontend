@@ -1,9 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { serverFetch } from '@/lib/serverFetch';
+import { revalidateTag } from 'next/cache';
 
 export const postSchedule = async (classId: string, payload: any) => {
-  const res = await serverFetch.post(`schedule/${classId}`, payload);
+  try {
+    const res = await serverFetch.post(`schedule/${classId}`, payload);
 
-  const result = res.json();
-  return result;
+    const result = await res.json();
+
+    if (res.ok) {
+      revalidateTag("schedule");
+    }
+
+    return result;
+  } catch (err) {
+    console.error('Post error:', err);
+    return {
+      success: false,
+      message: 'Something went wrong while posting schedule',
+    };
+  }
 };

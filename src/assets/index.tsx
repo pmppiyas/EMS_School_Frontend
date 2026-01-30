@@ -1,7 +1,7 @@
 import { Award, Heart, Users } from 'lucide-react';
 
 import hero1 from '@/assets/hero2.jpg';
-import hero2 from '@/assets/hero2.jpg';
+import hero2 from '@/assets/hero11.jpg';
 import hero3 from '@/assets/hero3.jpg';
 import hero4 from '@/assets/hero4.jpg';
 import hero5 from '@/assets/hero5.jpg';

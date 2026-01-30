@@ -1,7 +1,13 @@
 import { serverFetch } from '@/lib/serverFetch';
 
 export const getSchedulesByDay = async (day: string) => {
-  const res = await serverFetch.get(`schedule/${day.toUpperCase()}`);
+  const res = await serverFetch.get(`schedule/${day.toUpperCase()}`, {
+
+    next:{
+      revalidate: 60,
+      tags:["schedule"]
+    }
+  });
 
   let data;
   try {
