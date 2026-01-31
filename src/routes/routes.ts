@@ -87,6 +87,21 @@ export const adminRoutes: RouteSection[] = [
       },
     ],
   },
+  {
+    title: 'Support & Settings',
+    nav: [
+      {
+        title: 'Setting',
+        href: '/admin/dashboard/setting',
+        iconName: 'Settings',
+      },
+      {
+        title: 'Helpline',
+        href: '/admin/dashboard/helpline',
+        iconName: 'PhoneCall',
+      },
+    ],
+  },
 ];
 
 export const teacherRoutes: RouteSection[] = [
@@ -115,6 +130,21 @@ export const teacherRoutes: RouteSection[] = [
       },
     ],
   },
+  {
+    title: 'Support & Settings',
+    nav: [
+      {
+        title: 'Setting',
+        href: '/teacher/dashboard/setting',
+        iconName: 'Settings',
+      },
+      {
+        title: 'Helpline',
+        href: '/teacher/dashboard/helpline',
+        iconName: 'PhoneCall',
+      },
+    ],
+  },
 ];
 
 export const studentRoutes: RouteSection[] = [
@@ -132,13 +162,10 @@ export const studentRoutes: RouteSection[] = [
       },
     ],
   },
-];
-
-export const commonRoutes: RouteSection[] = [
   {
     title: 'Support & Settings',
     nav: [
-      { title: 'Setting', href: '/setting', iconName: 'Settings' },
+      { title: 'Setting', href: '/dashboard/setting', iconName: 'Settings' },
       { title: 'Helpline', href: '/dashboard/helpline', iconName: 'PhoneCall' },
     ],
   },

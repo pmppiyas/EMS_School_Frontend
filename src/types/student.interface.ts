@@ -1,5 +1,6 @@
 import { IClass } from '@/types/class.interface';
-import { Gender, IUser } from './types';
+import { Gender } from './types';
+import { IUser } from '@/types/user.inteface';
 
 export interface IStudent {
   id: string;
@@ -20,4 +21,6 @@ export interface IStudent {
   classId?: string | null;
   user?: IUser;
   class?: IClass;
+  role: string;
+  status?: string;
 }

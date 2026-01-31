@@ -1,22 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Gender } from '@/types/types';
 import { IUser } from '@/types/user.inteface';
 
-export interface ITeacher {
-  user?: IUser;
-  id?: string;
+export interface IAdmin {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string | null;
   address?: string | null;
-  photo?: string;
-  dateOfBirth?: string | Date | null;
-  designation?: string | null;
   gender?: Gender | null;
-  userId?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  photo?: string | null;
+  designation?: string | null;
+  userId: string;
+  user?: IUser;
+  createdAt: string | Date;
+  updatedAt: string | Date;
   role: string;
   status?: string;
 }

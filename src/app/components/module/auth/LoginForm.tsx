@@ -26,6 +26,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginForm = ({ redirect }: { redirect?: string }) => {
   const [loading, setLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
 
   const {
@@ -43,6 +44,9 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
 
       if (login.success) {
         toast.success(login.message);
+        // লগইন সফল হলে রিডাইরেক্ট স্টেট ট্রু করুন
+        setIsRedirecting(true);
+
         const destination = redirect ? decodeURIComponent(redirect) : '/';
         router.push(destination);
       } else {
@@ -57,7 +61,7 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
   };
 
   return (
-    <Card className="w-full max-w-sm shadow-md mt-16 mx-auto">
+    <Card className="w-full max-w-sm shadow-md mt-16 mx-auto border-border bg-card">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
         <CardDescription>
@@ -74,9 +78,12 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
               type="email"
               placeholder="m@example.com"
               {...register('email')}
+              disabled={loading}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
+              <p className="text-destructive text-sm font-medium">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -85,50 +92,65 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                className="ml-auto inline-block text-sm text-primary hover:underline underline-offset-4"
               >
                 Forgot your password?
               </Link>
             </div>
-            <Input id="password" type="password" {...register('password')} />
+            <Input
+              id="password"
+              type="password"
+              {...register('password')}
+              disabled={loading}
+            />
             {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password.message}</p>
+              <p className="text-destructive text-sm font-medium">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
-          <div className="flex justify-center">
-            <Button
-              type="submit"
-              className="w-full min-w-40 flex items-center justify-center gap-2"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  {redirect ? 'Redirecting...' : 'Logging in...'}
-                </>
-              ) : (
-                'Login'
-              )}
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            className="w-full min-w-40 flex items-center justify-center gap-2 mx-auto"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {isRedirecting ? 'Redirecting...' : 'Logging in...'}
+              </>
+            ) : (
+              'Login'
+            )}
+          </Button>
         </form>
       </CardContent>
 
-      <CardFooter className="flex flex-col gap-2">
+      <CardFooter className="flex flex-col gap-4">
+        <div className="relative w-full">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
         <Button variant="outline" className="w-full" disabled={loading}>
           Login with Google
         </Button>
 
-        <div className="mt-4 text-center text-sm">
+        <p className="text-center text-sm text-muted-foreground">
           Have no account?{' '}
           <Link
             href="/signup"
-            className="text-primary font-medium hover:underline"
+            className="text-primary font-bold hover:underline"
           >
             Sign Up
           </Link>
-        </div>
+        </p>
       </CardFooter>
     </Card>
   );

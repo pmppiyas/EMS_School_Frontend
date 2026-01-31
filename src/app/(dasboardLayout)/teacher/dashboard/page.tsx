@@ -6,7 +6,7 @@ import AttendanceCharts from '@/app/components/module/dashboard/admin/overview/A
 import { getTeacherMeta } from '@/app/services/teacher/getTeacherMeta';
 
 const TeacherDashboard = async () => {
-  const { teacher } = await getMe();
+  const teacher = await getMe();
 
   const { teacher: myAttendance } = await getTeacherAttendance();
 
@@ -37,7 +37,7 @@ const TeacherDashboard = async () => {
     },
   ];
 
-  const meta = await getTeacherMeta(teacher.userId);
+  const meta = await getTeacherMeta(teacher.id);
 
   return (
     <div className=" space-y-8 min-h-screen bg-gray-50/30">

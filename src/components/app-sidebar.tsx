@@ -13,7 +13,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { commonRoutes, getRoutesByRole } from '@/routes/routes';
+import {  getRoutesByRole } from '@/routes/routes';
 
 export default async function AppSidebar() {
   const user = await getUserInfo();
@@ -37,32 +37,6 @@ export default async function AppSidebar() {
       <SidebarContent className="py-4">
         {roleSections.map((section, idx) => (
           <SidebarGroup key={idx} className="mb-4 last:mb-0">
-            {section.title && (
-              <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
-                {section.title}
-              </SidebarGroupLabel>
-            )}
-            <SidebarGroupContent>
-              <SidebarMenu className="px-2 space-y-1">
-                {section.nav.map((item) => (
-                  <SidebarMenuItem key={item.href}>
-                    <NavLinkClient
-                      href={item.href}
-                      title={item.title}
-                      iconName={item.iconName || ''}
-                    />
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
-
-        {/* Separator if needed */}
-        <div className="my-4 border-t border-border/40 mx-4" />
-
-        {commonRoutes.map((section, idx) => (
-          <SidebarGroup key={`common-${idx}`}>
             {section.title && (
               <SidebarGroupLabel className="px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
                 {section.title}

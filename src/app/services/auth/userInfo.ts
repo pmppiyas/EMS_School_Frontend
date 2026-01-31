@@ -1,11 +1,11 @@
-import { env } from "@/config/env";
-import { getCookie } from "@/lib/JwtToken";
-import { IUser } from "@/types/types";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { env } from '@/config/env';
+import { getCookie } from '@/lib/JwtToken';
+import { IUser } from '@/types/user.inteface';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const getUserInfo = async (): Promise<IUser | null> => {
   try {
-    const accessToken = await getCookie("accessToken");
+    const accessToken = await getCookie('accessToken');
     if (!accessToken) {
       return null;
     }
