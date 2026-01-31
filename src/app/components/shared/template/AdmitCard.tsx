@@ -94,8 +94,8 @@ const AdmitCard = ({
       <div className="flex justify-between items-end  px-4">
         <div className="text-center">
           <div className="w-36 border-t border-black pt-1">
-            <p className="text-xs font-bold">Class Teacher</p>
-            <p className="text-[10px]">শ্রেণী শিক্ষকের স্বাক্ষর</p>
+            <p className="text-xs font-bold uppercase">Secretary</p>
+            <p className="text-[10px]">সচিবের স্বাক্ষর</p>
           </div>
         </div>
         <div className="text-center">

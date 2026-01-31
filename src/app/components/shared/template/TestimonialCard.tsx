@@ -107,9 +107,9 @@ const TestimonialCard = ({
           <div className="mt-12 flex justify-between items-end px-10">
             <div className="text-center w-56">
               <div className="border-t border-slate-900 pt-1">
-                <p className="text-sm font-bold uppercase">Class Teacher</p>
+                <p className="text-sm font-bold uppercase">Secretary</p>
                 <p className="text-[10px] text-muted-foreground">
-                  শ্রেণী শিক্ষকের স্বাক্ষর
+                  সচিবের স্বাক্ষর
                 </p>
               </div>
             </div>

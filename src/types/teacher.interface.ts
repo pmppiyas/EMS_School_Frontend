@@ -17,6 +17,6 @@ export interface ITeacher {
   userId?: string;
   createdAt?: string;
   updatedAt?: string;
-  role: string;
+  role?: string;
   status?: string;
 }

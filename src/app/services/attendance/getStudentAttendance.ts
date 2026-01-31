@@ -7,7 +7,7 @@ export const getStudentAttendance = async (classId?: string) => {
 
   const res = await serverFetch.get(url, {
     next: {
-      revalidate: 30,
+      revalidate: 0,
     },
   });
 

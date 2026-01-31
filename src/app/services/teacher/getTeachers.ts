@@ -4,7 +4,7 @@ export const getTeachers = async () => {
   const res = await serverFetch.get('teacher', {
     next: {
       tags: ['teacher'],
-      revalidate: 60,
+      revalidate: 0,
     },
   });
 

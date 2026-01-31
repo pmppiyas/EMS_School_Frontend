@@ -4,7 +4,7 @@ export const getMyAttendance = async (month: string, year: string) => {
   const res = await serverFetch.get(`attendance/my/${month}/${year}`, {
     next: {
       tags: ['attendance'],
-      revalidate: 60,
+      revalidate: 0,
     },
   });
 
