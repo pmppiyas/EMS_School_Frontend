@@ -19,4 +19,5 @@ export interface ITeacher {
   updatedAt?: string;
   role?: string;
   status?: string;
+  needPasswordChange?: string;
 }

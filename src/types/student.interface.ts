@@ -23,4 +23,5 @@ export interface IStudent {
   class?: IClass;
   role: string;
   status?: string;
+  needPasswordChange?: string;
 }

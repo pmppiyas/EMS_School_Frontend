@@ -17,4 +17,5 @@ export interface IAdmin {
   updatedAt: string | Date;
   role: string;
   status?: string;
+  needPasswordChange?: string;
 }

@@ -16,8 +16,7 @@ const ProfileSection = ({ user }: { user: IUserProfile }) => {
   return (
     <>
       <Card className="overflow-hidden border border-border bg-card shadow-sm">
-        {/* Profile Banner: Using Shadcn Primary color with subtle pattern */}
-        <div className="h-32 bg-primary/10 border-b border-border relative overflow-hidden">
+        <div className="h-28 bg-primary/10 border-b border-border relative overflow-hidden">
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))]from-primary via-transparent to-transparent" />
         </div>
 
