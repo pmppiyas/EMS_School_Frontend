@@ -44,7 +44,6 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
 
       if (login.success) {
         toast.success(login.message);
-        // লগইন সফল হলে রিডাইরেক্ট স্টেট ট্রু করুন
         setIsRedirecting(true);
 
         const destination = redirect ? decodeURIComponent(redirect) : '/';

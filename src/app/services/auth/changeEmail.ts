@@ -2,28 +2,24 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { env } from '@/config/env';
+import { revalidatePath } from 'next/cache';
+import { serverFetch } from '@/lib/serverFetch';
 
-export async function loginUser(payload: { email: string; password: string }) {
-  const res = await fetch(`${env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+export async function changeEmail(newEmail: string) {
+  const cookieStore = await cookies();
+
+  const res = await serverFetch.patch('auth/change-email', { newEmail });
 
   const result = await res.json();
 
   if (!res.ok) {
-    throw new Error(result.message || 'Login failed');
+    throw new Error(result.message || 'Failed to change email');
   }
 
   const { accessToken, refreshToken } = result.data;
 
-  const cookieStore = cookies();
 
-  (await cookieStore).set({
+  cookieStore.set({
     name: 'accessToken',
     value: accessToken,
     httpOnly: true,
@@ -33,7 +29,7 @@ export async function loginUser(payload: { email: string; password: string }) {
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  (await cookieStore).set({
+  cookieStore.set({
     name: 'refreshToken',
     value: refreshToken,
     httpOnly: true,
@@ -42,6 +38,8 @@ export async function loginUser(payload: { email: string; password: string }) {
     path: '/',
     maxAge: 60 * 60 * 24 * 30,
   });
+
+  revalidatePath('/');
 
   return result;
 }
