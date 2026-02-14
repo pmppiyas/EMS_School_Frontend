@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { usePathname} from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Navbar = () => {
@@ -16,6 +17,10 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+    const pathName = usePathname();
+  console.log(pathName);
+  const isLogin = pathName === '/login';
+  console.log(isLogin);
 
   const navLinks = (
     <>
@@ -51,6 +56,7 @@ const Navbar = () => {
       </Link>
     </>
   );
+
 
   return (
     <header
@@ -92,7 +98,7 @@ const Navbar = () => {
                 : 'invisible opacity-0 translate-y-10 lg:visible lg:opacity-100 lg:translate-y-0'
             }`}
           >
-            <ul className="border-t border-gray-800 lg:border-t-0 px-6 lg:px-0 pt-6 lg:pt-0 flex flex-col lg:flex-row gap-y-4 gap-x-3 text-lg text-white w-full lg:justify-center lg:items-center">
+            <ul className={`border-t border-gray-800 lg:border-t-0 px-6 lg:px-0 pt-6 lg:pt-0 flex flex-col lg:flex-row gap-y-4 gap-x-3 text-lg ${isLogin ? 'text-black' : 'text-white'} w-full lg:justify-center lg:items-center`}>
               {navLinks}
             </ul>
             <div className="lg:min-w-max flex items-center sm:w-max w-full pb-6 lg:pb-0 border-b border-gray-800 lg:border-0 px-6 lg:px-0">

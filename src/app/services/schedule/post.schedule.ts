@@ -12,7 +12,7 @@ export const postSchedule = async (classId: string, payload: any) => {
     const result = await res.json();
 
     if (res.ok) {
-      revalidateTag('schedule', 'default');
+      revalidateTag('schedule', '/');
     }
 
     return result;

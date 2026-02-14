@@ -3,6 +3,7 @@ import { getAllFees } from '@/app/services/fee/getAllfees';
 
 async function ViewPaymentWrapper() {
   const { fees } = await getAllFees();
+
   return <ViewPayment fees={fees} />;
 }
 

@@ -1,17 +1,14 @@
 'use client';
 
+import EmptyComp from '@/app/components/shared/EmptyComp';
 import { PERIODS } from '@/constant';
 import { IScheduleRow } from '@/types/schedule.interface';
 
 const ScheduleTable = ({ data }: { data: IScheduleRow[] }) => {
   return (
     <div className="overflow-x-auto mt-6">
-      {data.length === 0 ? (
-        <div className="h-[300px] flex flex-col items-center justify-center   border-dashed border-2 rounded-lg">
-          <p>No schedule data found!</p>
-          <p>Please set first from manage tab;</p>
-        </div>
-      ) : (
+      {data.length === 0 ?
+<EmptyComp /> : (
         <table className="w-full border border-primary-foreground text-sm">
           <thead className="bg-background">
             <tr>

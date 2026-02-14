@@ -2,10 +2,17 @@ import { Card } from '@/components/ui/card';
 
 import { CalendarDays, ReceiptText } from 'lucide-react';
 import { IFee } from '@/types/fee.interface';
+import PaymentMeta from '@/app/components/module/dashboard/admin/payment/PaymentMeta';
 
-const ViewPayment = ({ fees }: { fees: IFee[] }) => {
+const ViewPayment = ({ fees }: { fees: IFee[]}) => {
+
+
+
   return (
-    <div className="flex flex-col gap-2 max-w-full mx-auto">
+    <div className='space-y-4'>
+      <PaymentMeta/>
+
+     <div className="flex flex-col gap-2 max-w-full mx-auto">
       {fees.map((fee, index) => (
         <Card
           key={index}
@@ -49,6 +56,7 @@ const ViewPayment = ({ fees }: { fees: IFee[] }) => {
         </Card>
       ))}
     </div>
+  </div>
   );
 };
 
