@@ -96,6 +96,11 @@ export const adminRoutes: RouteSection[] = [
         iconName: 'Settings',
       },
       {
+        title: 'Manage',
+        href: '/admin/dashboard/manage',
+        iconName: 'Settings',
+      },
+      {
         title: 'Helpline',
         href: '/admin/dashboard/helpline',
         iconName: 'PhoneCall',

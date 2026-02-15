@@ -18,9 +18,9 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
     const pathName = usePathname();
-  console.log(pathName);
+
   const isLogin = pathName === '/login';
-  console.log(isLogin);
+
 
   const navLinks = (
     <>
