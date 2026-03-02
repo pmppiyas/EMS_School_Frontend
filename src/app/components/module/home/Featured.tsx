@@ -15,56 +15,56 @@ const Featured = () => {
   const images = [
     {
       src: pared,
-      label: 'Annual Sports Day',
+      label: 'বার্ষিক ক্রীড়া দিবস',
       span: 'md:col-span-2 md:row-span-2',
       gradient: 'from-blue-600/80 to-purple-600/80',
     },
     {
       src: pared,
-      label: 'Cultural Program',
+      label: 'সাংস্কৃতিক অনুষ্ঠান',
       span: '',
       gradient: 'from-pink-600/80 to-rose-600/80',
     },
     {
       src: pareda,
-      label: 'Classrooms',
+      label: 'ক্লাসরুম',
       span: '',
       gradient: 'from-emerald-600/80 to-teal-600/80',
     },
     {
       src: nursery,
-      label: 'Science Labs',
+      label: 'বিজ্ঞান ল্যাব',
       span: 'md:col-span-2',
       gradient: 'from-orange-600/80 to-amber-600/80',
     },
     {
       src: photo2,
-      label: 'Education Tour',
+      label: 'শিক্ষা সফর',
       span: '',
       gradient: 'from-cyan-600/80 to-blue-600/80',
     },
     {
       src: photo1,
-      label: 'Library',
+      label: 'লাইব্রেরি',
       span: 'md:row-span-2',
       gradient: 'from-violet-600/80 to-purple-600/80',
     },
     {
       src: photo3,
-      label: 'Student Activities',
+      label: 'ছাত্রছাত্রী কার্যক্রম',
       span: '',
       gradient: 'from-indigo-600/80 to-blue-600/80',
     },
     {
       src: pared,
-      label: 'Morning Assembly',
+      label: 'সকালের অ্যাসেম্বলি',
       span: '',
       gradient: 'from-red-600/80 to-pink-600/80',
     },
   ];
 
   return (
-    <div className="w-full lg:w-11/12 mx-auto py-16 relative overflow-hidden from-white via-gray-50 to-primary-foreground ">
+    <div className="w-full lg:w-11/12 mx-auto py-16 relative overflow-hidden from-white via-gray-50 to-primary-foreground">
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-linear-to-b -z-10" />
 
@@ -80,17 +80,17 @@ const Featured = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
           >
-            <Header title="School" title2="Gallery" />
+            <Header title="বিদ্যালয়" title2="গ্যালারি" />
           </motion.div>
 
           {/* Gallery Info Banner */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mb-10 bg-background rounded-2xl p-6 shadow-lg border border-background"
           >
@@ -101,16 +101,16 @@ const Featured = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-foreground">
-                    Capturing School Memories
+                    বিদ্যালয়ের মুহূর্তগুলো ক্যাপচার করা
                   </h3>
                   <p className="text-muted-foreground">
-                    Explore the vibrant life and activities at our school
+                    আমাদের স্কুলের জীবন ও কার্যক্রমগুলো এক নজরে দেখুন
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Eye className="w-4 h-4" />
-                <span>{images.length} Photos</span>
+                <span>{images.length}টি ছবি</span>
               </div>
             </div>
           </motion.div>
@@ -122,7 +122,7 @@ const Featured = () => {
                 key={index}
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.5,
                   delay: index * 0.08,
@@ -173,14 +173,14 @@ const Featured = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-center"
           >
             <button className="group relative bg-linear-to-r from-primary to-primary hover:from-primary/90 hover:to-primary/90 text-background px-10 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center gap-3 overflow-hidden">
               <div className="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <Camera className="w-5 h-5 relative z-10" />
-              <span className="relative z-10">View Full Gallery</span>
+              <span className="relative z-10">সম্পূর্ণ গ্যালারি দেখুন</span>
               <div className="w-0 group-hover:w-6 h-0.5 bg-background rounded-full transition-all duration-300 relative z-10" />
             </button>
           </motion.div>

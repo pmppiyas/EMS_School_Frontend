@@ -1,3 +1,4 @@
+import Footer from '@/app/components/module/home/Footer';
 import Navbar from '@/app/components/shared/Navbar';
 import React from 'react';
 
@@ -10,6 +11,7 @@ export default function CommonLayout({
     <div>
       <Navbar />
       <div className=" flex flex-col items-center">{children}</div>
+      <Footer />
     </div>
   );
 }

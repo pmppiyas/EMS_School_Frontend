@@ -144,10 +144,10 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
         <p className="text-center text-sm text-muted-foreground">
           Have no account?{' '}
           <Link
-            href="/signup"
+            href="/contact"
             className="text-primary font-bold hover:underline"
           >
-            Sign Up
+            Please contact to Office
           </Link>
         </p>
       </CardFooter>

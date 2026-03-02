@@ -14,211 +14,161 @@ import Link from 'next/link';
 const NoticeBoard = () => {
   const NoticeData = [
     {
-      title: 'Mid-Term Examination ClassTime Published',
+      title: 'মিড-টার্ম পরীক্ষার সময়সূচি প্রকাশ',
       message:
-        'The Mid-Term Examination ClassTime for all programs has officially been published. Students are advised to review the timetable carefully and make necessary preparations ahead of time. Please ensure that you bring your student ID to the examination hall and arrive at least fifteen minutes before your ClassTimed exam.',
+        'সকল শ্রেণির মিড-টার্ম পরীক্ষার সময়সূচি প্রকাশিত হয়েছে। শিক্ষার্থীদের নির্ধারিত সময় অনুযায়ী প্রস্তুতি নেওয়ার জন্য অনুরোধ করা হচ্ছে। পরীক্ষার হলে প্রবেশের সময় পরিচয়পত্র সঙ্গে আনতে হবে।',
       url: '#',
-      date: 'Jan 28, 2026',
-      category: 'Examination',
+      date: '২৮ জানুয়ারি, ২০২৬',
+      category: 'পরীক্ষা',
     },
     {
-      title: 'Campus Renovation Work Announcement',
+      title: 'ক্যাম্পাস সংস্কার কার্যক্রম',
       message:
-        'Renovation work will begin on different parts of the campus starting next week. Students may experience temporary changes in class locations, walkway restrictions, or noise during daytime hours. The management team is working to ensure that the renovation process causes minimal disruption to academic activities.',
+        'আগামী সপ্তাহ থেকে ক্যাম্পাসের কিছু অংশে সংস্কার কাজ শুরু হবে। সাময়িকভাবে কিছু শ্রেণিকক্ষ পরিবর্তন হতে পারে। কর্তৃপক্ষ শিক্ষার্থীদের অসুবিধা কমাতে সর্বোচ্চ চেষ্টা করবে।',
       url: '#',
-      date: 'Jan 25, 2026',
-      category: 'Campus',
+      date: '২৫ জানুয়ারি, ২০২৬',
+      category: 'ক্যাম্পাস',
     },
     {
-      title: 'Library Membership Renewal Reminder',
+      title: 'লাইব্রেরি সদস্যপদ নবায়ন',
       message:
-        'All students are reminded to renew their library memberships for the upcoming semester before the deadline. Without renewal, you will lose access to book borrowing, digital resources, and study room reservations. Visit the library help desk with your student ID to complete the process.',
+        'নতুন সেমিস্টারের জন্য সকল শিক্ষার্থীকে লাইব্রেরি সদস্যপদ নবায়ন করতে অনুরোধ করা হচ্ছে। নবায়ন না করলে বই ধার নেওয়া ও ডিজিটাল রিসোর্স ব্যবহার করা যাবে না।',
       url: '#',
-      date: 'Jan 22, 2026',
-      category: 'Library',
-    },
-    {
-      title: 'Co-Curricular Activities Week Registration',
-      message:
-        'Registration for Co-Curricular Activities Week is now open for all students. This event includes competitions, workshops, sports activities, and creative showcases designed to help students build confidence and discover new talents. Participation certificates will be provided, which can be valuable for future portfolios and university applications.',
-      url: '#',
-      date: 'Jan 20, 2026',
-      category: 'Activities',
+      date: '২২ জানুয়ারি, ২০২৬',
+      category: 'লাইব্রেরি',
     },
   ];
 
   return (
-    <div className="bg-gradient-to-b from-primary-foreground via-gray-50 to-white w-full mx-auto relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-primary rounded-full filter blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl" />
-      </div>
-
-      <section className="py-16 lg:w-11/12 mx-auto relative z-10">
+    <div className="bg-background text-foreground w-full relative overflow-hidden">
+      <section className="py-20 lg:w-11/12 mx-auto">
         <div className="container mx-auto px-4">
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.6 }}
           >
-            <Header title="Notice" title2="Board" />
+            <Header title="নোটিশ" title2="বোর্ড" />
           </motion.div>
 
-          {/* Enhanced Marquee Slider */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative mb-12"
-          >
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-primary-foreground to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-primary-foreground to-transparent z-10" />
-
-            <div className="slider-container w-full flex-nowrap relative overflow-hidden">
-              <div className="marqueeSliderLeft flex items-center gap-5">
-                {NoticeData.map((item, index) => (
-                  <Link
-                    href={item.url}
-                    className="group relative py-5 px-8 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary capitalize text-white rounded-xl font-medium whitespace-nowrap shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3 border border-primary/20"
-                    key={index}
-                  >
-                    <Bell className="w-5 h-5 group-hover:animate-pulse" />
-                    <span>{item.title}</span>
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                ))}
-              </div>
+          {/* Marquee */}
+          <div className="relative my-12 overflow-hidden">
+            <div className="flex gap-6 whitespace-nowrap animate-[marquee_20s_linear_infinite]">
+              {NoticeData.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.url}
+                  className="flex items-center gap-3 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium shadow-md hover:opacity-90 transition"
+                >
+                  <Bell className="w-5 h-5" />
+                  {item.title}
+                </Link>
+              ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Enhanced Accordion Section */}
-          <div className="px-6 flex flex-col lg:flex-row gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex-1"
-            >
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-primary to-primary/90 p-6">
-                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+          {/* Main Content */}
+          <div className="flex flex-col lg:flex-row gap-10">
+            {/* Accordion */}
+            <div className="flex-1">
+              <div className="bg-card border border-border rounded-2xl shadow-sm">
+                <div className="bg-primary text-primary-foreground p-6 rounded-t-2xl">
+                  <h3 className="text-2xl font-bold flex items-center gap-3">
                     <Bell className="w-6 h-6" />
-                    Recent Announcements
+                    সাম্প্রতিক ঘোষণা
                   </h3>
                 </div>
 
                 <Accordion type="single" collapsible className="px-6 py-4">
                   {NoticeData.map((item, index) => (
-                    <motion.div
+                    <AccordionItem
                       key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: false, amount: 0.3 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      value={`item-${index}`}
+                      className="border-b border-border last:border-0"
                     >
-                      <AccordionItem
-                        value={`item-${index}`}
-                        className="border-b border-gray-200 last:border-0"
-                      >
-                        <AccordionTrigger className="text-lg hover:no-underline group py-6">
-                          <div className="flex flex-col items-start gap-2 text-left">
-                            <div className="flex items-center gap-3 flex-wrap">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                {item.category}
-                              </span>
-                              <span className="flex items-center gap-1 text-sm text-gray-500">
-                                <Calendar className="w-4 h-4" />
-                                {item.date}
-                              </span>
-                            </div>
-                            <span className="font-semibold text-gray-800 group-hover:text-primary transition-colors">
-                              {item.title}
+                      <AccordionTrigger className="hover:no-underline py-6">
+                        <div className="flex flex-col items-start gap-2 text-left">
+                          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs">
+                              {item.category}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {item.date}
                             </span>
                           </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="text-gray-600 leading-relaxed pb-6">
-                          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-primary">
-                            {item.message}
-                          </div>
-                          <Link
-                            href={item.url}
-                            className="inline-flex items-center gap-2 mt-4 text-primary font-medium hover:gap-3 transition-all"
-                          >
-                            Read More
-                            <ChevronRight className="w-4 h-4" />
-                          </Link>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </motion.div>
+
+                          <span className="font-semibold text-foreground">
+                            {item.title}
+                          </span>
+                        </div>
+                      </AccordionTrigger>
+
+                      <AccordionContent className="pb-6 text-muted-foreground leading-relaxed">
+                        <div className="bg-muted rounded-lg p-4 border-l-4 border-primary">
+                          {item.message}
+                        </div>
+
+                        <Link
+                          href={item.url}
+                          className="inline-flex items-center gap-2 mt-4 text-primary font-medium hover:gap-3 transition-all"
+                        >
+                          বিস্তারিত পড়ুন
+                          <ChevronRight className="w-4 h-4" />
+                        </Link>
+                      </AccordionContent>
+                    </AccordionItem>
                   ))}
                 </Accordion>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Side Panel - Optional Featured Notice */}
-            <motion.aside
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="lg:w-80 space-y-6"
-            >
-              <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-6 text-white shadow-xl">
+            {/* Side Panel */}
+            <aside className="lg:w-80 space-y-6">
+              <div className="bg-primary text-primary-foreground rounded-2xl p-6 shadow-md">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-white/20 p-3 rounded-full">
-                    <Bell className="w-6 h-6" />
-                  </div>
-                  <h4 className="text-xl font-bold">Important</h4>
+                  <Bell className="w-6 h-6" />
+                  <h4 className="text-xl font-bold">গুরুত্বপূর্ণ বার্তা</h4>
                 </div>
-                <p className="text-white/90 mb-4">
-                  Stay updated with the latest announcements and notices from
-                  the administration.
+                <p className="mb-4 text-primary-foreground/90">
+                  বিদ্যালয়ের সর্বশেষ ঘোষণা ও আপডেট জানতে নিয়মিত নোটিশ বোর্ড
+                  দেখুন।
                 </p>
                 <Link
                   href="#"
-                  className="inline-flex items-center gap-2 bg-white text-primary px-4 py-2 rounded-lg font-medium hover:bg-white/90 transition-colors"
+                  className="inline-flex items-center gap-2 bg-background text-primary px-4 py-2 rounded-lg font-medium hover:bg-muted transition"
                 >
-                  View All Notices
+                  সকল নোটিশ দেখুন
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                <h4 className="text-lg font-bold text-gray-800 mb-4">
-                  Quick Links
-                </h4>
+              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+                <h4 className="text-lg font-bold mb-4">দ্রুত লিংক</h4>
+
                 <ul className="space-y-3">
                   {[
-                    'Academic Calendar',
-                    'Exam Schedule',
-                    'Event Registration',
-                    'Contact Support',
+                    'একাডেমিক ক্যালেন্ডার',
+                    'পরীক্ষার সময়সূচি',
+                    'ইভেন্ট নিবন্ধন',
+                    'যোগাযোগ করুন',
                   ].map((link, idx) => (
-                    <motion.li
-                      key={idx}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: false, amount: 0.3 }}
-                      transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    >
+                    <li key={idx}>
                       <Link
                         href="#"
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                        className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition"
                       >
-                        <span className="text-gray-700 group-hover:text-primary transition-colors">
+                        <span className="text-muted-foreground hover:text-foreground transition">
                           {link}
                         </span>
-                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
                       </Link>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
               </div>
-            </motion.aside>
+            </aside>
           </div>
         </div>
       </section>

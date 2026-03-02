@@ -15,7 +15,6 @@ export default function Home() {
       <Featured />
       <OurTeacher />
       <Testimonial />
-      <Footer />
     </div>
   );
 }

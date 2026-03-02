@@ -6,7 +6,7 @@ export const getAllStudents = async (
   classId?: string,
   searchTerm?: string,
   page: number = 1,
-  limit: number = 10
+  limit: number = 30
 ) => {
   try {
     const queryParams = new URLSearchParams();

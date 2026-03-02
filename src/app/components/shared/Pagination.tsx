@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { getCookie, setCookie } from '@/lib/cookies';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 interface PaginationProps {
   total: number;
@@ -17,23 +17,46 @@ const Pagination: React.FC<PaginationProps> = ({
   cookieName = 'studentPage',
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const totalPages = Math.ceil(total / limit);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    const savedPage = getCookie(cookieName);
-    if (savedPage && !isNaN(Number(savedPage))) {
-      const pageNum = Number(savedPage);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCurrentPage(pageNum <= totalPages ? pageNum : 1);
-      router.refresh();
-    }
-  }, [router, totalPages, cookieName]);
+    const init = async () => {
+      const urlPage = searchParams.get('page');
+      const savedPage = await getCookie(cookieName);
+
+      if (urlPage && !isNaN(Number(urlPage))) {
+        const pageNum = Number(urlPage);
+        setCurrentPage(pageNum <= totalPages ? pageNum : 1);
+      } else if (savedPage && !isNaN(Number(savedPage))) {
+        const pageNum = Number(savedPage);
+        setCurrentPage(pageNum <= totalPages ? pageNum : 1);
+        updateUrl(pageNum <= totalPages ? pageNum : 1);
+      } else {
+        setCurrentPage(1);
+        updateUrl(1);
+        await setCookie(cookieName, '1');
+      }
+    };
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalPages]);
+
+  const updateUrl = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', String(page));
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const changePage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
+
     setCurrentPage(newPage);
     setCookie(cookieName, String(newPage));
+    updateUrl(newPage);
   };
 
   if (totalPages <= 1) return null;

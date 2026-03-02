@@ -15,7 +15,7 @@ const AdmitCard = ({
       {/* Header Section */}
       <div className="flex items-center justify-between border-b-2 border-black  pb-2">
         <div className="w-16 h-16 border flex items-center justify-center text-[10px] text-center">
-          School Logo
+          DMSC
         </div>
 
         <div className="text-center flex-1">
