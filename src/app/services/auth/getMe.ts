@@ -9,5 +9,7 @@ export const getMe = async () => {
 
   const result = (await res).json();
 
+
+
   return result;
 };

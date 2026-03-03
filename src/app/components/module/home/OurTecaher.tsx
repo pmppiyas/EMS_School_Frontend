@@ -8,6 +8,10 @@ import { Award, GraduationCap, Users } from 'lucide-react';
 export default async function OurTeacher() {
   const { teachers = [] }: { teachers: ITeacher[] } = await getTeachers();
 
+  if (teachers.length === 0) {
+    return;
+  }
+
   return (
     <div className="bg-background text-foreground w-full mx-auto overflow-hidden">
       <section className="py-16 lg:w-11/12 mx-auto">

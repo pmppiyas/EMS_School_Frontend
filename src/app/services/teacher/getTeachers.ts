@@ -8,17 +8,17 @@ export const getTeachers = async () => {
     },
   });
 
-  let data;
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Server Error:', errorText);
+    return { teachers: [] };
+  }
+
   try {
-    data = await res.json();
+    const data = await res.json();
+    return data.data;
   } catch (err) {
     console.error('JSON parse error:', err);
-    return null;
+    return { teachers: [] };
   }
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch teachers');
-  }
-
-  return data.data;
 };

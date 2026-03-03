@@ -1,13 +1,16 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useUser } from '@/hooks/useUser';
 import Link from 'next/link';
-import { usePathname} from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Navbar = () => {
   const [openNavbar, setOpenNavbar] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const { user } = useUser();
 
   const toggleNavbar = () => setOpenNavbar((openNavbar) => !openNavbar);
   const closeNavbar = () => setOpenNavbar(false);
@@ -17,10 +20,9 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-    const pathName = usePathname();
+  const pathName = usePathname();
 
   const isLogin = pathName === '/login';
-
 
   const navLinks = (
     <>
@@ -56,7 +58,6 @@ const Navbar = () => {
       </Link>
     </>
   );
-
 
   return (
     <header
@@ -94,21 +95,26 @@ const Navbar = () => {
           <div
             className={`flex overflow-hidden duration-300 ease-linear flex-col gap-y-6 gap-x-4 lg:flex-row w-full lg:justify-between lg:items-center absolute lg:relative top-full lg:top-0 bg-gray-900 lg:bg-transparent border-x border-x-gray-800 lg:border-x-0 ${
               openNavbar
-                ? 'visible opacity-100 translate-y-0'
+                ? 'visible opacity-100 translate-y-0 pb-8'
                 : 'invisible opacity-0 translate-y-10 lg:visible lg:opacity-100 lg:translate-y-0'
             }`}
           >
-            <ul className={`border-t border-gray-800 lg:border-t-0 px-6 lg:px-0 pt-6 lg:pt-0 flex flex-col lg:flex-row gap-y-4 gap-x-3 text-lg ${isLogin ? 'text-black' : 'text-white'} w-full lg:justify-center lg:items-center`}>
+            <ul
+              className={`border-t border-gray-800 lg:border-t-0 px-6 lg:px-0 pt-6 lg:pt-0 flex flex-col lg:flex-row gap-y-4 gap-x-3 text-lg ${isLogin ? 'text-black' : 'text-white'} w-full lg:justify-center lg:items-center`}
+            >
               {navLinks}
             </ul>
-            <div className="lg:min-w-max flex items-center sm:w-max w-full pb-6 lg:pb-0 border-b border-gray-800 lg:border-0 px-6 lg:px-0">
-              <Link
-                href="/login"
-                className="flex justify-center items-center w-full sm:w-max px-6 h-12 rounded-full outline-none relative overflow-hidden border duration-300 ease-linear after:absolute after:inset-x-0 after:aspect-square after:scale-0 after:opacity-70 after:origin-center after:duration-300 after:ease-linear after:rounded-full after:top-0 after:left-0 after:bg-primary hover:after:opacity-100 hover:after:scale-[2.5] bg-primary border-transparent hover:border-primary/90"
-              >
-                <span className="relative z-10 text-white">Login</span>
-              </Link>
-            </div>
+            {!user ||
+              (!user.success && (
+                <div className="lg:min-w-max flex items-center sm:w-max w-full pb-6 lg:pb-0 border-b border-gray-800 lg:border-0 px-6 lg:px-0">
+                  <Link
+                    href="/login"
+                    className="flex justify-center items-center w-full sm:w-max px-6 h-12 rounded-full outline-none relative overflow-hidden border duration-300 ease-linear after:absolute after:inset-x-0 after:aspect-square after:scale-0 after:opacity-70 after:origin-center after:duration-300 after:ease-linear after:rounded-full after:top-0 after:left-0 after:bg-primary hover:after:opacity-100 hover:after:scale-[2.5] bg-primary border-transparent hover:border-primary/90"
+                  >
+                    <span className="relative z-10 text-white">Login</span>
+                  </Link>
+                </div>
+              ))}
           </div>
 
           <div className="min-w-max flex items-center gap-x-3">
