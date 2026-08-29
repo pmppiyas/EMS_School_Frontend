@@ -1,8 +1,7 @@
 import { getStudentAttendance } from '@/app/services/attendance/getStudentAttendance';
 import AttendanceCharts from '../../../components/module/dashboard/admin/overview/AttendanceCharts';
-
 import { getTeacherAttendance } from '../../../services/attendance/getTeacherAttendance';
-import PaymentMeta from "@/app/components/module/dashboard/admin/payment/PaymentMeta";
+import PaymentMeta from '@/app/components/module/dashboard/admin/payment/PaymentMeta';
 
 const page = async () => {
   const { student } = await getStudentAttendance();
@@ -51,7 +50,7 @@ const page = async () => {
         ))}
       </div>
 
-      <PaymentMeta/>
+      <PaymentMeta />
 
       <AttendanceCharts student={student} />
     </div>

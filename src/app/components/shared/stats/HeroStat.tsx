@@ -6,11 +6,15 @@ function HeroStat({
   value,
   label,
   delay,
+  valueColor = 'text-white',
+  labelColor = 'text-slate-200',
 }: {
   icon: React.ReactNode;
   value: string;
   label: string;
   delay: number;
+  valueColor?: string;
+  labelColor?: string;
 }) {
   const numericValue = parseInt(value.replace(/\D/g, ''));
   const suffix = value.replace(/[0-9]/g, '');
@@ -23,8 +27,8 @@ function HeroStat({
       transition={{ duration: 0.5, delay }}
       className="text-center"
     >
-      <div className="flex items-center justify-center mb-2">{icon}</div>
-      <div className="text-2xl md:text-3xl font-bold text-background mb-1 flex justify-center items-center">
+      <div className="flex items-center justify-center mb-1.5">{icon}</div>
+      <div className={`text-2xl md:text-3xl font-extrabold ${valueColor} mb-0.5 flex justify-center items-center`}>
         {!isNaN(numericValue) ? (
           <>
             <NumberTicker value={numericValue} />
@@ -34,7 +38,7 @@ function HeroStat({
           <span>{value}</span>
         )}
       </div>
-      <div className="text-[10px] md:text-sm text-gray-400 uppercase tracking-wider">
+      <div className={`text-[11px] md:text-xs font-semibold ${labelColor} uppercase tracking-wider`}>
         {label}
       </div>
     </motion.div>

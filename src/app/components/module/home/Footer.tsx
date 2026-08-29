@@ -1,66 +1,75 @@
-import { Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube, GraduationCap, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 const Footer = () => {
   const quickLinks = [
-    { name: "About Us", href: "/about" },
-    { name: "Admissions", href: "/admissions" },
-    { name: "Academic Programs", href: "/academics" },
-    { name: "Faculty", href: "/faculty" },
-    { name: "Events", href: "/events" },
-    { name: "Contact", href: "/contact" },
+    { name: "আমাদের সম্পর্কে", href: "/about" },
+    { name: "ভর্তি তথ্য", href: "/admissions" },
+    { name: "একাডেমিক কার্যক্রম", href: "/academics" },
+    { name: "শিক্ষকমণ্ডলী", href: "/faculty" },
+    { name: "ইভেন্টস ও নোটিশ", href: "/events" },
+    { name: "যোগাযোগ", href: "/contact" },
   ];
 
   const resources = [
-    { name: "Student Portal", href: "/portal" },
-    { name: "Parent Portal", href: "/parent-portal" },
-    { name: "Library", href: "/library" },
-    { name: "Calendar", href: "/calendar" },
-    { name: "News & Updates", href: "/news" },
-    { name: "Career", href: "/career" },
+    { name: "শিক্ষার্থী পোর্টাল", href: "/portal" },
+    { name: "অভিভাবক পোর্টাল", href: "/parent-portal" },
+    { name: "ডিজিটাল লাইব্রেরি", href: "/library" },
+    { name: "একাডেমিক ক্যালেন্ডার", href: "/calendar" },
+    { name: "ফলাফল ও মূল্যায়ন", href: "/news" },
+    { name: "ক্যারিয়ার", href: "/career" },
   ];
 
   return (
-    <footer className="bg-foreground/90 text-background/70 w-full">
+    <footer className="w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-400 border-t border-slate-800/80">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-12 lg:w-11/12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-16 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
           {/* School Info */}
           <div className="space-y-4">
-            <h3 className="text-background text-xl font-bold mb-4">
-              Dhormopur Model School & College
-            </h3>
-            <p className="text-sm leading-relaxed">
-              Committed to providing quality education and nurturing young minds to become future leaders with strong moral values and academic excellence.
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 text-white shadow-md">
+                <GraduationCap className="h-5 w-5" />
+              </div>
+              <span className="text-xl font-bold text-white tracking-tight">
+                ধরমপুর মডেল একাডেমি
+              </span>
+            </div>
+            
+            <p className="text-sm text-slate-400 leading-relaxed font-normal">
+              নৈতিক মূল্যবোধ, আনন্দময় পরিবেশ ও আধুনিক প্রযুক্তির সমন্বয়ে শিশুর সুপ্ত প্রতিভার বিকাশ ও উজ্জ্বল ভবিষ্যৎ গড়ায় নিবেদিত।
             </p>
-            <div className="flex gap-4 pt-4">
-              <Link href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <Facebook className="w-5 h-5" />
+
+            <div className="flex gap-2.5 pt-2">
+              <Link href="#" aria-label="Facebook" className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-transparent transition-all">
+                <Facebook className="w-4 h-4" />
               </Link>
-              <Link href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <Twitter className="w-5 h-5" />
+              <Link href="#" aria-label="Twitter" className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-transparent transition-all">
+                <Twitter className="w-4 h-4" />
               </Link>
-              <Link href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <Instagram className="w-5 h-5" />
+              <Link href="#" aria-label="Instagram" className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-pink-600 hover:text-white hover:border-transparent transition-all">
+                <Instagram className="w-4 h-4" />
               </Link>
-              <Link href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <Youtube className="w-5 h-5" />
+              <Link href="#" aria-label="Youtube" className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-rose-600 hover:text-white hover:border-transparent transition-all">
+                <Youtube className="w-4 h-4" />
               </Link>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-background text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+            <h4 className="text-white text-base font-bold mb-4">প্রয়োজনীয় লিংক</h4>
+            <ul className="space-y-2.5">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-primary transition-colors inline-block"
+                    className="text-sm text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center gap-1 group"
                   >
-                    {link.name}
+                    <span className="group-hover:translate-x-1 transition-transform">
+                      {link.name}
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -69,15 +78,17 @@ const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h3 className="text-background text-xl font-bold mb-4">Resources</h3>
-            <ul className="space-y-2">
+            <h4 className="text-white text-base font-bold mb-4">রিসোর্স ও পোর্টাল</h4>
+            <ul className="space-y-2.5">
               {resources.map((resource, index) => (
                 <li key={index}>
                   <Link
                     href={resource.href}
-                    className="text-sm hover:text-primary transition-colors inline-block"
+                    className="text-sm text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center gap-1 group"
                   >
-                    {resource.name}
+                    <span className="group-hover:translate-x-1 transition-transform">
+                      {resource.name}
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -86,22 +97,22 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-background text-xl font-bold mb-4">Contact Us</h3>
-            <ul className="space-y-4">
+            <h4 className="text-white text-base font-bold mb-4">যোগাযোগের ঠিকানা</h4>
+            <ul className="space-y-3.5">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 mt-1 shrink-0 text-primary" />
-                <span className="text-sm">
-                  Dhormopur, Kazla, Gobindoganj,<br />
-                  Gaibandha, Bangladesh
+                <MapPin className="w-4.5 h-4.5 mt-0.5 shrink-0 text-sky-400" />
+                <span className="text-sm text-slate-300 leading-snug">
+                  ধর্মপুর, কাজলা, গোবিন্দগঞ্জ,<br />
+                  গাইবান্ধা, বাংলাদেশ
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 shrink-0 text-primary" />
-                <span className="text-sm">+880 1234-567890</span>
+                <Phone className="w-4.5 h-4.5 shrink-0 text-sky-400" />
+                <span className="text-sm text-slate-300">+880 01917-692136</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 shrink-0 text-primary" />
-                <span className="text-sm">info@ourschool.edu.bd</span>
+                <Mail className="w-4.5 h-4.5 shrink-0 text-sky-400" />
+                <span className="text-sm text-slate-300">office@dhormopur.edu.bd</span>
               </li>
             </ul>
           </div>
@@ -109,18 +120,18 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 py-6 lg:w-11/12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Our School. All rights reserved.
+      <div className="border-t border-slate-800/80">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-5 max-w-7xl">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+            <p>
+              © {new Date().getFullYear()} ধরমপুর মডেল একাডেমি। সর্বস্বত্ব সংরক্ষিত।
             </p>
-            <div className="flex gap-6 text-sm">
-              <Link href="/privacy" className="hover:text-primary transition-colors">
-                Privacy Policy
+            <div className="flex gap-6">
+              <Link href="/privacy" className="hover:text-blue-400 transition-colors">
+                গোপনীয়তা নীতি
               </Link>
-              <Link href="/terms" className="hover:text-primary transition-colors">
-                Terms of Service
+              <Link href="/terms" className="hover:text-blue-400 transition-colors">
+                ব্যবহারের শর্তাবলী
               </Link>
             </div>
           </div>

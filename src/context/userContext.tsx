@@ -3,6 +3,7 @@
 
 import { getMe } from '@/app/services/auth/getMe';
 import React, { createContext, useEffect, useState } from 'react';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
 interface UserContextType {
   user: any;
@@ -41,7 +42,9 @@ export const UserProvider = ({
 
   return (
     <UserContext.Provider value={{ user, isLoading, refreshUser: fetchUser }}>
-      {children}
+      <NextThemesProvider attribute="class" defaultTheme="light" enableSystem>
+        {children}
+      </NextThemesProvider>
     </UserContext.Provider>
   );
 };

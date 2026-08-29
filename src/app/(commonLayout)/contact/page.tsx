@@ -71,7 +71,7 @@ const ContactPage = () => {
                 <ContactInfoItem
                   icon={<MapPin size={20} />}
                   title="অবস্থান"
-                  detail="ধরমপুর মেইন রোড, ঢাকা, বাংলাদেশ"
+                  detail="ধর্মপুর মেইন রোড, ঢাকা, বাংলাদেশ"
                 />
                 <ContactInfoItem
                   icon={<Phone size={20} />}

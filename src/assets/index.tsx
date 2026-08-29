@@ -123,8 +123,8 @@ export const HERO_SLIDES = [
       },
       {
         icon: <Award className="w-6 h-6 text-primary" />,
-        value: 'সোনা',
-        label: 'মেডেল',
+        value: '৫০+',
+        label: 'পুরস্কার',
       },
       {
         icon: <Heart className="w-6 h-6 text-primary" />,

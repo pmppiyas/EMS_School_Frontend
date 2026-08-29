@@ -8,9 +8,9 @@ export default function CommonLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="w-full min-h-screen">
       <Navbar />
-      <div className=" flex flex-col items-center">{children}</div>
+      <main className="w-full flex flex-col items-center">{children}</main>
       <Footer />
     </div>
   );

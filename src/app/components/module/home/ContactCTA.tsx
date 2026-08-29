@@ -1,95 +1,150 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowRight, Sparkles, PhoneCall, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContactCTA() {
   const contacts = [
-    { icon: Phone, label: '+880 01917-692136', tone: 'chart-3' },
-    { icon: Mail, label: 'office@dhormopur.edu.bd', tone: 'chart-2' },
+    {
+      icon: Phone,
+      title: 'সরাসরি হেল্পলাইন',
+      label: '+880 1917-692136',
+      sub: 'সকাল ৯:০০ টা - বিকাল ৪:০০ টা',
+      href: 'tel:+8801917692136',
+      badge: 'কল করুন',
+      iconBg: 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white',
+    },
+    {
+      icon: Mail,
+      title: 'অফিসিয়াল ইমেইল',
+      label: 'office@dhormopur.edu.bd',
+      sub: '২৪/৭ বার্তা পাঠানো যাবে',
+      href: 'mailto:office@dhormopur.edu.bd',
+      badge: 'ইমেইল পাঠান',
+      iconBg: 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white',
+    },
     {
       icon: MapPin,
-      label: 'ধর্মপুর, কাজলা, গোবিন্দগঞ্জ, গাইবান্ধা',
-      tone: 'chart-3',
+      title: 'ক্যাম্পাস লোকেশন',
+      label: 'ধর্মপুর, কাজলা, গোবিন্দগঞ্জ',
+      sub: 'গাইবান্ধা, রংপুর বিভাগ',
+      href: 'https://maps.google.com/?q=Gobindaganj,Gaibandha',
+      badge: 'ম্যাপ দেখুন',
+      iconBg: 'bg-sky-50 text-sky-600 group-hover:bg-sky-600 group-hover:text-white',
     },
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-      className="mt-20 text-center px-4"
-    >
-      <div className="relative group max-w-5xl mx-auto">
-        {/* Glow Background */}
-        <div className="absolute -inset-1 bg-linear-to-r from-primary via-primary to-primary/70 rounded-4xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
+    <section className="w-full py-16 sm:py-24 bg-gradient-to-b from-blue-50/90 via-indigo-50/40 to-slate-100/90 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 border-t border-blue-100/90 dark:border-slate-800 text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-300">
+      {/* Subtle Ambient Mesh Lights */}
+      <div className="absolute top-0 right-10 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-96 h-96 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative bg-white rounded-4xl p-10 md:p-14 shadow-2xl border border-gray-100 overflow-hidden">
-          {/* Animated blobs */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-linear-to-br from-primary/10 to-primary/10 blur-3xl rounded-full -mr-20 -mt-20 animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-linear-to-tr from-primary/10 to-primary/10 blur-3xl rounded-full -ml-20 -mb-20 animate-pulse" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-6xl relative z-10 text-center">
+        {/* Tagline Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 mb-4 text-xs font-bold text-blue-700 dark:text-sky-300 bg-white dark:bg-sky-500/10 border border-blue-200/80 dark:border-sky-400/20 rounded-full shadow-2xs"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-sky-400" />
+          <span>নতুন শিক্ষাবর্ষে ভর্তি ও তথ্য</span>
+        </motion.div>
 
-          <div className="relative z-10">
-            {/* Tagline */}
-            <span className="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-primary uppercase bg-primary/5 rounded-full">
-              যোগাযোগ করুন
-            </span>
+        {/* Section Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4 tracking-tight leading-tight max-w-3xl mx-auto"
+        >
+          সন্তানের সুন্দর ভবিষ্যতের জন্য{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 dark:from-sky-400 dark:via-blue-300 dark:to-indigo-300">
+            আজই যোগাযোগ করুন
+          </span>
+        </motion.h2>
 
-            <h3 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
-              আমাদের অফিসের সাথে{' '}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-primary">
-                যোগাযোগ করুন
-              </span>
-            </h3>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="text-slate-600 dark:text-slate-400 mb-10 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl mx-auto"
+        >
+          ভর্তি প্রক্রিয়া, ফি কাঠামো বা যেকোনো প্রাতিষ্ঠানিক তথ্যের জন্য আমাদের প্রশাসনিক দল আপনাকে আন্তরিক সহযোগিতা করতে প্রস্তুত।
+        </motion.p>
 
-            <p className="text-gray-600 mb-12 text-lg max-w-2xl mx-auto leading-relaxed">
-              কোনো প্রশ্ন আছে? ভর্তি, সময়সূচি বা যেকোনো তথ্যের জন্য আমাদের
-              প্রশাসনিক দল সাহায্যের জন্য প্রস্তুত।
-            </p>
-
-            {/* Contact Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {contacts.map((item, idx) => {
-                let toneClass = '';
-                if (item.tone === 'chart-1') toneClass = 'bg-chart-1';
-                else if (item.tone === 'chart-2') toneClass = 'bg-chart-2';
-                else if (item.tone === 'chart-3') toneClass = 'bg-chart-3';
-
-                return (
-                  <motion.div
-                    key={idx}
-                    whileHover={{ y: -5 }}
-                    className="flex flex-col items-center p-6 rounded-2xl bg-linear-to-b from-gray-50 to-white border border-gray-100 shadow-sm group/item hover:shadow-md transition-all"
+        {/* Direct Interactive Contact Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-10 text-left"
+        >
+          {contacts.map((item, idx) => (
+            <a
+              key={idx}
+              href={item.href}
+              target={item.href.startsWith('http') ? '_blank' : undefined}
+              rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="group relative flex flex-col justify-between p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900/90 hover:bg-white dark:hover:bg-slate-800/90 border border-slate-200/90 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-500/50 shadow-sm dark:shadow-xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 backdrop-blur-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${item.iconBg}`}
                   >
-                    <div
-                      className={`${toneClass} w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mb-4 group-hover/item:rotate-12 transition-transform`}
-                    >
-                      <item.icon className="text-white w-6 h-6" />
-                    </div>
-                    <span className="text-sm font-bold text-gray-800 tracking-tight">
-                      {item.label}
-                    </span>
-                  </motion.div>
-                );
-              })}
-            </div>
+                    <item.icon className="w-5.5 h-5.5" />
+                  </div>
+                  <span className="text-[11px] font-bold text-blue-600 dark:text-sky-300 group-hover:text-blue-700 dark:group-hover:text-white bg-blue-50 dark:bg-slate-800 px-2.5 py-1 rounded-full border border-blue-100 dark:border-slate-700 flex items-center gap-1 transition-colors">
+                    <span>{item.badge}</span>
+                    <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </span>
+                </div>
 
-            {/* Action Button */}
-            <Link href="/contact" className="inline-block">
-              <button className="group relative bg-primary text-white px-12 py-5 rounded-2xl font-bold text-lg transition-all shadow-2xl hover:shadow-primary/40 hover:-translate-y-1 flex items-center gap-4 overflow-hidden">
-                <span className="relative z-10">এখন যোগাযোগ করুন</span>
-                <ArrowRight className="relative z-10 w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+                <span className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">
+                  {item.title}
+                </span>
+                <span className="block text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight break-all sm:break-normal group-hover:text-blue-600 dark:group-hover:text-sky-300 transition-colors">
+                  {item.label}
+                </span>
+              </div>
 
-                {/* Hover linear overlay */}
-                <div className="absolute inset-0 bg-linear-to-r from-primary to-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </button>
-            </Link>
-          </div>
-        </div>
+              <span className="block text-xs text-slate-500 dark:text-slate-400 mt-3 font-medium">
+                {item.sub}
+              </span>
+            </a>
+          ))}
+        </motion.div>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3.5"
+        >
+          <Link href="/contact" className="w-full sm:w-auto">
+            <button className="w-full sm:w-auto group bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3.5 rounded-2xl font-bold text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/25 hover:scale-105 flex items-center justify-center gap-2.5">
+              <span>অনলাইন ভর্তি ও যোগাযোগ ফর্ম</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
+
+          <a href="tel:+8801917692136" className="w-full sm:w-auto">
+            <button className="w-full sm:w-auto bg-white dark:bg-slate-900 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-white border border-slate-200/90 dark:border-slate-800 px-7 py-3.5 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center gap-2">
+              <PhoneCall className="w-4 h-4 text-blue-600 dark:text-sky-400" />
+              <span>সরাসরি কল করুন</span>
+            </button>
+          </a>
+        </motion.div>
       </div>
-    </motion.div>
+    </section>
   );
 }

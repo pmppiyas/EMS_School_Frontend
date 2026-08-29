@@ -1,168 +1,147 @@
 'use client';
 
-import ContactCTA from '@/app/components/module/home/ContactCTA';
 import Header from '@/app/components/shared/Header';
 import { motion } from 'framer-motion';
-import { Quote, Star, Users } from 'lucide-react';
+import { Quote, Star, CheckCircle2, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 const Testimonial = () => {
   const testimonials = [
     {
-      name: 'সারা আহমেদ',
-      role: 'অভিভাবক',
+      name: 'মোঃ শফিকুল ইসলাম',
+      relation: 'অভিভাবক • ৭ম শ্রেণি (রোল: ০৪)',
       rating: 5,
-      text: 'শিক্ষকদের নিবেদন এবং সহায়ক পরিবেশ আমার সন্তানের শিক্ষাজীবন ও ব্যক্তিগত বিকাশে অসাধারণ প্রভাব ফেলেছে।',
-      tone: 'chart-2',
+      date: 'গত সপ্তাহে',
+      text: 'শিক্ষকদের নিবিড় পর্যবেক্ষণ এবং আন্তরিক দিকনির্দেশনায় আমার সন্তানের পড়াশোনায় আমূল পরিবর্তন এসেছে। নিয়মিত ক্লাস টেস্ট ও রিপোর্ট কার্ডের মাধ্যমে অগ্রগতি ট্র্যাক করা খুব সহজ।',
+      tone: 'bg-blue-600',
     },
     {
-      name: 'করিম রহমান',
-      role: 'অভিভাবক',
+      name: 'ড. রুবাইয়াত হাসান',
+      relation: 'অভিভাবক • ৩য় শ্রেণি',
       rating: 5,
-      text: 'চমৎকার বিদ্যালয় ও সুবিধাসম্পন্ন পরিবেশ। আমার কন্যা প্রতিদিন বিদ্যালয়ে যেতে ভালোবাসে এবং শিক্ষাগত ও সামাজিকভাবে উন্নতি করেছে।',
-      tone: 'chart-2',
+      date: '২ সপ্তাহ আগে',
+      text: 'বিদ্যালয়ের নিরাপদ পরিবেশ ও নৈতিক শিক্ষার বিষয়টি আমাকে সবচেয়ে বেশি মুগ্ধ করেছে। শুধু পাঠ্যপুস্তকের পড়ালেখা নয়, শিশুদের আদব-কায়দা ও সৃজনশীলতায় বিশেষ গুরুত্ব দেওয়া হয়।',
+      tone: 'bg-emerald-600',
     },
     {
-      name: 'নাদিয়া হাসান',
-      role: 'প্রাক্তন শিক্ষার্থী',
+      name: 'ফারজানা আক্তার',
+      relation: 'অভিভাবক • প্লে-গ্রুপ ও ২য় শ্রেণি',
       rating: 5,
-      text: 'এখানকার শিক্ষা এবং মূল্যবোধ আমাকে আজকের আমি হতে সাহায্য করেছে। শিক্ষকরা প্রতিটি শিক্ষার্থীর সাফল্যের জন্য অতিরিক্ত যত্ন নেন।',
-      tone: 'chart-3',
+      date: '১ মাস আগে',
+      text: 'ছোট বাচ্চাদের জন্য এত চমৎকার খেলার মাঠ ও আনন্দময় ক্লাসরুম সত্যিই বিরল। শিক্ষিকারা মাতৃস্নেহে শিশুদের পাঠদান করান, ফলে বাচ্চারা প্রতিদিন স্কুলে যেতে আগ্রহী থাকে।',
+      tone: 'bg-indigo-600',
     },
     {
-      name: 'মোহাম্মদ আলী',
-      role: 'অভিভাবক',
+      name: 'ইঞ্জি. তারেক মাহমুদ',
+      relation: 'অভিভাবক • ৯ম শ্রেণি (বিজ্ঞান)',
       rating: 5,
-      text: 'একটি যত্নশীল পরিবেশ যেখানে শিশুরা বিকাশ লাভ করে। বিদ্যালয়ের সামগ্রিক উন্নয়নের দিকে মনোযোগ অন্যান্য বিদ্যালয়ের চেয়ে আলাদা।',
-      tone: 'chart-4',
+      date: '৩ সপ্তাহ আগে',
+      text: 'আধুনিক কম্পিউটার ও বিজ্ঞান ল্যাবে হাতে-কলমে প্র্যাকটিক্যাল ক্লাসের ব্যবস্থা থাকায় শিক্ষার্থীরা প্রযুক্তি ও বিজ্ঞানে দারুণ পারদর্শী হয়ে উঠছে। স্কুলের সার্বিক ব্যবস্থাপনায় আমি সন্তুষ্ট।',
+      tone: 'bg-purple-600',
     },
   ];
 
   return (
-    <div className="bg-background text-foreground w-full relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-primary rounded-full filter blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full filter blur-3xl" />
-      </div>
+    <section className="w-full py-16 sm:py-20 bg-white dark:bg-[#060D1A] text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-300">
+      {/* Decorative Ambient Mesh Glows */}
+      <div className="absolute top-10 right-10 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <section className="py-16 lg:w-11/12 mx-auto relative z-10">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Header
-              title="অভিভাবকরা কি বলেন"
-              sub="আমাদের বিদ্যালয়ের অভিজ্ঞতা এবং কেন তারা তাদের সন্তানের শিক্ষা আমাদের হাতে বিশ্বাস করেন, তা জানুন।"
-            />
-          </motion.div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-7xl relative z-10">
+        {/* Section Header - Clean & Trust-focused */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200/80 dark:border-blue-800/60 text-blue-700 dark:text-sky-300 text-xs sm:text-sm font-bold mb-2.5 shadow-2xs">
+            <HeartHandshake className="w-4 h-4 text-blue-600 dark:text-sky-400" />
+            <span>অভিভাবকদের মূল্যবান অভিজ্ঞতা</span>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-12 bg-primary p-6 md:p-8 rounded-2xl text-white shadow-xl"
-          >
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-4 rounded-xl backdrop-blur-sm">
-                  <Users className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold">৫০০+</div>
-                  <div className="text-white/90 font-medium">
-                    সন্তুষ্ট পরিবার
-                  </div>
-                </div>
-              </div>
+          <Header
+            title="অভিভাবকরা কি"
+            title2=" বলছেন"
+            sub="আমাদের শিক্ষাব্যবস্থা, পরিবেশ ও মানবিক যত্ন নিয়ে সম্মানিত অভিভাবকদের বাস্তব মতামত।"
+          />
 
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-4 rounded-xl backdrop-blur-sm">
-                  <Star className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold">৪.৯/৫</div>
-                  <div className="text-white/90 font-medium">গড় রেটিং</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-4 rounded-xl backdrop-blur-sm">
-                  <Quote className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold">৯৮%</div>
-                  <div className="text-white/90 font-medium">
-                    আমাদের সুপারিশ করেন
-                  </div>
-                </div>
-              </div>
+          {/* Social Proof Rating summary */}
+          <div className="flex items-center justify-center gap-2 mt-4 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300">
+            <div className="flex gap-1 text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400" />
+              ))}
             </div>
-          </motion.div>
+            <span>৪.৯ / ৫.০ রেটিং</span>
+            <span className="text-slate-400">•</span>
+            <span className="text-blue-600 dark:text-sky-400 font-semibold flex items-center gap-1">
+              <ShieldCheck className="w-4 h-4" />
+              <span>১০০% সন্তুষ্ট অভিভাবক</span>
+            </span>
+          </div>
+        </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((testimonial, index) => {
-              let toneClass = '';
-              if (testimonial.tone === 'chart-1') toneClass = 'bg-chart-1';
-              else if (testimonial.tone === 'chart-2') toneClass = 'bg-chart-2';
-              else if (testimonial.tone === 'chart-3') toneClass = 'bg-chart-3';
-              else if (testimonial.tone === 'chart-4') toneClass = 'bg-chart-4';
-
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.1,
-                    ease: 'easeOut',
-                  }}
-                  className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden"
-                >
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-4 relative z-10">
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-16">
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="group relative bg-slate-50/60 dark:bg-slate-900/90 hover:bg-white dark:hover:bg-slate-800/90 p-7 sm:p-8 rounded-3xl shadow-xs dark:shadow-xl hover:shadow-xl transition-all duration-300 border border-slate-200/80 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-500/50 flex flex-col justify-between backdrop-blur-md"
+            >
+              <div>
+                {/* Card Top: Stars & Watermark Quote */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <Star
                         key={i}
-                        className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                        className="w-4 h-4 fill-amber-400 text-amber-400"
                       />
                     ))}
                   </div>
 
-                  {/* Testimonial Text */}
-                  <p className="text-gray-700 mb-6 leading-relaxed relative z-10 min-h-[120px]">
-                    &ldquo;{testimonial.text}&rdquo;
-                  </p>
+                  <Quote className="w-7 h-7 text-blue-200 dark:text-blue-500/30 group-hover:text-blue-300 transition-colors" />
+                </div>
 
-                  {/* Author Info */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100 relative z-10">
-                    <div
-                      className={`${toneClass} w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md`}
-                    >
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-sm text-gray-500">
-                        {testimonial.role}
-                      </p>
-                    </div>
+                {/* Testimonial Quote Text */}
+                <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-base mb-6 leading-relaxed font-normal">
+                  &ldquo;{testimonial.text}&rdquo;
+                </p>
+              </div>
+
+              {/* Author & Verification Footer */}
+              <div className="flex items-center justify-between pt-4 border-t border-slate-200/80 dark:border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`${testimonial.tone} w-11 h-11 rounded-2xl flex items-center justify-center text-white font-extrabold text-base shadow-sm shrink-0`}
+                  >
+                    {testimonial.name.charAt(0)}
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                  <div>
+                    <h4 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-blue-600 dark:group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
+                      <span>{testimonial.name}</span>
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-sky-400 shrink-0" />
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                      {testimonial.relation}
+                    </p>
+                  </div>
+                </div>
 
-          <ContactCTA />
+                <span className="hidden sm:inline-block text-[11px] font-semibold text-slate-400">
+                  {testimonial.date}
+                </span>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 
