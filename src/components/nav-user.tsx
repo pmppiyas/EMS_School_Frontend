@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useUser } from '@/hooks/useUser';
 import { logout } from '../app/services/auth/logout';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
@@ -38,13 +39,18 @@ export function NavUser({
   const { isMobile } = useSidebar();
   const [, startTransition] = useTransition();
   const router = useRouter();
+  const { refreshUser } = useUser();
 
   const handleLogout = async () => {
     const res = await logout();
     if (res.success) {
-      startTransition(() => router.refresh());
-      toast.success(res.message as string);
-    } else toast.error(res.message as string);
+      await refreshUser();
+      router.refresh();
+      router.push('/login');
+      toast.success((res.message as string) || 'Logged out successfully');
+    } else {
+      toast.error((res.message as string) || 'Logout failed');
+    }
   };
 
   return (

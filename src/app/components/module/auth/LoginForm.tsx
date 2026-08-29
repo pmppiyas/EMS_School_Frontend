@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useUser } from '@/hooks/useUser';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -28,6 +29,7 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
   const [loading, setLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
+  const { refreshUser } = useUser();
 
   const {
     register,
@@ -43,13 +45,20 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
       const login = await loginUser(data);
 
       if (login.success) {
-        toast.success(login.message);
+        toast.success(login.message || 'Login successful!');
         setIsRedirecting(true);
 
-        const destination = redirect ? decodeURIComponent(redirect) : '/';
+        // Instantly refresh user state in client context so Navbar updates immediately without page reload!
+        await refreshUser();
+
+        // Refresh router cache
+        router.refresh();
+
+        const destination =
+          redirect && redirect !== '/' ? decodeURIComponent(redirect) : '/dashboard';
         router.push(destination);
       } else {
-        toast.error(login.message);
+        toast.error(login.message || 'Invalid credentials');
         setLoading(false);
       }
     } catch (err) {

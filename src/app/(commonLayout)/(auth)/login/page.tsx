@@ -7,10 +7,10 @@ const LoginPage = async ({
 }: {
   searchParams?: Promise<{ redirectTo?: string }>;
 }) => {
-  const redirect = (await searchParams)?.redirectTo || '/';
+  const redirect = (await searchParams)?.redirectTo || '/dashboard';
 
   return (
-    <div className="min-h-screen w-full flex  items-center justify-center">
+    <div className="min-h-screen w-full flex items-center justify-center">
       <LoginForm redirect={redirect} />
     </div>
   );

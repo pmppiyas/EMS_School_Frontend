@@ -74,13 +74,14 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'About', href: '/about', icon: Info },
     { name: 'Gallery', href: '/gallery', icon: ImageIcon },
     { name: 'Contact', href: '/contact', icon: PhoneCall },
   ];
 
-  const isLoggedIn = user && user.success;
+  const isLoggedIn = Boolean(
+    user && (user.success || user.data || user.id || user.email || user.user)
+  );
 
   return (
     <>
@@ -146,7 +147,7 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* Right Side CTA Actions */}
+          {/* Right Side Actions */}
           <div className="hidden lg:flex items-center gap-2.5">
             {/* Theme Switcher Toggle */}
             {mounted && (
@@ -166,38 +167,31 @@ const Navbar = () => {
               </button>
             )}
 
+            {/* Dynamic Action Button: Dashboard if logged in, else Login */}
             {isLoggedIn ? (
               <Button
                 size="sm"
                 asChild
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-full px-5 h-9.5 shadow-md shadow-blue-500/25"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-full px-5 h-9.5 shadow-md shadow-blue-500/25 transition-all hover:scale-105 cursor-pointer"
               >
                 <Link href="/dashboard" className="flex items-center gap-1.5">
-                  <UserCheck className="w-4 h-4" />
+                  <LayoutDashboard className="w-4 h-4" />
                   <span>Dashboard</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-90" />
                 </Link>
               </Button>
             ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="text-xs lg:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-sky-300 px-3 py-1.5 transition-colors"
-                >
-                  Login
+              <Button
+                size="sm"
+                asChild
+                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-full px-5 h-9.5 shadow-md shadow-blue-500/25 transition-all hover:scale-105 cursor-pointer"
+              >
+                <Link href="/login" className="flex items-center gap-1.5">
+                  <LogIn className="w-4 h-4" />
+                  <span>Login</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-90" />
                 </Link>
-
-                <Button
-                  size="sm"
-                  asChild
-                  className="relative group overflow-hidden rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-700 hover:via-indigo-700 hover:to-sky-700 text-white text-xs lg:text-sm font-bold px-5 h-9.5 shadow-md shadow-blue-500/25 hover:shadow-blue-500/40 transition-all"
-                >
-                  <Link href="/contact" className="flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-sky-200 group-hover:rotate-12 transition-transform" />
-                    <span>Contact</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </Link>
-                </Button>
-              </>
+              </Button>
             )}
           </div>
 
@@ -220,11 +214,12 @@ const Navbar = () => {
               </button>
             )}
 
+            {/* Mobile Top Action Button */}
             {isLoggedIn ? (
               <Button
                 size="sm"
                 asChild
-                className="bg-blue-600 text-white text-[11px] font-bold h-8 px-3 rounded-full"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[11px] font-bold h-8 px-3 rounded-full"
               >
                 <Link href="/dashboard" onClick={() => setOpenNavbar(false)}>
                   Dashboard
@@ -289,13 +284,13 @@ const Navbar = () => {
 
             <div className="h-px bg-slate-100 dark:bg-slate-800 my-2" />
 
-            {/* Mobile Bottom Actions */}
-            <div className="grid grid-cols-2 gap-2 pt-1">
+            {/* Mobile Bottom Action */}
+            <div className="pt-1">
               {isLoggedIn ? (
                 <Button
                   size="sm"
                   asChild
-                  className="col-span-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold"
+                  className="w-full rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold h-10 shadow-md shadow-blue-500/25"
                 >
                   <Link
                     href="/dashboard"
@@ -304,41 +299,25 @@ const Navbar = () => {
                   >
                     <LayoutDashboard className="w-4 h-4" />
                     <span>Go to Dashboard</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </Link>
                 </Button>
               ) : (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    className="w-full rounded-2xl border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold"
+                <Button
+                  size="sm"
+                  asChild
+                  className="w-full rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white font-bold h-10 shadow-md shadow-blue-500/25"
+                >
+                  <Link
+                    href="/login"
+                    onClick={() => setOpenNavbar(false)}
+                    className="flex items-center justify-center gap-1.5"
                   >
-                    <Link
-                      href="/login"
-                      onClick={() => setOpenNavbar(false)}
-                      className="flex items-center justify-center gap-1.5"
-                    >
-                      <LogIn className="w-3.5 h-3.5" />
-                      <span>Login</span>
-                    </Link>
-                  </Button>
-
-                  <Button
-                    size="sm"
-                    asChild
-                    className="w-full rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white font-bold shadow-md shadow-blue-500/25"
-                  >
-                    <Link
-                      href="/contact"
-                      onClick={() => setOpenNavbar(false)}
-                      className="flex items-center justify-center gap-1.5"
-                    >
-                      <span>Contact</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </Button>
-                </>
+                    <LogIn className="w-4 h-4" />
+                    <span>Login</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
+                </Button>
               )}
             </div>
           </div>

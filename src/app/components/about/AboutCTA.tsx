@@ -1,7 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, PhoneCall, MapPin, CalendarCheck, ShieldCheck } from 'lucide-react';
+import {
+  Sparkles,
+  ArrowRight,
+  PhoneCall,
+  MapPin,
+  CalendarCheck,
+  ShieldCheck,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export default function AboutCTA() {
@@ -45,7 +52,8 @@ export default function AboutCTA() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="text-slate-600 dark:text-slate-300 mb-10 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl mx-auto"
         >
-          ক্যাম্পাস ঘুরে দেখতে বা সম্মানিত চেয়ারম্যান ও অধ্যক্ষ মহোদয়ের সাথে সরাসরি পরামর্শ করতে যেকোনো কার্যদিবসে আমাদের ক্যাম্পাসে আমন্ত্রিত।
+          ক্যাম্পাস ঘুরে দেখতে বা সম্মানিত চেয়ারম্যান ও অধ্যক্ষ মহোদয়ের সাথে
+          সরাসরি পরামর্শ করতে যেকোনো কার্যদিবসে আমাদের ক্যাম্পাসে আমন্ত্রিত।
         </motion.p>
 
         {/* Action Buttons */}
@@ -75,7 +83,7 @@ export default function AboutCTA() {
         {/* Campus Location snippet */}
         <div className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
           <MapPin className="w-4 h-4 text-blue-600 dark:text-sky-400" />
-          <span>ক্যাম্পাস: ধর্মপুর, সুন্দরগঞ্জ, গাইবান্ধা, বাংলাদেশ</span>
+          <span>ক্যাম্পাস: ধর্মপুর, গোবিন্দগঞ্জ, গাইবান্ধা, বাংলাদেশ</span>
         </div>
       </div>
     </section>
